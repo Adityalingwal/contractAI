@@ -19,4 +19,4 @@ export interface RouteConfig {
   };
 }
 
-export type AuthedRequest = Request & { user: User };
+export type AuthedRequest = Request & { user: any };
