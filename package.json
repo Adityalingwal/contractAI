@@ -2,25 +2,25 @@
     "name": "contractAI",
     "private": true,
     "workspaces": [
-      "packages/api-types",
-      "packages/client",
-      "packages/server"
+        "packages/api-types",
+        "packages/client",
+        "packages/server"
     ],
     "scripts": {
-      "clean": "lerna clean",
-      "build": "npm run build --workspaces",
-      "build:prod": "npm install && npm run build",
-      "start:server": "npm run start --prefix packages/server",
-      "start:client": "npm run start --prefix packages/client",
-      "test": "npm run test",
-      "publish": "lerna publish"
+        "clean": "lerna clean",
+        "build": "npm run build --workspaces",
+        "build:prod": "npm install && npm run build",
+        "start:server": "npm run start --prefix packages/server",
+        "start:client": "npm run start --prefix packages/client",
+        "test": "npm run test",
+        "publish": "lerna publish"
     },
     "devDependencies": {
-      "cross-env": "^7.0.3",
-      "lerna": "^6.6.2"
+        "cross-env": "^7.0.3",
+        "lerna": "^6.6.2"
     },
     "dependencies": {
-      "rimraf": "^6.0.1"
+        "dotenv": "^16.4.7",
+        "rimraf": "^6.0.1"
     }
-  }
-  
+}
