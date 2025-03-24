@@ -5,14 +5,12 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import { Badge } from '../components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import { Label } from '../components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 
 const BusinessDashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterSkill, setFilterSkill] = useState('');
   
-  // Mock data - in a real app, this would come from your API
   const contractors = [
     {
       id: 1,

@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, Check, ClipboardCheck, CreditCard, FileText, LightbulbIcon, Shield, Users } from "lucide-react";
@@ -46,10 +45,10 @@ const Landing = () => {
             <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors">Testimonials</a>
           </nav>
           <div className="flex items-center space-x-4">
-            <Link to="/">
+            <Link to="/dashboard-selector">
               <Button variant="outline" size="sm">Login</Button>
             </Link>
-            <Link to="/dashboard">
+            <Link to="/dashboard-selector">
               <Button size="sm">Get Started</Button>
             </Link>
           </div>
@@ -84,7 +83,7 @@ const Landing = () => {
               className="flex flex-col md:flex-row items-center justify-center gap-4 mt-8 md:mt-12"
               variants={item}
             >
-              <Link to="/dashboard">
+              <Link to="/dashboard-selector">
                 <Button size="lg" className="w-full md:w-auto bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-600/90 hover:to-purple-600/90">
                   Get Started 
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -310,7 +309,7 @@ const Landing = () => {
               Join innovative businesses saving time and reducing overhead with ContractorAI
             </p>
             <div className="flex flex-col md:flex-row justify-center gap-4 mt-6">
-              <Link to="/dashboard">
+              <Link to="/dashboard-selector">
                 <Button 
                   size="lg"
                   variant="secondary"
