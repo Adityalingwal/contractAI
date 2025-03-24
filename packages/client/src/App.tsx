@@ -12,6 +12,8 @@ import Reports from "./pages/Reports";
 import Alerts from "./pages/Alerts";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import BusinessDashboard from "./pages/BusinessDashboard";
+import ContractorDashboard from "./pages/ContractorDashboard";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +32,8 @@ const App = () => (
           <Route path="/alerts" element={<Alerts />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/BusinessDashboard" element={<BusinessDashboard />} />
+          <Route path="/ContractorDashboard" element={<ContractorDashboard />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

@@ -46,7 +46,7 @@ const Landing = () => {
             <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors">Testimonials</a>
           </nav>
           <div className="flex items-center space-x-4">
-            <Link to="/dashboard">
+            <Link to="/">
               <Button variant="outline" size="sm">Login</Button>
             </Link>
             <Link to="/dashboard">
