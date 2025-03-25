@@ -1,9 +1,9 @@
--- Define ENUM types
+
 CREATE TYPE task_status AS ENUM ('open', 'assigned', 'in_progress', 'completed', 'cancelled');
 CREATE TYPE payment_method AS ENUM ('ACH', 'USDC');
 CREATE TYPE invoice_status AS ENUM ('pending', 'paid', 'failed');
 
--- Contractors Table
+
 CREATE TABLE contractors (
     contractor_id SERIAL PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
