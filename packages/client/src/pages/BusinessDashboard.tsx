@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import './BusinessDashboard.css';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Input } from '../components/ui/input';
@@ -14,6 +16,18 @@ import {
   Mail,
   Phone,
   X,
+  Home,
+  CreditCard,
+  FileText,
+  Bell,
+  PlusCircle,
+  CheckCircle,
+  AlertCircle,
+  XCircle,
+  Calendar,
+  Users,
+  MessageSquare,
+  Info,
 } from 'lucide-react';
 import {
   Select,
@@ -108,6 +122,93 @@ interface ProfileModalState {
   contractor: ContractorProfile | null;
 }
 
+// Add this new interface for notifications
+interface Notification {
+  id: number;
+  type: 'success' | 'error' | 'warning' | 'info';
+  title: string;
+  message: string;
+  date: string;
+  isRead: boolean;
+  relatedTo?: string;
+}
+
+// Add dummy notifications data
+const dummyNotifications: Notification[] = [
+  {
+    id: 1,
+    type: 'success',
+    title: 'Payment Approved',
+    message: 'Your payment of $750 to Sarah Johnson has been approved and is being processed.',
+    date: '2024-07-10 09:15 AM',
+    isRead: false,
+    relatedTo: 'payment'
+  },
+  {
+    id: 2,
+    type: 'success',
+    title: 'Payment Sent',
+    message: 'Payment of $850 has been successfully sent to Michael Chen.',
+    date: '2024-07-09 02:30 PM',
+    isRead: true,
+    relatedTo: 'payment'
+  },
+  {
+    id: 3,
+    type: 'error',
+    title: 'Payment Failed',
+    message: 'Payment to Emily Rodriguez failed. Please check your payment method.',
+    date: '2024-07-08 11:45 AM',
+    isRead: false,
+    relatedTo: 'payment'
+  },
+  {
+    id: 4,
+    type: 'info',
+    title: 'Contract Accepted',
+    message: 'Emily Rodriguez has accepted your contract proposal for the AI Integration Project.',
+    date: '2024-07-07 03:20 PM',
+    isRead: true,
+    relatedTo: 'contract'
+  },
+  {
+    id: 5,
+    type: 'warning',
+    title: 'Contract Expiring Soon',
+    message: 'Your contract with Sarah Johnson will expire in 5 days. Consider renewal.',
+    date: '2024-07-06 10:10 AM',
+    isRead: false,
+    relatedTo: 'contract'
+  },
+  {
+    id: 6,
+    type: 'info',
+    title: 'New Message',
+    message: 'You have received a new message from Michael Chen regarding the Mobile App project.',
+    date: '2024-07-05 04:45 PM',
+    isRead: true,
+    relatedTo: 'message'
+  },
+  {
+    id: 7,
+    type: 'success',
+    title: 'Milestone Completed',
+    message: 'Sarah Johnson has completed the first milestone for the E-commerce Platform Redesign.',
+    date: '2024-07-04 01:30 PM',
+    isRead: false,
+    relatedTo: 'contract'
+  },
+  {
+    id: 8,
+    type: 'warning',
+    title: 'Upcoming Meeting',
+    message: 'Reminder: You have a scheduled meeting with Emily Rodriguez tomorrow at 2:00 PM.',
+    date: '2024-07-03 09:00 AM',
+    isRead: true,
+    relatedTo: 'meeting'
+  }
+];
+
 const BusinessDashboard = () => {
   // State for search and filters
   const [searchQuery, setSearchQuery] = useState('');
@@ -115,6 +216,22 @@ const BusinessDashboard = () => {
     hourlyRate: '',
     experience: '',
     availability: ''
+  });
+  
+  // Add state to track active sidebar item
+  const [activeItem, setActiveItem] = useState('find-contractors');
+  
+  // Add state for the contract form
+  const [contractForm, setContractForm] = useState({
+    name: '',
+    description: '',
+    requiredExperience: '',
+    location: '',
+    startDate: '',
+    endDate: '',
+    paymentType: 'hourly',
+    paymentAmount: '',
+    skills: ''
   });
 
   // This would be replaced with actual API call to fetch contractor profiles
@@ -126,10 +243,15 @@ const BusinessDashboard = () => {
     contractor: null
   });
 
-  // Replace the useEffect with this updated version
+  // Add notification state
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [activeFilter, setActiveFilter] = useState<string>('all');
+
+  // Update useEffect to also load notifications
   useEffect(() => {
-    // Simulating API call with dummy data
+    // Simulating API calls with dummy data
     setContractors(dummyContractors);
+    setNotifications(dummyNotifications);
   }, []);
 
   // Add this function to filter contractors based on search query and filters
@@ -159,6 +281,53 @@ const BusinessDashboard = () => {
       [filterType]: value
     }));
   };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setContractForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleContractSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Here you would send the form data to your API
+    console.log('Contract form submitted:', contractForm);
+    // Show success message or redirect
+    alert('Contract posted successfully!');
+    // Reset form
+    setContractForm({
+      name: '',
+      description: '',
+      requiredExperience: '',
+      location: '',
+      startDate: '',
+      endDate: '',
+      paymentType: 'hourly',
+      paymentAmount: '',
+      skills: ''
+    });
+  };
+
+  // Add a function to mark notifications as read
+  const markAsRead = (id: number) => {
+    setNotifications(prev => 
+      prev.map(notification => 
+        notification.id === id ? { ...notification, isRead: true } : notification
+      )
+    );
+  };
+
+  // Add a function to filter notifications
+  const getFilteredNotifications = () => {
+    if (activeFilter === 'all') {
+      return notifications;
+    }
+    return notifications.filter(notification => notification.relatedTo === activeFilter);
+  };
+
+  const unreadCount = notifications.filter(notification => !notification.isRead).length;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -290,166 +459,675 @@ const BusinessDashboard = () => {
     </motion.div>
   );
 
-  return (
+  // Contract posting form component with improved visuals and animations
+  const ContractPostingForm = () => (
     <motion.div
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-      className="min-h-screen bg-gradient-to-b from-purple-50 via-white to-purple-50 py-12 px-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="bg-gradient-to-br from-white to-purple-50 rounded-xl shadow-lg p-8 relative overflow-hidden"
     >
-      <Card className="max-w-6xl mx-auto shadow-xl border-0 overflow-hidden">
-        <motion.div
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
+      {/* Decorative elements */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-purple-200 rounded-full opacity-20 -mr-20 -mt-20"></div>
+      <div className="absolute bottom-0 left-0 w-40 h-40 bg-blue-200 rounded-full opacity-20 -ml-10 -mb-10"></div>
+      
+      <motion.div
+        initial={{ y: -20 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-700 to-blue-600 bg-clip-text text-transparent mb-8">
+          Post a New Contract
+        </h2>
+      </motion.div>
+      
+      <form onSubmit={handleContractSubmit} className="space-y-8 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Contract Name with animation */}
+          <motion.div 
+            className="space-y-2"
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.1 }}
+          >
+            <Label htmlFor="name" className="text-md font-medium text-purple-800">Contract Name</Label>
+            <Input
+              id="name"
+              name="name"
+              value={contractForm.name}
+              onChange={handleInputChange}
+              placeholder="E.g., Website Redesign Project"
+              className="border-purple-200 shadow-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-200 py-6 text-lg transition-all"
+              required
+            />
+          </motion.div>
+          
+          {/* Required Experience with animation */}
+          <motion.div 
+            className="space-y-2"
+            initial={{ x: 20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <Label htmlFor="requiredExperience" className="text-md font-medium text-purple-800">Required Experience</Label>
+            <Select name="requiredExperience" onValueChange={(value) => setContractForm(prev => ({ ...prev, requiredExperience: value }))}>
+              <SelectTrigger className="border-purple-200 shadow-sm hover:border-purple-300 focus:border-purple-500 py-6 text-lg transition-all">
+                <SelectValue placeholder="Select experience level" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="0-2 years">0-2 years</SelectItem>
+                <SelectItem value="3-5 years">3-5 years</SelectItem>
+                <SelectItem value="5-10 years">5-10 years</SelectItem>
+                <SelectItem value="10+ years">10+ years</SelectItem>
+              </SelectContent>
+            </Select>
+          </motion.div>
+          
+          {/* Location with animation */}
+          <motion.div 
+            className="space-y-2"
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            <Label htmlFor="location" className="text-md font-medium text-purple-800">Location</Label>
+            <Input
+              id="location"
+              name="location"
+              value={contractForm.location}
+              onChange={handleInputChange}
+              placeholder="E.g., Remote, New York, etc."
+              className="border-purple-200 shadow-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-200 py-6 text-lg transition-all"
+              required
+            />
+          </motion.div>
+          
+          {/* Start Date with animation */}
+          <motion.div 
+            className="space-y-2"
+            initial={{ x: 20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            <Label htmlFor="startDate" className="text-md font-medium text-purple-800">Start Date</Label>
+            <Input
+              id="startDate"
+              name="startDate"
+              type="date"
+              value={contractForm.startDate}
+              onChange={handleInputChange}
+              className="border-purple-200 shadow-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-200 py-6 text-lg transition-all"
+              required
+            />
+          </motion.div>
+          
+          {/* End Date with animation */}
+          <motion.div 
+            className="space-y-2"
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            <Label htmlFor="endDate" className="text-md font-medium text-purple-800">End Date</Label>
+            <Input
+              id="endDate"
+              name="endDate"
+              type="date"
+              value={contractForm.endDate}
+              onChange={handleInputChange}
+              className="border-purple-200 shadow-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-200 py-6 text-lg transition-all"
+              required
+            />
+          </motion.div>
+          
+          {/* Payment Amount with animation */}
+          <motion.div 
+            className="space-y-2"
+            initial={{ x: 20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.6 }}
+          >
+            <Label htmlFor="paymentAmount" className="text-md font-medium text-purple-800">
+              Payment Amount ($)
+            </Label>
+            <Input
+              id="paymentAmount"
+              name="paymentAmount"
+              type="number"
+              value={contractForm.paymentAmount}
+              onChange={handleInputChange}
+              placeholder="E.g., 25"
+              className="border-purple-200 shadow-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-200 py-6 text-lg transition-all"
+              required
+            />
+          </motion.div>
+          
+          {/* Description with animation */}
+          <motion.div 
+            className="space-y-2 md:col-span-2"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.7 }}
+          >
+            <Label htmlFor="description" className="text-md font-medium text-purple-800">Project Description</Label>
+            <textarea
+              id="description"
+              name="description"
+              value={contractForm.description}
+              onChange={handleInputChange}
+              rows={5}
+              placeholder="Describe the project, requirements, and expectations..."
+              className="w-full rounded-md border border-purple-200 p-4 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all text-lg resize-none shadow-sm"
+              required
+            />
+          </motion.div>
+        </div>
+        
+        {/* Submit Button with animation */}
+        <motion.div 
+          className="text-right mt-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
         >
-          <CardHeader className="text-center pb-8 pt-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-t-xl relative overflow-hidden">
-            <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
-            <motion.div
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <Button 
+              type="submit" 
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold px-8 py-6 rounded-xl shadow-lg text-lg"
+            >
+              Post Your Contract
+            </Button>
+          </motion.div>
+        </motion.div>
+      </form>
+    </motion.div>
+  );
+
+  // Add notifications component
+  const NotificationsPanel = () => {
+    const filteredNotifications = getFilteredNotifications();
+    
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="bg-white rounded-xl shadow-lg overflow-hidden"
+      >
+        {/* Header with filter tabs */}
+        <div className="p-6 border-b border-gray-100">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-purple-900">Notifications</h2>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-500">{unreadCount} unread</span>
+              {unreadCount > 0 && (
+                <button 
+                  className="text-xs text-purple-700 hover:text-purple-900 transition-colors font-medium"
+                  onClick={() => setNotifications(prev => prev.map(n => ({ ...n, isRead: true })))}
+                >
+                  Mark all as read
+                </button>
+              )}
+            </div>
+          </div>
+          
+          <div className="flex gap-2 overflow-x-auto pb-2">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                activeFilter === 'all' 
+                  ? 'bg-purple-100 text-purple-800' 
+                  : 'text-gray-600 hover:bg-gray-100'
+              }`}
+              onClick={() => setActiveFilter('all')}
+            >
+              All
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                activeFilter === 'payment' 
+                  ? 'bg-purple-100 text-purple-800' 
+                  : 'text-gray-600 hover:bg-gray-100'
+              }`}
+              onClick={() => setActiveFilter('payment')}
+            >
+              Payments
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                activeFilter === 'contract' 
+                  ? 'bg-purple-100 text-purple-800' 
+                  : 'text-gray-600 hover:bg-gray-100'
+              }`}
+              onClick={() => setActiveFilter('contract')}
+            >
+              Contracts
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                activeFilter === 'message' 
+                  ? 'bg-purple-100 text-purple-800' 
+                  : 'text-gray-600 hover:bg-gray-100'
+              }`}
+              onClick={() => setActiveFilter('message')}
+            >
+              Messages
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                activeFilter === 'meeting' 
+                  ? 'bg-purple-100 text-purple-800' 
+                  : 'text-gray-600 hover:bg-gray-100'
+              }`}
+              onClick={() => setActiveFilter('meeting')}
+            >
+              Meetings
+            </motion.button>
+          </div>
+        </div>
+        
+        {/* Notifications list */}
+        <div className="max-h-[70vh] overflow-y-auto">
+          {filteredNotifications.length === 0 ? (
+            <div className="p-12 text-center">
+              <div className="flex justify-center mb-4">
+                <Bell className="h-12 w-12 text-gray-300" />
+              </div>
+              <p className="text-gray-500">No notifications to display</p>
+            </div>
+          ) : (
+            <ul className="divide-y divide-gray-100">
+              {filteredNotifications.map((notification) => (
+                <motion.li 
+                  key={notification.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  whileHover={{ backgroundColor: '#fafafa' }}
+                  className={`p-6 relative ${!notification.isRead ? 'bg-purple-50' : ''}`}
+                >
+                  {!notification.isRead && (
+                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 w-2 h-2 rounded-full bg-purple-600"></div>
+                  )}
+                  <div className="flex gap-4">
+                    <div className={`flex-shrink-0 rounded-full p-2 ${
+                      notification.type === 'success' ? 'bg-green-100 text-green-500' :
+                      notification.type === 'error' ? 'bg-red-100 text-red-500' :
+                      notification.type === 'warning' ? 'bg-yellow-100 text-yellow-500' :
+                      'bg-blue-100 text-blue-500'
+                    }`}>
+                      {notification.type === 'success' && <CheckCircle className="h-6 w-6" />}
+                      {notification.type === 'error' && <XCircle className="h-6 w-6" />}
+                      {notification.type === 'warning' && <AlertCircle className="h-6 w-6" />}
+                      {notification.type === 'info' && <Info className="h-6 w-6" />}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex justify-between">
+                        <h3 className={`font-semibold ${!notification.isRead ? 'text-purple-900' : 'text-gray-700'}`}>
+                          {notification.title}
+                        </h3>
+                        <button
+                          onClick={() => markAsRead(notification.id)}
+                          className="text-gray-400 hover:text-gray-600"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                      <p className="text-gray-600 mt-1">{notification.message}</p>
+                      <p className="text-xs text-gray-400 mt-2">{notification.date}</p>
+                    </div>
+                  </div>
+                </motion.li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </motion.div>
+    );
+  };
+
+  return (
+    <div className="dashboard-container">
+      {/* Enhanced Left Sidebar */}
+      <motion.div 
+        className="sidebar"
+        initial={{ x: -50, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="sidebar-header">
+          <div className="logo-container">
+            <div className="logo-bg"></div>
+            <h3 className="logo-text">Business Portal</h3>
+          </div>
+        </div>
+        
+        <div className="sidebar-menu">
+          <ul>
+            <motion.li 
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.1 }}
+            >
+              <Link 
+                to="#" 
+                className={`menu-item ${activeItem === 'find-contractors' ? 'active' : ''}`}
+                onClick={() => setActiveItem('find-contractors')}
+              >
+                <div className="icon-container">
+                  <Briefcase className="h-5 w-5" />
+                </div>
+                <span>Find Contractors</span>
+                {activeItem === 'find-contractors' && 
+                  <motion.div className="active-indicator" layoutId="activeIndicator" />
+                }
+              </Link>
+            </motion.li>
+            <motion.li 
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <CardTitle className="text-4xl font-bold text-white mb-4">
-                Find Expert Contractors
-              </CardTitle>
-              <p className="text-purple-100 text-lg">
-                Connect with skilled professionals for your projects
-              </p>
-            </motion.div>
-          </CardHeader>
-        </motion.div>
-
-        <CardContent className="p-8">
-          <motion.div className="space-y-8" variants={containerVariants}>
-            {/* Search Box */}
-            <motion.div variants={itemVariants} className="relative max-w-2xl mx-auto">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-purple-400" />
-              <Input
-                placeholder="Search contractors by name or experience..."
-                className="pl-10 pr-4 py-6 text-lg shadow-md hover:shadow-lg transition-shadow border-purple-100 focus:border-purple-500"
-                value={searchQuery}
-                onChange={handleSearch}
-              />
-            </motion.div>
-
-            {/* Filters */}
-            <motion.div variants={itemVariants} className="bg-white p-6 rounded-xl shadow-md">
-              <h3 className="text-lg font-semibold mb-4 text-purple-800">Filter Results</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium text-purple-700">Hourly Rate</Label>
-                  <Select onValueChange={(value) => handleFilterChange(value, 'hourlyRate')}>
-                    <SelectTrigger className="border-purple-100 hover:border-purple-300 transition-colors">
-                      <SelectValue placeholder="Select range" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="0-25">$0 - $25</SelectItem>
-                      <SelectItem value="26-50">$26 - $50</SelectItem>
-                      <SelectItem value="51-100">$51 - $100</SelectItem>
-                      <SelectItem value="100+">$100+</SelectItem>
-                    </SelectContent>
-                  </Select>
+              <Link 
+                to="#" 
+                className={`menu-item ${activeItem === 'post-contract' ? 'active' : ''}`}
+                onClick={() => setActiveItem('post-contract')}
+              >
+                <div className="icon-container">
+                  <PlusCircle className="h-5 w-5" />
                 </div>
-
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium text-purple-700">Experience</Label>
-                  <Select onValueChange={(value) => handleFilterChange(value, 'experience')}>
-                    <SelectTrigger className="border-purple-100 hover:border-purple-300 transition-colors">
-                      <SelectValue placeholder="Select experience" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="0-2">0-2 years</SelectItem>
-                      <SelectItem value="3-5">3-5 years</SelectItem>
-                      <SelectItem value="5-10">5-10 years</SelectItem>
-                      <SelectItem value="10+">10+ years</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <span>Post a Contract</span>
+                {activeItem === 'post-contract' && 
+                  <motion.div className="active-indicator" layoutId="activeIndicator" />
+                }
+              </Link>
+            </motion.li>
+            <motion.li 
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <Link 
+                to="#" 
+                className={`menu-item ${activeItem === 'contract-status' ? 'active' : ''}`}
+                onClick={() => setActiveItem('contract-status')}
+              >
+                <div className="icon-container">
+                  <FileText className="h-5 w-5" />
                 </div>
-
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium text-purple-700">Availability</Label>
-                  <Select onValueChange={(value) => handleFilterChange(value, 'availability')}>
-                    <SelectTrigger className="border-purple-100 hover:border-purple-300 transition-colors">
-                      <SelectValue placeholder="Select availability" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="full-time">Full-time</SelectItem>
-                      <SelectItem value="part-time">Part-time</SelectItem>
-                      <SelectItem value="contract">Contract</SelectItem>
-                      <SelectItem value="freelance">Freelance</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <span>Contract Status</span>
+                {activeItem === 'contract-status' && 
+                  <motion.div className="active-indicator" layoutId="activeIndicator" />
+                }
+              </Link>
+            </motion.li>
+            <motion.li 
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <Link 
+                to="#" 
+                className={`menu-item ${activeItem === 'send-payment' ? 'active' : ''}`}
+                onClick={() => setActiveItem('send-payment')}
+              >
+                <div className="icon-container">
+                  <CreditCard className="h-5 w-5" />
                 </div>
+                <span>Send Payment</span>
+                {activeItem === 'send-payment' && 
+                  <motion.div className="active-indicator" layoutId="activeIndicator" />
+                }
+              </Link>
+            </motion.li>
+            <motion.li 
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              <Link 
+                to="#" 
+                className={`menu-item ${activeItem === 'notifications' ? 'active' : ''}`}
+                onClick={() => setActiveItem('notifications')}
+              >
+                <div className="icon-container">
+                  <Bell className="h-5 w-5" />
+                </div>
+                <span>Notifications</span>
+                {activeItem === 'notifications' && 
+                  <motion.div className="active-indicator" layoutId="activeIndicator" />
+                }
+              </Link>
+            </motion.li>
+          </ul>
+          
+          {/* Home link at the bottom */}
+          <motion.div 
+            className="home-link-container"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.7 }}
+          >
+            <Link to="/" className="menu-item home-link">
+              <div className="icon-container home-icon">
+                <Home className="h-5 w-5" />
               </div>
-            </motion.div>
-
-            {/* Results Section */}
-            <motion.div variants={itemVariants} className="mt-8 space-y-6">
-              {filteredContractors.map((contractor, index) => (
-                <motion.div
-                  key={contractor.id}
-                  variants={cardVariants}
-                  whileHover="hover"
-                  custom={index}
-                >
-                  <Card className="p-6 bg-white/50 backdrop-blur-sm border border-purple-100">
-                    <div className="flex flex-col md:flex-row justify-between gap-6">
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-3">
-                          <div className="h-12 w-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white text-xl font-bold">
-                            {contractor.name[0]}
-                          </div>
-                          <div>
-                            <h3 className="text-xl font-semibold text-purple-900">{contractor.name}</h3>
-                            <p className="text-purple-600">{contractor.experience}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-4 text-gray-600">
-                          <span className="flex items-center gap-1">
-                            <Briefcase className="w-4 h-4" />
-                            {contractor.completedProjects.length} Projects
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Clock className="w-4 h-4" />
-                            {contractor.availability}
-                          </span>
-                        </div>
-                        <p className="text-gray-600 line-clamp-2">
-                          {contractor.professionalSummary}
-                        </p>
-                      </div>
-                      <div className="flex flex-col items-end gap-4">
-                        <div className="text-right">
-                          <p className="text-2xl font-bold text-purple-600">
-                            ${contractor.hourlyRate}
-                            <span className="text-sm text-purple-400">/hr</span>
-                          </p>
-                        </div>
-                        <Button 
-                          className="bg-purple-600 hover:bg-purple-700 text-white w-full"
-                          onClick={() => setProfileModal({ isOpen: true, contractor })}
-                        >
-                          View Profile
-                        </Button>
-                      </div>
-                    </div>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
+              <span>Return to Home</span>
+            </Link>
           </motion.div>
-        </CardContent>
-      </Card>
+        </div>
+        
+        {/* Decorative elements */}
+        <div className="sidebar-decorations">
+          <div className="decoration-circle-1"></div>
+          <div className="decoration-circle-2"></div>
+        </div>
+      </motion.div>
 
-      {/* Add the modal to the main return statement, just before the closing </motion.div> */}
+      {/* Main Content */}
+      <div className="main-content">
+        {activeItem === 'find-contractors' && (
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+          >
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="content-header mb-6"
+            >
+              <h1 className="text-3xl font-bold text-purple-900">Find Expert Contractors</h1>
+              <p className="text-purple-600">Connect with skilled professionals for your projects</p>
+            </motion.div>
+            
+            <CardContent className="content-body p-0">
+              <motion.div className="space-y-8" variants={containerVariants}>
+                {/* Search Box */}
+                <motion.div variants={itemVariants} className="relative max-w-2xl mx-auto">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-purple-400" />
+                  <Input
+                    placeholder="Search contractors by name or experience..."
+                    className="pl-10 pr-4 py-6 text-lg shadow-md hover:shadow-lg transition-shadow border-purple-100 focus:border-purple-500"
+                    value={searchQuery}
+                    onChange={handleSearch}
+                  />
+                </motion.div>
+
+                {/* Filters */}
+                <motion.div variants={itemVariants} className="bg-white p-6 rounded-xl shadow-md">
+                  <h3 className="text-lg font-semibold mb-4 text-purple-800">Filter Results</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-purple-700">Hourly Rate</Label>
+                      <Select onValueChange={(value) => handleFilterChange(value, 'hourlyRate')}>
+                        <SelectTrigger className="border-purple-100 hover:border-purple-300 transition-colors">
+                          <SelectValue placeholder="Select range" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="0-25">$0 - $25</SelectItem>
+                          <SelectItem value="26-50">$26 - $50</SelectItem>
+                          <SelectItem value="51-100">$51 - $100</SelectItem>
+                          <SelectItem value="100+">$100+</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-purple-700">Experience</Label>
+                      <Select onValueChange={(value) => handleFilterChange(value, 'experience')}>
+                        <SelectTrigger className="border-purple-100 hover:border-purple-300 transition-colors">
+                          <SelectValue placeholder="Select experience" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="0-2">0-2 years</SelectItem>
+                          <SelectItem value="3-5">3-5 years</SelectItem>
+                          <SelectItem value="5-10">5-10 years</SelectItem>
+                          <SelectItem value="10+">10+ years</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-purple-700">Availability</Label>
+                      <Select onValueChange={(value) => handleFilterChange(value, 'availability')}>
+                        <SelectTrigger className="border-purple-100 hover:border-purple-300 transition-colors">
+                          <SelectValue placeholder="Select availability" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="full-time">Full-time</SelectItem>
+                          <SelectItem value="part-time">Part-time</SelectItem>
+                          <SelectItem value="contract">Contract</SelectItem>
+                          <SelectItem value="freelance">Freelance</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Results Section */}
+                <motion.div variants={itemVariants} className="mt-8 space-y-6">
+                  {filteredContractors.map((contractor, index) => (
+                    <motion.div
+                      key={contractor.id}
+                      variants={cardVariants}
+                      whileHover="hover"
+                      custom={index}
+                    >
+                      <Card className="p-6 bg-white/50 backdrop-blur-sm border border-purple-100">
+                        <div className="flex flex-col md:flex-row justify-between gap-6">
+                          <div className="space-y-3">
+                            <div className="flex items-center gap-3">
+                              <div className="h-12 w-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white text-xl font-bold">
+                                {contractor.name[0]}
+                              </div>
+                              <div>
+                                <h3 className="text-xl font-semibold text-purple-900">{contractor.name}</h3>
+                                <p className="text-purple-600">{contractor.experience}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-4 text-gray-600">
+                              <span className="flex items-center gap-1">
+                                <Briefcase className="w-4 h-4" />
+                                {contractor.completedProjects.length} Projects
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Clock className="w-4 h-4" />
+                                {contractor.availability}
+                              </span>
+                            </div>
+                            <p className="text-gray-600 line-clamp-2">
+                              {contractor.professionalSummary}
+                            </p>
+                          </div>
+                          <div className="flex flex-col items-end gap-4">
+                            <div className="text-right">
+                              <p className="text-2xl font-bold text-purple-600">
+                                ${contractor.hourlyRate}
+                                <span className="text-sm text-purple-400">/hr</span>
+                              </p>
+                            </div>
+                            <Button 
+                              className="bg-purple-600 hover:bg-purple-700 text-white w-full"
+                              onClick={() => setProfileModal({ isOpen: true, contractor })}
+                            >
+                              View Profile
+                            </Button>
+                          </div>
+                        </div>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </motion.div>
+            </CardContent>
+          </motion.div>
+        )}
+
+        {activeItem === 'post-contract' && (
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+            className="pt-4"
+          >
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="content-header mb-8 text-center"
+            >
+              <h1 className="text-4xl font-bold text-purple-900 mb-3">Post a New Contract</h1>
+              <p className="text-purple-600 text-xl">Find the perfect professional for your project</p>
+              <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto mt-4 rounded-full"></div>
+            </motion.div>
+            
+            <ContractPostingForm />
+          </motion.div>
+        )}
+
+        {/* Add notifications content */}
+        {activeItem === 'notifications' && (
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+            className="pt-4"
+          >
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="content-header mb-8 text-center"
+            >
+              <h1 className="text-4xl font-bold text-purple-900 mb-3">Notifications Center</h1>
+              <p className="text-purple-600 text-xl">Stay updated on your contracts and payments</p>
+              <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto mt-4 rounded-full"></div>
+            </motion.div>
+            
+            <NotificationsPanel />
+          </motion.div>
+        )}
+      </div>
+
+      {/* Modal */}
       {profileModal.isOpen && profileModal.contractor && (
         <ProfileModal 
           contractor={profileModal.contractor} 
           onClose={() => setProfileModal({ isOpen: false, contractor: null })} 
         />
       )}
-    </motion.div>
+    </div>
   );
 };
 
