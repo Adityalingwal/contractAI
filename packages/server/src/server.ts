@@ -13,7 +13,7 @@ import { invoiceRouterConfig } from './routers/invoiceRouter';
 
 const app: Application = express();
 
-const clientBuildPath = path.resolve(__dirname, '../../client/build');
+const clientBuildPath = path.resolve(__dirname, '../../client/dist');
 
 app.use(express.static(clientBuildPath));
 app.use(express.json());
