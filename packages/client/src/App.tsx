@@ -1,9 +1,8 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Index";
 import Contractors from "./pages/Contractors";
@@ -15,6 +14,8 @@ import NotFound from "./pages/NotFound";
 import BusinessDashboard from "./pages/BusinessDashboard";
 import ContractorDashboard from "./pages/ContractorDashboard";
 import DashboardSelector from "./pages/DashboardSelector";
+import ExploreContractors from './pages/ExploreContractors';
+
 
 const queryClient = new QueryClient();
 
@@ -23,7 +24,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <Router>
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -35,9 +36,10 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
           <Route path="/business" element={<BusinessDashboard />} />
           <Route path="/contractor" element={<ContractorDashboard />} />
-          <Route path="/dashboard-selector" element={<DashboardSelector />} />
+          <Route path="/dashboard-selector" element={<DashboardSelector />} /> 
+          <Route path="/explore-contractors" element={<ExploreContractors />} />
         </Routes>
-      </BrowserRouter>
+      </Router>
     </TooltipProvider>
   </QueryClientProvider>
 );
