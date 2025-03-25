@@ -34,69 +34,69 @@ const item = {
 
 const Landing = () => {
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-white to-gray-50">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-subtle">
-        <div className="container flex justify-between items-center h-16 px-4 md:px-6">
-          <Logo />
-          <nav className="hidden md:flex items-center space-x-8 text-sm font-medium">
-            <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">Features</a>
-            <a href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors">How It Works</a>
-            <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors">Testimonials</a>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-100">
+        <div className="container flex justify-between items-center h-20 px-4 md:px-8">
+          <Logo className="scale-110 origin-left" />
+          <nav className="hidden md:flex items-center space-x-10 text-sm font-medium">
+            <a href="#features" className="text-muted-foreground hover:text-foreground hover:scale-105 transition-all">Features</a>
+            <a href="#how-it-works" className="text-muted-foreground hover:text-foreground hover:scale-105 transition-all">How It Works</a>
+            <a href="#testimonials" className="text-muted-foreground hover:text-foreground hover:scale-105 transition-all">Testimonials</a>
           </nav>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-5">
             <Link to="/dashboard-selector">
-              <Button variant="outline" size="sm">Login</Button>
+              <Button variant="outline" size="sm" className="px-6 shadow-sm border-gray-200 hover:border-gray-300">Login</Button>
             </Link>
             <Link to="/dashboard-selector">
-              <Button size="sm">Get Started</Button>
+              <Button size="sm" className="px-6 shadow-md hover:shadow-lg transition-shadow">Get Started</Button>
             </Link>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-20 pb-10">
+      <section className="relative min-h-screen flex items-center pt-24 pb-16">
         {/* Animated Background */}
         <AnimatedBackground />
         
         <div className="container max-w-6xl mx-auto px-4 z-10">
           <motion.div
-            className="text-center space-y-8 py-24"
+            className="text-center space-y-10 py-20 md:py-28"
             variants={container}
             initial="hidden"
             animate="show"
           >
             <motion.h1 
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 drop-shadow-sm"
               variants={item}
             >
               Scale Your Workforce, Not Your Overhead
             </motion.h1>
             <motion.p 
-              className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto"
+              className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
               variants={item}
             >
               <span className="font-medium">Automated Contractor Onboarding & Payments Powered by AI and Payman</span>
             </motion.p>
             <motion.div 
-              className="flex flex-col md:flex-row items-center justify-center gap-4 mt-8 md:mt-12"
+              className="flex flex-col md:flex-row items-center justify-center gap-6 mt-12"
               variants={item}
             >
               <Link to="/dashboard-selector">
-                <Button size="lg" className="w-full md:w-auto bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-600/90 hover:to-purple-600/90">
+                <Button size="lg" className="w-full md:w-auto px-8 py-6 text-base font-medium bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-300">
                   Get Started 
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
-              <Button variant="outline" size="lg" className="w-full md:w-auto border-2">
+              <Button variant="outline" size="lg" className="w-full md:w-auto px-8 py-6 text-base font-medium border-2 shadow-sm hover:shadow-md transition-all duration-300">
                 Request a Demo
               </Button>
             </motion.div>
           </motion.div>
           
           <motion.div
-            className="relative z-10 mt-12 max-w-5xl mx-auto"
+            className="relative z-10 mt-8 max-w-5xl mx-auto"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ 
@@ -105,9 +105,9 @@ const Landing = () => {
               ease: [0.25, 0.25, 0, 1]
             }}
           >
-            <div className="relative">
+            <div className="relative transform hover:scale-[1.02] transition-transform duration-500">
               {/* Dashboard preview mockup */}
-              <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+              <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
                 <div className="h-6 bg-gray-100 flex items-center px-4">
                   <div className="flex space-x-2">
                     <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
@@ -178,19 +178,19 @@ const Landing = () => {
                 </div>
               </div>
               
-              {/* Glow effect */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-violet-500/20 blur-xl opacity-50 -z-10 rounded-3xl"></div>
+              {/* Enhanced glow effect */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500/30 via-purple-500/30 to-violet-500/30 blur-xl opacity-70 -z-10 rounded-3xl animate-pulse"></div>
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 md:py-32 px-4 bg-white relative z-10">
+      <section id="features" className="py-24 md:py-36 px-4 bg-white relative z-10">
         <div className="container max-w-6xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-20">
             <motion.h2 
-              className="text-3xl md:text-4xl font-display font-bold mb-4"
+              className="text-3xl md:text-5xl font-display font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-700"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -199,7 +199,7 @@ const Landing = () => {
               Powerful Features for Modern Businesses
             </motion.h2>
             <motion.p 
-              className="text-xl text-muted-foreground max-w-2xl mx-auto"
+              className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -209,7 +209,7 @@ const Landing = () => {
             </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-4">
             <FeatureCard 
               icon={<Users />}
               title="Contractor Onboarding"
@@ -239,11 +239,11 @@ const Landing = () => {
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-20 md:py-32 px-4 bg-indigo-50 relative z-10">
+      <section id="how-it-works" className="py-24 md:py-36 px-4 bg-gradient-to-b from-indigo-50 to-white relative z-10">
         <div className="container max-w-6xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-20">
             <motion.h2 
-              className="text-3xl md:text-4xl font-display font-bold mb-4"
+              className="text-3xl md:text-5xl font-display font-bold mb-6 text-indigo-900"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -252,7 +252,7 @@ const Landing = () => {
               How It Works
             </motion.h2>
             <motion.p 
-              className="text-xl text-muted-foreground max-w-2xl mx-auto"
+              className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -267,11 +267,11 @@ const Landing = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-20 md:py-32 px-4 bg-white relative z-10">
+      <section id="testimonials" className="py-24 md:py-36 px-4 bg-white relative z-10">
         <div className="container max-w-6xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-20">
             <motion.h2 
-              className="text-3xl md:text-4xl font-display font-bold mb-4"
+              className="text-3xl md:text-5xl font-display font-bold mb-6 text-gray-900"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -280,7 +280,7 @@ const Landing = () => {
               What Our Customers Say
             </motion.h2>
             <motion.p 
-              className="text-xl text-muted-foreground max-w-2xl mx-auto"
+              className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -295,34 +295,39 @@ const Landing = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white relative z-10">
-        <div className="container max-w-6xl mx-auto">
+      <section className="py-24 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white relative z-10 overflow-hidden">
+        {/* Add decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
+          <div className="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-white/20 blur-3xl"></div>
+          <div className="absolute -left-24 -bottom-24 w-96 h-96 rounded-full bg-white/20 blur-3xl"></div>
+        </div>
+        <div className="container max-w-6xl mx-auto relative z-10">
           <motion.div 
-            className="text-center space-y-6"
+            className="text-center space-y-8 max-w-4xl mx-auto"
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-3xl md:text-4xl font-display font-bold">Ready to Transform Your Contractor Management?</h2>
-            <p className="text-xl max-w-2xl mx-auto text-primary-foreground/90">
+            <h2 className="text-3xl md:text-5xl font-display font-bold">Ready to Transform Your Contractor Management?</h2>
+            <p className="text-xl max-w-2xl mx-auto text-primary-foreground/90 leading-relaxed">
               Join innovative businesses saving time and reducing overhead with ContractorAI
             </p>
-            <div className="flex flex-col md:flex-row justify-center gap-4 mt-6">
+            <div className="flex flex-col md:flex-row justify-center gap-6 mt-10">
               <Link to="/dashboard-selector">
                 <Button 
                   size="lg"
                   variant="secondary"
-                  className="w-full md:w-auto"
+                  className="w-full md:w-auto px-8 py-6 text-base font-medium shadow-lg hover:shadow-xl transition-all"
                 >
                   Get Started Now
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Button 
                 variant="outline" 
                 size="lg"
-                className="w-full md:w-auto bg-transparent border-white/20 hover:bg-white/10 text-white"
+                className="w-full md:w-auto px-8 py-6 text-base font-medium bg-transparent border-white/20 hover:bg-white/10 text-white shadow-lg hover:shadow-xl transition-all"
               >
                 Schedule a Demo
               </Button>
@@ -347,7 +352,7 @@ interface FeatureCardProps {
 const FeatureCard = ({ icon, title, description, delay }: FeatureCardProps) => {
   return (
     <motion.div 
-      className="bg-white p-6 rounded-2xl shadow-subtle hover:shadow-card transition-all duration-300 border border-border"
+      className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-indigo-100 group hover:-translate-y-2"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -357,22 +362,22 @@ const FeatureCard = ({ icon, title, description, delay }: FeatureCardProps) => {
         ease: [0.25, 0.25, 0, 1]
       }}
     >
-      <div className="h-12 w-12 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mb-4">
+      <div className="h-14 w-14 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-6 group-hover:bg-indigo-200 group-hover:scale-110 transition-all duration-300">
         {icon}
       </div>
-      <h3 className="text-xl font-semibold mb-2">{title}</h3>
+      <h3 className="text-xl font-semibold mb-3">{title}</h3>
       <p className="text-muted-foreground">{description}</p>
-      <ul className="mt-4 space-y-2">
-        <li className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Check className="h-4 w-4 text-indigo-600" /> 
+      <ul className="mt-6 space-y-3">
+        <li className="flex items-center gap-3 text-sm text-muted-foreground">
+          <Check className="h-5 w-5 text-indigo-600" /> 
           <span>Easy to implement</span>
         </li>
-        <li className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Check className="h-4 w-4 text-indigo-600" /> 
+        <li className="flex items-center gap-3 text-sm text-muted-foreground">
+          <Check className="h-5 w-5 text-indigo-600" /> 
           <span>Automated workflows</span>
         </li>
-        <li className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Check className="h-4 w-4 text-indigo-600" /> 
+        <li className="flex items-center gap-3 text-sm text-muted-foreground">
+          <Check className="h-5 w-5 text-indigo-600" /> 
           <span>Time-saving solution</span>
         </li>
       </ul>

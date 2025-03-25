@@ -35,7 +35,7 @@ const DashboardSelector = () => {
               animate={{ scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              Choose Your Dashboard
+              Choose Your Role
             </motion.h1>
             <motion.p 
               className="text-xl text-muted-foreground max-w-2xl mx-auto"
@@ -43,20 +43,20 @@ const DashboardSelector = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              Select the dashboard that best fits your role
+              Select the Role from Businessman or Contractor
             </motion.p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 max-w-8xl mx-auto px-4">
             {/* Business Dashboard Card */}
             <DashboardCard 
               icon={<Building2 className="h-8 w-8" />}
               title="Business Dashboard"
-              description="Manage your contractors, assign tasks, and process payments all in one place."
+              description="Manage your contracts, assign tasks, and process payments all in one place."
               buttonText="Access Business Dashboard"
               to="/business"
               delay={0}
-              gradient="from-indigo-600 to-blue-600"
+              color="bg-indigo-600"
             />
             
             {/* Contractor Dashboard Card */}
@@ -67,7 +67,7 @@ const DashboardSelector = () => {
               buttonText="Access Contractor Dashboard"
               to="/contractor"
               delay={0.1}
-              gradient="from-purple-600 to-pink-600"
+              color="bg-purple-600"
             />
           </div>
         </div>
@@ -83,10 +83,10 @@ interface DashboardCardProps {
   buttonText: string;
   to: string;
   delay: number;
-  gradient: string;
+  color: string;
 }
 
-const DashboardCard = ({ icon, title, description, buttonText, to, delay, gradient }: DashboardCardProps) => {
+const DashboardCard = ({ icon, title, description, buttonText, to, delay, color }: DashboardCardProps) => {
   return (
     <motion.div 
       className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 flex flex-col h-full hover:shadow-2xl transition-shadow duration-300"
@@ -103,7 +103,7 @@ const DashboardCard = ({ icon, title, description, buttonText, to, delay, gradie
       }}
     >
       <motion.div 
-        className={`h-24 bg-gradient-to-r ${gradient} flex items-center justify-center`}
+        className={`h-28 ${color} flex items-center justify-center`}
         whileHover={{ 
           scale: 1.05,
           transition: { duration: 0.2 }
@@ -117,9 +117,9 @@ const DashboardCard = ({ icon, title, description, buttonText, to, delay, gradie
           {icon}
         </motion.div>
       </motion.div>
-      <div className="p-6 flex-grow">
+      <div className="p-8 flex-grow">
         <motion.h2 
-          className="text-2xl font-semibold mb-3"
+          className="text-2xl font-semibold mb-4"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: delay + 0.2 }}
@@ -135,13 +135,13 @@ const DashboardCard = ({ icon, title, description, buttonText, to, delay, gradie
           {description}
         </motion.p>
       </div>
-      <div className="p-6 pt-0 mt-auto">
+      <div className="px-8 pb-8 pt-0 mt-auto">
         <Link to={to} className="w-full" onClick={() => console.log('Navigation triggered')}>
           <motion.div
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
           >
-            <Button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 transition-colors duration-300">
+            <Button className={`w-full ${color} hover:opacity-90 transition-opacity duration-300`}>
               {buttonText}
               <motion.div
                 initial={{ x: 0 }}

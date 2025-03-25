@@ -807,6 +807,7 @@ const BusinessDashboard = () => {
         <div className="sidebar-header">
           <div className="logo-container">
             <div className="logo-bg"></div>
+            <Briefcase className="w-6 h-6 absolute top-1/2 left-3 transform -translate-y-1/2 text-white" />
             <h3 className="logo-text">Business Portal</h3>
           </div>
         </div>
@@ -940,137 +941,146 @@ const BusinessDashboard = () => {
             initial="hidden"
             animate="visible"
             variants={containerVariants}
+            className="find-contractors-section"
           >
             <motion.div
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="content-header mb-6"
+              className="content-header text-center mb-8"
             >
-              <h1 className="text-3xl font-bold text-purple-900">Find Expert Contractors</h1>
-              <p className="text-purple-600">Connect with skilled professionals for your projects</p>
+              <h1 className="text-3xl font-bold text-purple-900 mb-3">Find Expert Contractors</h1>
+              <p className="text-purple-600 text-xl max-w-lg mx-auto">Connect with skilled professionals for your projects</p>
+              <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto mt-4 rounded-full"></div>
             </motion.div>
             
-            <CardContent className="content-body p-0">
-              <motion.div className="space-y-8" variants={containerVariants}>
-                {/* Search Box */}
-                <motion.div variants={itemVariants} className="relative max-w-2xl mx-auto">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-purple-400" />
-                  <Input
-                    placeholder="Search contractors by name or experience..."
-                    className="pl-10 pr-4 py-6 text-lg shadow-md hover:shadow-lg transition-shadow border-purple-100 focus:border-purple-500"
-                    value={searchQuery}
-                    onChange={handleSearch}
-                  />
-                </motion.div>
+            {/* Search Box */}
+            <motion.div 
+              variants={itemVariants} 
+              className="search-container"
+            >
+              <div className="search-box">
+                <Search className="search-icon" />
+                <Input
+                  placeholder="Search contractors by name or experience..."
+                  value={searchQuery}
+                  onChange={handleSearch}
+                />
+              </div>
+            </motion.div>
 
-                {/* Filters */}
-                <motion.div variants={itemVariants} className="bg-white p-6 rounded-xl shadow-md">
-                  <h3 className="text-lg font-semibold mb-4 text-purple-800">Filter Results</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="space-y-2">
-                      <Label className="text-sm font-medium text-purple-700">Hourly Rate</Label>
-                      <Select onValueChange={(value) => handleFilterChange(value, 'hourlyRate')}>
-                        <SelectTrigger className="border-purple-100 hover:border-purple-300 transition-colors">
-                          <SelectValue placeholder="Select range" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="0-25">$0 - $25</SelectItem>
-                          <SelectItem value="26-50">$26 - $50</SelectItem>
-                          <SelectItem value="51-100">$51 - $100</SelectItem>
-                          <SelectItem value="100+">$100+</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+            {/* Filters */}
+            <motion.div variants={itemVariants} className="filters-panel">
+              <h3>Filter Results</h3>
+              <div className="filters-grid">
+                <div className="filter-item">
+                  <Label className="filter-label">Hourly Rate</Label>
+                  <Select onValueChange={(value) => handleFilterChange(value, 'hourlyRate')}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select range" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="0-25">$0 - $25</SelectItem>
+                      <SelectItem value="26-50">$26 - $50</SelectItem>
+                      <SelectItem value="51-100">$51 - $100</SelectItem>
+                      <SelectItem value="100+">$100+</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-                    <div className="space-y-2">
-                      <Label className="text-sm font-medium text-purple-700">Experience</Label>
-                      <Select onValueChange={(value) => handleFilterChange(value, 'experience')}>
-                        <SelectTrigger className="border-purple-100 hover:border-purple-300 transition-colors">
-                          <SelectValue placeholder="Select experience" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="0-2">0-2 years</SelectItem>
-                          <SelectItem value="3-5">3-5 years</SelectItem>
-                          <SelectItem value="5-10">5-10 years</SelectItem>
-                          <SelectItem value="10+">10+ years</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                <div className="filter-item">
+                  <Label className="filter-label">Experience</Label>
+                  <Select onValueChange={(value) => handleFilterChange(value, 'experience')}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select experience" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="0-2">0-2 years</SelectItem>
+                      <SelectItem value="3-5">3-5 years</SelectItem>
+                      <SelectItem value="5-10">5-10 years</SelectItem>
+                      <SelectItem value="10+">10+ years</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-                    <div className="space-y-2">
-                      <Label className="text-sm font-medium text-purple-700">Availability</Label>
-                      <Select onValueChange={(value) => handleFilterChange(value, 'availability')}>
-                        <SelectTrigger className="border-purple-100 hover:border-purple-300 transition-colors">
-                          <SelectValue placeholder="Select availability" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="full-time">Full-time</SelectItem>
-                          <SelectItem value="part-time">Part-time</SelectItem>
-                          <SelectItem value="contract">Contract</SelectItem>
-                          <SelectItem value="freelance">Freelance</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </motion.div>
+                <div className="filter-item">
+                  <Label className="filter-label">Availability</Label>
+                  <Select onValueChange={(value) => handleFilterChange(value, 'availability')}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select availability" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="full-time">Full-time</SelectItem>
+                      <SelectItem value="part-time">Part-time</SelectItem>
+                      <SelectItem value="contract">Contract</SelectItem>
+                      <SelectItem value="freelance">Freelance</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </motion.div>
 
-                {/* Results Section */}
-                <motion.div variants={itemVariants} className="mt-8 space-y-6">
-                  {filteredContractors.map((contractor, index) => (
+            {/* Results Section */}
+            <motion.div variants={itemVariants} className="mt-8">
+              {filteredContractors.length === 0 ? (
+                <div className="empty-results">
+                  <Briefcase />
+                  <h3>No contractors found</h3>
+                  <p>Try adjusting your search or filters</p>
+                </div>
+              ) : (
+                <div className="contractors-grid">
+                  {filteredContractors.map((contractor) => (
                     <motion.div
                       key={contractor.id}
                       variants={cardVariants}
                       whileHover="hover"
-                      custom={index}
+                      className="contractor-card"
                     >
-                      <Card className="p-6 bg-white/50 backdrop-blur-sm border border-purple-100">
-                        <div className="flex flex-col md:flex-row justify-between gap-6">
-                          <div className="space-y-3">
-                            <div className="flex items-center gap-3">
-                              <div className="h-12 w-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white text-xl font-bold">
-                                {contractor.name[0]}
-                              </div>
-                              <div>
-                                <h3 className="text-xl font-semibold text-purple-900">{contractor.name}</h3>
-                                <p className="text-purple-600">{contractor.experience}</p>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-4 text-gray-600">
-                              <span className="flex items-center gap-1">
-                                <Briefcase className="w-4 h-4" />
-                                {contractor.completedProjects.length} Projects
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <Clock className="w-4 h-4" />
-                                {contractor.availability}
-                              </span>
-                            </div>
-                            <p className="text-gray-600 line-clamp-2">
-                              {contractor.professionalSummary}
-                            </p>
-                          </div>
-                          <div className="flex flex-col items-end gap-4">
-                            <div className="text-right">
-                              <p className="text-2xl font-bold text-purple-600">
-                                ${contractor.hourlyRate}
-                                <span className="text-sm text-purple-400">/hr</span>
-                              </p>
-                            </div>
-                            <Button 
-                              className="bg-purple-600 hover:bg-purple-700 text-white w-full"
-                              onClick={() => setProfileModal({ isOpen: true, contractor })}
-                            >
-                              View Profile
-                            </Button>
-                          </div>
+                      <div className="contractor-card-header">
+                        <div className="contractor-avatar">
+                          {contractor.name[0]}
                         </div>
-                      </Card>
+                        <div className="contractor-info">
+                          <h3 className="contractor-name">{contractor.name}</h3>
+                          <p className="contractor-experience">{contractor.experience}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="contractor-body">
+                        <div className="contractor-stats">
+                          <span className="contractor-stat">
+                            <Briefcase className="w-4 h-4" />
+                            {contractor.completedProjects.length} Projects
+                          </span>
+                          <span className="contractor-stat">
+                            <Clock className="w-4 h-4" />
+                            {contractor.availability}
+                          </span>
+                        </div>
+                        
+                        <p className="contractor-summary">
+                          {contractor.professionalSummary}
+                        </p>
+                        
+                        <div className="contractor-rate">
+                          ${contractor.hourlyRate}<span>/hr</span>
+                        </div>
+                      </div>
+                      
+                      <div className="contractor-card-footer">
+                        <button 
+                          className="view-profile-btn"
+                          onClick={() => setProfileModal({ isOpen: true, contractor })}
+                        >
+                          View Profile
+                        </button>
+                      </div>
                     </motion.div>
                   ))}
-                </motion.div>
-              </motion.div>
-            </CardContent>
+                </div>
+              )}
+            </motion.div>
           </motion.div>
         )}
 
@@ -1087,8 +1097,8 @@ const BusinessDashboard = () => {
               transition={{ duration: 0.5 }}
               className="content-header mb-8 text-center"
             >
-              <h1 className="text-4xl font-bold text-purple-900 mb-3">Post a New Contract</h1>
-              <p className="text-purple-600 text-xl">Find the perfect professional for your project</p>
+              <h1 className="text-3xl font-bold text-purple-900 mb-3">Post a New Contract</h1>
+              <p className="text-violet-600 text-xl max-w-lg mx-auto">Find the perfect professional for your project</p>
               <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto mt-4 rounded-full"></div>
             </motion.div>
             
