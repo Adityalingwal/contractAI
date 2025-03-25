@@ -22,16 +22,29 @@ const DashboardSelector = () => {
         <div className="container max-w-6xl mx-auto">
           <motion.div 
             className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ 
+              duration: 0.7,
+              ease: "easeOut"
+            }}
           >
-            <h1 className="text-3xl md:text-4xl font-display font-bold mb-4">
+            <motion.h1 
+              className="text-3xl md:text-4xl font-display font-bold mb-4 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
               Choose Your Dashboard
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            </motion.h1>
+            <motion.p 
+              className="text-xl text-muted-foreground max-w-2xl mx-auto"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
               Select the dashboard that best fits your role
-            </p>
+            </motion.p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -76,30 +89,69 @@ interface DashboardCardProps {
 const DashboardCard = ({ icon, title, description, buttonText, to, delay, gradient }: DashboardCardProps) => {
   return (
     <motion.div 
-      className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 flex flex-col h-full"
+      className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 flex flex-col h-full hover:shadow-2xl transition-shadow duration-300"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ 
-        duration: 0.5, 
+        duration: 0.6, 
         delay: delay,
-        ease: [0.25, 0.25, 0, 1]
+        ease: "easeOut"
+      }}
+      whileHover={{ 
+        scale: 1.02,
+        transition: { duration: 0.2 }
       }}
     >
-      <div className={`h-24 bg-gradient-to-r ${gradient} flex items-center justify-center`}>
-        <div className="h-16 w-16 rounded-full bg-white/20 flex items-center justify-center text-white">
+      <motion.div 
+        className={`h-24 bg-gradient-to-r ${gradient} flex items-center justify-center`}
+        whileHover={{ 
+          scale: 1.05,
+          transition: { duration: 0.2 }
+        }}
+      >
+        <motion.div 
+          className="h-16 w-16 rounded-full bg-white/20 flex items-center justify-center text-white"
+          whileHover={{ rotate: 360 }}
+          transition={{ duration: 0.6 }}
+        >
           {icon}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
       <div className="p-6 flex-grow">
-        <h2 className="text-2xl font-semibold mb-3">{title}</h2>
-        <p className="text-muted-foreground mb-6">{description}</p>
+        <motion.h2 
+          className="text-2xl font-semibold mb-3"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: delay + 0.2 }}
+        >
+          {title}
+        </motion.h2>
+        <motion.p 
+          className="text-muted-foreground mb-6"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: delay + 0.3 }}
+        >
+          {description}
+        </motion.p>
       </div>
       <div className="p-6 pt-0 mt-auto">
-        <Link to={to} className="w-full">
-          <Button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-600/90 hover:to-purple-600/90">
-            {buttonText}
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
+        <Link to={to} className="w-full" onClick={() => console.log('Navigation triggered')}>
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <Button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 transition-colors duration-300">
+              {buttonText}
+              <motion.div
+                initial={{ x: 0 }}
+                whileHover={{ x: 5 }}
+                transition={{ duration: 0.2 }}
+              >
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </motion.div>
+            </Button>
+          </motion.div>
         </Link>
       </div>
     </motion.div>

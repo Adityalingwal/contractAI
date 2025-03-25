@@ -1,154 +1,322 @@
-import React from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
-import { Badge } from '../components/ui/badge';
-import { Progress } from '../components/ui/progress';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Button } from '../components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Input } from '../components/ui/input';
+import { Textarea } from '../components/ui/textarea';
+import { Label } from '../components/ui/label';
+import { 
+  Briefcase, Mail, Phone, Star, Award, Clock, DollarSign, 
+  User, Calendar, Building, FileText, CheckCircle 
+} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const ContractorDashboard = () => {
-  // This would be fetched from your API
-  const contractor = {
-    name: 'Jane Doe',
-    avatar: '/avatar-placeholder.jpg',
-    tagline: 'Full-stack developer with 8 years of experience',
-    rating: 4.8,
-    reviews: 36,
-    skills: ['React', 'Node.js', 'TypeScript', 'MongoDB', 'AWS'],
-    projects: [
-      { id: 1, title: 'E-commerce Platform', description: 'Built a full e-commerce platform with React and Node.js', image: '/project1.jpg' },
-      { id: 2, title: 'CRM System', description: 'Developed a customer relationship management system', image: '/project2.jpg' },
-      { id: 3, title: 'Mobile App', description: 'Created a cross-platform mobile app using React Native', image: '/project3.jpg' },
-    ],
-    reviewsList: [
-      { id: 1, author: 'John Smith', rating: 5, comment: 'Exceptional work, delivered on time.', date: '2023-12-15' },
-      { id: 2, author: 'Sarah Johnson', rating: 4, comment: 'Great communication and skill set.', date: '2023-11-20' },
-    ],
-    activeProjects: [
-      { id: 1, title: 'Dashboard Redesign', client: 'Acme Corp', progress: 75, deadline: '2024-04-15' },
-    ]
+  const [formData, setFormData] = useState({
+    // Personal Info
+    name: '',
+    email: '',
+    phone: '',
+    alternatePhone: '',
+    address: '',
+
+    // Professional Details
+    skills: '',
+    experience: '',
+    hourlyRate: '',
+    availability: '',
+
+    // Previous Projects
+    completedProjects: [{
+      projectName: '',
+      clientName: '',
+      completionDate: '',
+      description: '',
+      feedback: ''
+    }],
+
+    // Payment Info
+    lastPaymentAmount: '',
+    lastPaymentDate: '',
+    lastProjectCompletionDate: '',
+    
+    // Additional Info
+    professionalSummary: '',
+    certifications: '',
+    preferredWorkHours: ''
+  });
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100
+      }
+    }
+  };
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      // Navigate to the explore contractors page with the form data
+      navigate('/explore-contractors', { 
+        state: { 
+          contractorData: formData 
+        }
+      });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    
+    // Handle nested form fields (for completedProjects)
+    if (name.includes('.')) {
+      const [parent, index, child] = name.split('.');
+      setFormData(prev => ({
+        ...prev,
+        [parent]: prev[parent].map((item: any, i: number) => 
+          i === parseInt(index) ? { ...item, [child]: value } : item
+        )
+      }));
+    } else {
+      // Handle regular form fields
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
+  };
+
+  const handleAddProject = (type: 'completed') => {
+    setFormData(prev => ({
+      ...prev,
+      completedProjects: [
+        ...prev.completedProjects,
+        {
+          projectName: '',
+          clientName: '',
+          completionDate: '',
+          description: '',
+          feedback: ''
+        }
+      ]
+    }));
   };
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Profile Section */}
-        <Card className="lg:col-span-1">
-          <CardHeader className="text-center">
-            <Avatar className="w-24 h-24 mx-auto">
-              <AvatarImage src={contractor.avatar} alt={contractor.name} />
-              <AvatarFallback>{contractor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-            </Avatar>
-            <CardTitle className="mt-4">{contractor.name}</CardTitle>
-            <CardDescription>{contractor.tagline}</CardDescription>
-            <div className="flex items-center justify-center mt-2">
-              <span className="text-yellow-500">★</span>
-              <span className="ml-1">{contractor.rating}</span>
-              <span className="text-muted-foreground ml-1">({contractor.reviews} reviews)</span>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <h3 className="font-semibold mb-2">Skills</h3>
-            <div className="flex flex-wrap gap-2 mb-6">
-              {contractor.skills.map((skill, index) => (
-                <Badge key={index} variant="secondary">{skill}</Badge>
-              ))}
-            </div>
+    <motion.div 
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="min-h-screen bg-gradient-to-b from-purple-50 to-white py-12 px-4"
+    >
+      <Card className="max-w-5xl mx-auto shadow-xl border-0">
+        <CardHeader className="text-center pb-8 pt-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-t-xl">
+          <motion.div
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <User className="w-16 h-16 mx-auto text-white mb-4" />
+            <CardTitle className="text-3xl font-bold text-white">
+              Detailed Contractor Profile
+            </CardTitle>
+            <p className="text-purple-100 mt-2">Please provide comprehensive information about your professional experience</p>
+          </motion.div>
+        </CardHeader>
 
-            {contractor.activeProjects.length > 0 && (
-              <>
-                <h3 className="font-semibold mb-2">Active Projects</h3>
-                <div className="space-y-4">
-                  {contractor.activeProjects.map(project => (
-                    <div key={project.id} className="border rounded-lg p-3">
-                      <div className="flex justify-between">
-                        <h4 className="font-medium">{project.title}</h4>
-                        <span className="text-sm text-muted-foreground">Due: {project.deadline}</span>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-2">Client: {project.client}</p>
-                      <div className="space-y-1">
-                        <div className="flex justify-between text-sm">
-                          <span>Progress</span>
-                          <span>{project.progress}%</span>
-                        </div>
-                        <Progress value={project.progress} className="h-2" />
-                      </div>
-                    </div>
-                  ))}
+        <CardContent className="p-8">
+          <form onSubmit={handleSubmit} className="space-y-8">
+            {/* Personal Information Section */}
+            <motion.div variants={itemVariants} className="space-y-6">
+              <div className="flex items-center gap-2 border-b pb-2">
+                <User className="w-6 h-6 text-purple-600" />
+                <h3 className="text-xl font-semibold">Personal Information</h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <InputField
+                  label="Full Name"
+                  name="name"
+                  icon={<User className="w-4 h-4" />}
+                  required
+                />
+                <InputField
+                  label="Email"
+                  name="email"
+                  type="email"
+                  icon={<Mail className="w-4 h-4" />}
+                  required
+                />
+                <InputField
+                  label="Primary Phone"
+                  name="phone"
+                  icon={<Phone className="w-4 h-4" />}
+                  required
+                />
+                <InputField
+                  label="Alternative Phone"
+                  name="alternatePhone"
+                  icon={<Phone className="w-4 h-4" />}
+                />
+                <div className="col-span-2">
+                  <InputField
+                    label="Address"
+                    name="address"
+                    icon={<Building className="w-4 h-4" />}
+                  />
                 </div>
-              </>
-            )}
-          </CardContent>
-        </Card>
+              </div>
+            </motion.div>
 
-        {/* Main Content Area */}
-        <div className="lg:col-span-2">
-          <Tabs defaultValue="projects">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="projects">Projects</TabsTrigger>
-              <TabsTrigger value="reviews">Reviews</TabsTrigger>
-              <TabsTrigger value="earnings">Earnings</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="projects" className="mt-6">
-              <h2 className="text-2xl font-bold mb-4">Portfolio</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {contractor.projects.map(project => (
-                  <Card key={project.id}>
-                    <div className="aspect-video w-full bg-muted rounded-t-lg overflow-hidden">
-                      <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+            {/* Previous Projects Section */}
+            <motion.div variants={itemVariants} className="space-y-6">
+              <div className="flex items-center gap-2 border-b pb-2">
+                <CheckCircle className="w-6 h-6 text-purple-600" />
+                <h3 className="text-xl font-semibold">Previous Projects</h3>
+              </div>
+              <div className="bg-purple-50 p-6 rounded-xl space-y-6">
+                {formData.completedProjects.map((_, index) => (
+                  <div key={index} className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <InputField
+                        label="Project Name"
+                        name={`completedProjects.${index}.projectName`}
+                        required
+                      />
+                      <InputField
+                        label="Completion Date"
+                        name={`completedProjects.${index}.completionDate`}
+                        type="date"
+                        required
+                      />
                     </div>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-lg">{project.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">{project.description}</p>
-                    </CardContent>
-                  </Card>
+                    <div className="space-y-2">
+                      <Label className="font-medium">Project Description</Label>
+                      <Textarea
+                        placeholder="Describe the project scope and your role"
+                        className="w-full mt-2"
+                        name={`completedProjects.${index}.description`}
+                        rows={3}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="font-medium">Client Feedback</Label>
+                      <Textarea
+                        placeholder="Add any feedback received from the client"
+                        className="w-full mt-2"
+                        name={`completedProjects.${index}.feedback`}
+                        rows={2}
+                      />
+                    </div>
+                  </div>
                 ))}
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => handleAddProject('completed')}
+                  className="mt-4"
+                >
+                  Add More Projects
+                </Button>
               </div>
-            </TabsContent>
-            
-            <TabsContent value="reviews" className="mt-6">
-              <h2 className="text-2xl font-bold mb-4">Client Reviews</h2>
-              <div className="space-y-4">
-                {contractor.reviewsList.map(review => (
-                  <Card key={review.id}>
-                    <CardHeader className="pb-2">
-                      <div className="flex justify-between items-center">
-                        <CardTitle className="text-lg">{review.author}</CardTitle>
-                        <div className="flex">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <span key={i} className={i < review.rating ? "text-yellow-500" : "text-gray-300"}>★</span>
-                          ))}
-                        </div>
-                      </div>
-                      <CardDescription>{review.date}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <p>{review.comment}</p>
-                    </CardContent>
-                  </Card>
-                ))}
+            </motion.div>
+
+            {/* Payment Information */}
+            <motion.div variants={itemVariants} className="space-y-6">
+              <div className="flex items-center gap-2 border-b pb-2">
+                <DollarSign className="w-6 h-6 text-purple-600" />
+                <h3 className="text-xl font-semibold">Payment Information</h3>
               </div>
-            </TabsContent>
-            
-            <TabsContent value="earnings" className="mt-6">
-              <h2 className="text-2xl font-bold mb-4">Earnings & Payments</h2>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Payment History</CardTitle>
-                  <CardDescription>Track your project payments and earnings</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-center text-muted-foreground py-8">Payment details will appear here</p>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </div>
-      </div>
-    </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <InputField
+                  label="Last Payment Amount"
+                  name="lastPaymentAmount"
+                  type="number"
+                  icon={<DollarSign className="w-4 h-4" />}
+                  required
+                />
+                <InputField
+                  label="Last Payment Date"
+                  name="lastPaymentDate"
+                  type="date"
+                  icon={<Calendar className="w-4 h-4" />}
+                  required
+                />
+                <InputField
+                  label="Last Project Completion Date"
+                  name="lastProjectCompletionDate"
+                  type="date"
+                  icon={<CheckCircle className="w-4 h-4" />}
+                  required
+                />
+                <InputField
+                  label="Hourly Rate"
+                  name="hourlyRate"
+                  type="number"
+                  icon={<DollarSign className="w-4 h-4" />}
+                  required
+                />
+              </div>
+            </motion.div>
+
+            {/* Submit Button */}
+            <motion.div 
+              variants={itemVariants}
+              className="flex justify-end gap-4 pt-6"
+            >
+              <Button
+                type="button"
+                variant="outline"
+                className="hover:bg-purple-50"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-2 rounded-lg transition-all duration-300 transform hover:scale-105"
+              >
+                Save Complete Profile
+              </Button>
+            </motion.div>
+          </form>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 };
+
+// Helper component for input fields
+const InputField = ({ label, name, type = "text", icon = null, required = false }) => (
+  <div className="space-y-2">
+    <Label className="flex items-center gap-2">
+      {icon && icon}
+      {label}
+    </Label>
+    <Input
+      type={type}
+      name={name}
+      required={required}
+      className="transition-all duration-300 border-purple-100 focus:border-purple-500 focus:ring-purple-500 hover:border-purple-300"
+    />
+  </div>
+);
 
 export default ContractorDashboard; 
