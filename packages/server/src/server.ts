@@ -4,7 +4,12 @@ import session from 'express-session';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import { restRouteHandler } from './routers/utils/restRouteHandler';
-
+import { contractorRouterConfig } from './routers/contractorRouter';
+import { companyRouterConfig } from './routers/companyRouter';
+import { taskRouterConfig } from './routers/taskRouter';
+import { skillRouterConfig } from './routers/skillRouter';
+import { contractorSkillRouterConfig } from './routers/contractorSkillRouter';
+import { invoiceRouterConfig } from './routers/invoiceRouter';
 
 const app: Application = express();
 
@@ -13,7 +18,6 @@ const clientBuildPath = path.resolve(__dirname, '../../client/build');
 app.use(express.static(clientBuildPath));
 app.use(express.json());
 
-
 app.use('*', (req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
   next();
@@ -21,16 +25,21 @@ app.use('*', (req, res, next) => {
 app.use(cookieParser());
 app.use(passport.initialize());
 
-app.use((req, res, next) => {
-  if (process.env.NODE_ENV === 'localhost') {
-    next();
-    return;
-  }
-});
-
+// Register all the router configurations
+app.use('/contractor', contractorRouterConfig.router);
+app.use('/company', companyRouterConfig.router);
+app.use('/task', taskRouterConfig.router);
+app.use('/skill', skillRouterConfig.router);
+app.use('/contractorSkill', contractorSkillRouterConfig.router);
+app.use('/invoice', invoiceRouterConfig.router);
 
 const routeConfigs = [
-  router,
+  contractorRouterConfig,
+  companyRouterConfig,
+  taskRouterConfig,
+  skillRouterConfig,
+  contractorSkillRouterConfig,
+  invoiceRouterConfig,
 ];
 
 routeConfigs.forEach(routeConfig => {
@@ -44,45 +53,35 @@ routeConfigs.forEach(routeConfig => {
   });
 });
 
-
+// All other GET requests not handled before will return our React app
 app.get('/*', (req, res) => {
   res.setHeader('Content-type', 'text/html');
   res.sendFile(path.join(clientBuildPath, 'index.html'));
 });
 
+// Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  if (process.env.NODE_ENV === 'localhost') {
-    next(err);
-    return;
-  }
+  // Simple pass-through without environment checks
+  next(err);
 });
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  if (process.env.NODE_ENV === 'localhost') {
-    console.error('Server error on handling request', err);
-  }
+  // Log all errors directly to console
+  console.error('Server error on handling request', err);
   res.status(500).send('Server error on handling request ');
 });
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
-  if (process.env.NODE_ENV === 'localhost') {
-    console.log(`Server is Fire at http://localhost:${PORT}`);
-    return;
-  }
+  console.log(`Server is running at http://localhost:${PORT}`);
 });
 
+// Global error handlers - always log to console
 process.on('uncaughtException', function (err) {
-  if (process.env.NODE_ENV === 'localhost') {
-    console.error('Uncaught Exception thrown', err);
-    return;
-  }
+  console.error('Uncaught Exception thrown', err);
 });
 
 process.on('unhandledRejection', (reason: string, promise: Promise<any>) => {
-  if (process.env.NODE_ENV === 'localhost') {
-    console.error('Uncaught Rejection', reason);
-    return;
-  }
+  console.error('Uncaught Rejection', reason);
 });
