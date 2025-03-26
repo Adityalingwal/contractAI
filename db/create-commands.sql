@@ -5,9 +5,8 @@ CREATE TYPE invoice_status AS ENUM ('pending', 'paid', 'failed');
 
 
 CREATE TABLE contractors (
-    contractor_id SERIAL PRIMARY KEY,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
+    contractor_id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    full_name VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     linkedin_profile VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

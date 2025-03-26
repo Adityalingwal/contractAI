@@ -4,10 +4,10 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import './ContractorDashboard.css';
 import { Briefcase, FileText, User, FileCheck, Home, CreditCard } from 'lucide-react';
-import ContractorForm from './ContractorForm.tsx';
-import { MyContracts } from '../components/MyContracts.tsx';
-import { PaymentStatus } from '../components/PaymentStatus.tsx';
-import { EditProfile } from '../components/EditProfile.tsx';
+import ContractorForm from './ContractorForm';
+import { MyContracts } from '../components/MyContracts';
+import { PaymentStatus } from '../components/PaymentStatus';
+import { EditProfile } from '../components/EditProfile';
 
 const ContractorDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('createProfile');
@@ -34,12 +34,13 @@ const ContractorDashboard: React.FC = () => {
       case 'myContracts':
         return <MyContracts />;
       default:
-        return <div className="p-6">hello</div>;
+        return <div className="p-6">Hello</div>;
     }
   };
 
   return (
     <div className="flex h-screen bg-background">
+      {/* Left Sidebar */}
       <motion.div
         className="w-64 border-r bg-card flex flex-col shadow-sm"
         initial={{ x: -50, opacity: 0 }}
@@ -71,7 +72,6 @@ const ContractorDashboard: React.FC = () => {
               <CreditCard className="h-4 w-4 mr-2" />
               Payment Status
             </Button>
-
             <Button
               variant={activeTab === 'editProfile' ? 'secondary' : 'ghost'}
               className="w-full justify-start"
@@ -80,7 +80,6 @@ const ContractorDashboard: React.FC = () => {
               <User className="h-4 w-4 mr-2" />
               Edit Profile
             </Button>
-
             <Button
               variant={activeTab === 'myContracts' ? 'secondary' : 'ghost'}
               className="w-full justify-start"
@@ -102,8 +101,14 @@ const ContractorDashboard: React.FC = () => {
         </div>
       </motion.div>
 
-      <main className="flex-1 overflow-auto bg-background">
-        <motion.div initial="hidden" animate="visible" variants={containerVariants}>
+      {/* Main Content */}
+      <main className="flex-1 overflow-auto bg-background px-6 py-6">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+          className="max-w-3xl mx-auto"
+        >
           {renderContent()}
         </motion.div>
       </main>
