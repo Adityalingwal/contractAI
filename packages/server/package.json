@@ -63,6 +63,7 @@
         "openai": "^4.24.7",
         "passport": "^0.7.0",
         "passport-google-oauth2": "^0.2.0",
+        "paymanai": "^2.7.0",
         "peopledatalabs": "^7.0.2",
         "pg": "^8.11.3",
         "postgres-interval": "^4.0.2",
