@@ -36,6 +36,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components/ui/select";
+import { Badge } from '../components/ui/badge';
+import { ScrollArea } from '../components/ui/scroll-area';
+import { Textarea } from '../components/ui/textarea';
 
 interface ContractorProfile {
   id: number;
@@ -459,623 +462,226 @@ const BusinessDashboard = () => {
     </motion.div>
   );
 
-  // Contract posting form component with improved visuals and animations
-  const ContractPostingForm = () => (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="bg-gradient-to-br from-white to-purple-50 rounded-xl shadow-lg p-8 relative overflow-hidden"
-    >
-      {/* Decorative elements */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-purple-200 rounded-full opacity-20 -mr-20 -mt-20"></div>
-      <div className="absolute bottom-0 left-0 w-40 h-40 bg-blue-200 rounded-full opacity-20 -ml-10 -mb-10"></div>
-      
-      <motion.div
-        initial={{ y: -20 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-700 to-blue-600 bg-clip-text text-transparent mb-8">
-          Post a New Contract
-        </h2>
-      </motion.div>
-      
-      <form onSubmit={handleContractSubmit} className="space-y-8 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Contract Name with animation */}
-          <motion.div 
-            className="space-y-2"
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.1 }}
-          >
-            <Label htmlFor="name" className="text-md font-medium text-purple-800">Contract Name</Label>
-            <Input
-              id="name"
-              name="name"
-              value={contractForm.name}
-              onChange={handleInputChange}
-              placeholder="E.g., Website Redesign Project"
-              className="border-purple-200 shadow-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-200 py-6 text-lg transition-all"
-              required
-            />
-          </motion.div>
-          
-          {/* Required Experience with animation */}
-          <motion.div 
-            className="space-y-2"
-            initial={{ x: 20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            <Label htmlFor="requiredExperience" className="text-md font-medium text-purple-800">Required Experience</Label>
-            <Select name="requiredExperience" onValueChange={(value) => setContractForm(prev => ({ ...prev, requiredExperience: value }))}>
-              <SelectTrigger className="border-purple-200 shadow-sm hover:border-purple-300 focus:border-purple-500 py-6 text-lg transition-all">
-                <SelectValue placeholder="Select experience level" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="0-2 years">0-2 years</SelectItem>
-                <SelectItem value="3-5 years">3-5 years</SelectItem>
-                <SelectItem value="5-10 years">5-10 years</SelectItem>
-                <SelectItem value="10+ years">10+ years</SelectItem>
-              </SelectContent>
-            </Select>
-          </motion.div>
-          
-          {/* Location with animation */}
-          <motion.div 
-            className="space-y-2"
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            <Label htmlFor="location" className="text-md font-medium text-purple-800">Location</Label>
-            <Input
-              id="location"
-              name="location"
-              value={contractForm.location}
-              onChange={handleInputChange}
-              placeholder="E.g., Remote, New York, etc."
-              className="border-purple-200 shadow-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-200 py-6 text-lg transition-all"
-              required
-            />
-          </motion.div>
-          
-          {/* Start Date with animation */}
-          <motion.div 
-            className="space-y-2"
-            initial={{ x: 20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-          >
-            <Label htmlFor="startDate" className="text-md font-medium text-purple-800">Start Date</Label>
-            <Input
-              id="startDate"
-              name="startDate"
-              type="date"
-              value={contractForm.startDate}
-              onChange={handleInputChange}
-              className="border-purple-200 shadow-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-200 py-6 text-lg transition-all"
-              required
-            />
-          </motion.div>
-          
-          {/* End Date with animation */}
-          <motion.div 
-            className="space-y-2"
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            <Label htmlFor="endDate" className="text-md font-medium text-purple-800">End Date</Label>
-            <Input
-              id="endDate"
-              name="endDate"
-              type="date"
-              value={contractForm.endDate}
-              onChange={handleInputChange}
-              className="border-purple-200 shadow-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-200 py-6 text-lg transition-all"
-              required
-            />
-          </motion.div>
-          
-          {/* Payment Amount with animation */}
-          <motion.div 
-            className="space-y-2"
-            initial={{ x: 20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.6 }}
-          >
-            <Label htmlFor="paymentAmount" className="text-md font-medium text-purple-800">
-              Payment Amount ($)
-            </Label>
-            <Input
-              id="paymentAmount"
-              name="paymentAmount"
-              type="number"
-              value={contractForm.paymentAmount}
-              onChange={handleInputChange}
-              placeholder="E.g., 25"
-              className="border-purple-200 shadow-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-200 py-6 text-lg transition-all"
-              required
-            />
-          </motion.div>
-          
-          {/* Description with animation */}
-          <motion.div 
-            className="space-y-2 md:col-span-2"
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.7 }}
-          >
-            <Label htmlFor="description" className="text-md font-medium text-purple-800">Project Description</Label>
-            <textarea
-              id="description"
-              name="description"
-              value={contractForm.description}
-              onChange={handleInputChange}
-              rows={5}
-              placeholder="Describe the project, requirements, and expectations..."
-              className="w-full rounded-md border border-purple-200 p-4 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all text-lg resize-none shadow-sm"
-              required
-            />
-          </motion.div>
-        </div>
-        
-        {/* Submit Button with animation */}
-        <motion.div 
-          className="text-right mt-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-        >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <Button 
-              type="submit" 
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold px-8 py-6 rounded-xl shadow-lg text-lg"
-            >
-              Post Your Contract
-            </Button>
-          </motion.div>
-        </motion.div>
-      </form>
-    </motion.div>
-  );
-
-  // Add notifications component
-  const NotificationsPanel = () => {
-    const filteredNotifications = getFilteredNotifications();
-    
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="bg-white rounded-xl shadow-lg overflow-hidden"
-      >
-        {/* Header with filter tabs */}
-        <div className="p-6 border-b border-gray-100">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-purple-900">Notifications</h2>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-500">{unreadCount} unread</span>
-              {unreadCount > 0 && (
-                <button 
-                  className="text-xs text-purple-700 hover:text-purple-900 transition-colors font-medium"
-                  onClick={() => setNotifications(prev => prev.map(n => ({ ...n, isRead: true })))}
-                >
-                  Mark all as read
-                </button>
-              )}
-            </div>
-          </div>
-          
-          <div className="flex gap-2 overflow-x-auto pb-2">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                activeFilter === 'all' 
-                  ? 'bg-purple-100 text-purple-800' 
-                  : 'text-gray-600 hover:bg-gray-100'
-              }`}
-              onClick={() => setActiveFilter('all')}
-            >
-              All
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                activeFilter === 'payment' 
-                  ? 'bg-purple-100 text-purple-800' 
-                  : 'text-gray-600 hover:bg-gray-100'
-              }`}
-              onClick={() => setActiveFilter('payment')}
-            >
-              Payments
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                activeFilter === 'contract' 
-                  ? 'bg-purple-100 text-purple-800' 
-                  : 'text-gray-600 hover:bg-gray-100'
-              }`}
-              onClick={() => setActiveFilter('contract')}
-            >
-              Contracts
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                activeFilter === 'message' 
-                  ? 'bg-purple-100 text-purple-800' 
-                  : 'text-gray-600 hover:bg-gray-100'
-              }`}
-              onClick={() => setActiveFilter('message')}
-            >
-              Messages
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                activeFilter === 'meeting' 
-                  ? 'bg-purple-100 text-purple-800' 
-                  : 'text-gray-600 hover:bg-gray-100'
-              }`}
-              onClick={() => setActiveFilter('meeting')}
-            >
-              Meetings
-            </motion.button>
-          </div>
-        </div>
-        
-        {/* Notifications list */}
-        <div className="max-h-[70vh] overflow-y-auto">
-          {filteredNotifications.length === 0 ? (
-            <div className="p-12 text-center">
-              <div className="flex justify-center mb-4">
-                <Bell className="h-12 w-12 text-gray-300" />
-              </div>
-              <p className="text-gray-500">No notifications to display</p>
-            </div>
-          ) : (
-            <ul className="divide-y divide-gray-100">
-              {filteredNotifications.map((notification) => (
-                <motion.li 
-                  key={notification.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  whileHover={{ backgroundColor: '#fafafa' }}
-                  className={`p-6 relative ${!notification.isRead ? 'bg-purple-50' : ''}`}
-                >
-                  {!notification.isRead && (
-                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 w-2 h-2 rounded-full bg-purple-600"></div>
-                  )}
-                  <div className="flex gap-4">
-                    <div className={`flex-shrink-0 rounded-full p-2 ${
-                      notification.type === 'success' ? 'bg-green-100 text-green-500' :
-                      notification.type === 'error' ? 'bg-red-100 text-red-500' :
-                      notification.type === 'warning' ? 'bg-yellow-100 text-yellow-500' :
-                      'bg-blue-100 text-blue-500'
-                    }`}>
-                      {notification.type === 'success' && <CheckCircle className="h-6 w-6" />}
-                      {notification.type === 'error' && <XCircle className="h-6 w-6" />}
-                      {notification.type === 'warning' && <AlertCircle className="h-6 w-6" />}
-                      {notification.type === 'info' && <Info className="h-6 w-6" />}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex justify-between">
-                        <h3 className={`font-semibold ${!notification.isRead ? 'text-purple-900' : 'text-gray-700'}`}>
-                          {notification.title}
-                        </h3>
-                        <button
-                          onClick={() => markAsRead(notification.id)}
-                          className="text-gray-400 hover:text-gray-600"
-                        >
-                          <X className="h-4 w-4" />
-                        </button>
-                      </div>
-                      <p className="text-gray-600 mt-1">{notification.message}</p>
-                      <p className="text-xs text-gray-400 mt-2">{notification.date}</p>
-                    </div>
-                  </div>
-                </motion.li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </motion.div>
-    );
-  };
-
   return (
-    <div className="dashboard-container">
-      {/* Enhanced Left Sidebar */}
+    <div className="flex h-screen bg-background">
+      {/* Enhanced Left Sidebar - updated with more professional colors */}
       <motion.div 
-        className="sidebar"
+        className="w-64 border-r bg-card flex flex-col shadow-sm"
         initial={{ x: -50, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="sidebar-header">
-          <div className="logo-container">
-            <div className="logo-bg"></div>
-            <Briefcase className="w-6 h-6 absolute top-1/2 left-3 transform -translate-y-1/2 text-white" />
-            <h3 className="logo-text">Business Portal</h3>
+        <div className="p-4 border-b">
+          <div className="flex items-center gap-2">
+            <Briefcase className="h-5 w-5 text-primary" />
+            <h3 className="font-semibold text-lg text-primary">Business Portal</h3>
           </div>
         </div>
         
-        <div className="sidebar-menu">
-          <ul>
-            <motion.li 
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.1 }}
+        <div className="py-4 flex-grow">
+          <nav className="space-y-2 px-2">
+            <Button 
+              variant={activeItem === 'find-contractors' ? "secondary" : "ghost"} 
+              className="w-full justify-start"
+              onClick={() => setActiveItem('find-contractors')}
             >
-              <Link 
-                to="#" 
-                className={`menu-item ${activeItem === 'find-contractors' ? 'active' : ''}`}
-                onClick={() => setActiveItem('find-contractors')}
-              >
-                <div className="icon-container">
-                  <Briefcase className="h-5 w-5" />
-                </div>
-                <span>Find Contractors</span>
-                {activeItem === 'find-contractors' && 
-                  <motion.div className="active-indicator" layoutId="activeIndicator" />
-                }
-              </Link>
-            </motion.li>
-            <motion.li 
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
+              <Briefcase className="h-4 w-4 mr-2" />
+              <span>Find Contractors</span>
+            </Button>
+            
+            <Button 
+              variant={activeItem === 'post-contract' ? "secondary" : "ghost"} 
+              className="w-full justify-start"
+              onClick={() => setActiveItem('post-contract')}
             >
-              <Link 
-                to="#" 
-                className={`menu-item ${activeItem === 'post-contract' ? 'active' : ''}`}
-                onClick={() => setActiveItem('post-contract')}
-              >
-                <div className="icon-container">
-                  <PlusCircle className="h-5 w-5" />
-                </div>
-                <span>Post a Contract</span>
-                {activeItem === 'post-contract' && 
-                  <motion.div className="active-indicator" layoutId="activeIndicator" />
-                }
-              </Link>
-            </motion.li>
-            <motion.li 
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
+              <PlusCircle className="h-4 w-4 mr-2" />
+              <span>Post a Contract</span>
+            </Button>
+            
+            <Button 
+              variant={activeItem === 'contract-status' ? "secondary" : "ghost"} 
+              className="w-full justify-start"
+              onClick={() => setActiveItem('contract-status')}
             >
-              <Link 
-                to="#" 
-                className={`menu-item ${activeItem === 'contract-status' ? 'active' : ''}`}
-                onClick={() => setActiveItem('contract-status')}
-              >
-                <div className="icon-container">
-                  <FileText className="h-5 w-5" />
-                </div>
-                <span>Contract Status</span>
-                {activeItem === 'contract-status' && 
-                  <motion.div className="active-indicator" layoutId="activeIndicator" />
-                }
-              </Link>
-            </motion.li>
-            <motion.li 
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.4 }}
+              <FileText className="h-4 w-4 mr-2" />
+              <span>Contract Status</span>
+            </Button>
+            
+            <Button 
+              variant={activeItem === 'send-payment' ? "secondary" : "ghost"} 
+              className="w-full justify-start"
+              onClick={() => setActiveItem('send-payment')}
             >
-              <Link 
-                to="#" 
-                className={`menu-item ${activeItem === 'send-payment' ? 'active' : ''}`}
-                onClick={() => setActiveItem('send-payment')}
-              >
-                <div className="icon-container">
-                  <CreditCard className="h-5 w-5" />
-                </div>
-                <span>Send Payment</span>
-                {activeItem === 'send-payment' && 
-                  <motion.div className="active-indicator" layoutId="activeIndicator" />
-                }
-              </Link>
-            </motion.li>
-            <motion.li 
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.5 }}
+              <CreditCard className="h-4 w-4 mr-2" />
+              <span>Send Payment</span>
+            </Button>
+            
+            <Button 
+              variant={activeItem === 'notifications' ? "secondary" : "ghost"} 
+              className="w-full justify-start"
+              onClick={() => setActiveItem('notifications')}
             >
-              <Link 
-                to="#" 
-                className={`menu-item ${activeItem === 'notifications' ? 'active' : ''}`}
-                onClick={() => setActiveItem('notifications')}
-              >
-                <div className="icon-container">
-                  <Bell className="h-5 w-5" />
-                </div>
-                <span>Notifications</span>
-                {activeItem === 'notifications' && 
-                  <motion.div className="active-indicator" layoutId="activeIndicator" />
-                }
-              </Link>
-            </motion.li>
-          </ul>
-          
-          {/* Home link at the bottom */}
-          <motion.div 
-            className="home-link-container"
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.7 }}
-          >
-            <Link to="/" className="menu-item home-link">
-              <div className="icon-container home-icon">
-                <Home className="h-5 w-5" />
-              </div>
-              <span>Return to Home</span>
-            </Link>
-          </motion.div>
+              <Bell className="h-4 w-4 mr-2" />
+              <span>Notifications</span>
+              {unreadCount > 0 && (
+                <Badge variant="secondary" className="ml-auto">{unreadCount}</Badge>
+              )}
+            </Button>
+          </nav>
         </div>
         
-        {/* Decorative elements */}
-        <div className="sidebar-decorations">
-          <div className="decoration-circle-1"></div>
-          <div className="decoration-circle-2"></div>
+        {/* Home link at the bottom */}
+        <div className="px-2 py-4 border-t mt-auto">
+          <Button variant="ghost" className="w-full justify-start" asChild>
+            <Link to="/">
+              <Home className="h-4 w-4 mr-2" />
+              <span>Return to Home</span>
+            </Link>
+          </Button>
         </div>
       </motion.div>
 
-      {/* Main Content */}
-      <div className="main-content">
+      {/* Main Content - updated with more professional styling */}
+      <main className="flex-1 overflow-auto bg-background">
         {activeItem === 'find-contractors' && (
           <motion.div
             initial="hidden"
             animate="visible"
             variants={containerVariants}
-            className="find-contractors-section"
+            className="p-6"
           >
-            <motion.div
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="content-header text-center mb-8"
-            >
-              <h1 className="text-3xl font-bold text-purple-900 mb-3">Find Expert Contractors</h1>
-              <p className="text-purple-600 text-xl max-w-lg mx-auto">Connect with skilled professionals for your projects</p>
-              <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto mt-4 rounded-full"></div>
-            </motion.div>
-            
-            {/* Search Box */}
-            <motion.div 
-              variants={itemVariants} 
-              className="search-container"
-            >
-              <div className="search-box">
-                <Search className="search-icon" />
-                <Input
-                  placeholder="Search contractors by name or experience..."
-                  value={searchQuery}
-                  onChange={handleSearch}
-                />
-              </div>
-            </motion.div>
+            <Card className="mb-6">
+              <CardHeader>
+                <CardTitle className="text-3xl font-bold text-primary">Find Expert Contractors</CardTitle>
+                <p className="text-muted-foreground">Connect with skilled professionals for your projects</p>
+              </CardHeader>
+              <CardContent>
+                {/* Search Box */}
+                <motion.div variants={itemVariants} className="mb-6">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      className="pl-10"
+                      placeholder="Search contractors by name or experience..."
+                      value={searchQuery}
+                      onChange={handleSearch}
+                    />
+                  </div>
+                </motion.div>
 
-            {/* Filters */}
-            <motion.div variants={itemVariants} className="filters-panel">
-              <h3>Filter Results</h3>
-              <div className="filters-grid">
-                <div className="filter-item">
-                  <Label className="filter-label">Hourly Rate</Label>
-                  <Select onValueChange={(value) => handleFilterChange(value, 'hourlyRate')}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select range" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="0-25">$0 - $25</SelectItem>
-                      <SelectItem value="26-50">$26 - $50</SelectItem>
-                      <SelectItem value="51-100">$51 - $100</SelectItem>
-                      <SelectItem value="100+">$100+</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                {/* Filters */}
+                <motion.div variants={itemVariants} className="mb-6 space-y-4">
+                  <h3 className="text-lg font-medium">Filter Results</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <Label className="mb-2 block">Hourly Rate</Label>
+                      <Select onValueChange={(value) => handleFilterChange(value, 'hourlyRate')}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select range" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="0-25">$0 - $25</SelectItem>
+                          <SelectItem value="26-50">$26 - $50</SelectItem>
+                          <SelectItem value="51-100">$51 - $100</SelectItem>
+                          <SelectItem value="100+">$100+</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-                <div className="filter-item">
-                  <Label className="filter-label">Experience</Label>
-                  <Select onValueChange={(value) => handleFilterChange(value, 'experience')}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select experience" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="0-2">0-2 years</SelectItem>
-                      <SelectItem value="3-5">3-5 years</SelectItem>
-                      <SelectItem value="5-10">5-10 years</SelectItem>
-                      <SelectItem value="10+">10+ years</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                    <div>
+                      <Label className="mb-2 block">Experience</Label>
+                      <Select onValueChange={(value) => handleFilterChange(value, 'experience')}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select experience" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="0-2">0-2 years</SelectItem>
+                          <SelectItem value="3-5">3-5 years</SelectItem>
+                          <SelectItem value="5-10">5-10 years</SelectItem>
+                          <SelectItem value="10+">10+ years</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-                <div className="filter-item">
-                  <Label className="filter-label">Availability</Label>
-                  <Select onValueChange={(value) => handleFilterChange(value, 'availability')}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select availability" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="full-time">Full-time</SelectItem>
-                      <SelectItem value="part-time">Part-time</SelectItem>
-                      <SelectItem value="contract">Contract</SelectItem>
-                      <SelectItem value="freelance">Freelance</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </motion.div>
+                    <div>
+                      <Label className="mb-2 block">Availability</Label>
+                      <Select onValueChange={(value) => handleFilterChange(value, 'availability')}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select availability" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="full-time">Full-time</SelectItem>
+                          <SelectItem value="part-time">Part-time</SelectItem>
+                          <SelectItem value="contract">Contract</SelectItem>
+                          <SelectItem value="freelance">Freelance</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </motion.div>
+              </CardContent>
+            </Card>
 
             {/* Results Section */}
-            <motion.div variants={itemVariants} className="mt-8">
+            <motion.div variants={itemVariants}>
               {filteredContractors.length === 0 ? (
-                <div className="empty-results">
-                  <Briefcase />
-                  <h3>No contractors found</h3>
-                  <p>Try adjusting your search or filters</p>
-                </div>
+                <Card className="p-12 text-center">
+                  <Briefcase className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-xl font-medium text-primary mb-2">No contractors found</h3>
+                  <p className="text-muted-foreground">Try adjusting your search or filters</p>
+                </Card>
               ) : (
-                <div className="contractors-grid">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredContractors.map((contractor) => (
                     <motion.div
                       key={contractor.id}
                       variants={cardVariants}
                       whileHover="hover"
-                      className="contractor-card"
                     >
-                      <div className="contractor-card-header">
-                        <div className="contractor-avatar">
-                          {contractor.name[0]}
-                        </div>
-                        <div className="contractor-info">
-                          <h3 className="contractor-name">{contractor.name}</h3>
-                          <p className="contractor-experience">{contractor.experience}</p>
-                        </div>
-                      </div>
-                      
-                      <div className="contractor-body">
-                        <div className="contractor-stats">
-                          <span className="contractor-stat">
-                            <Briefcase className="w-4 h-4" />
-                            {contractor.completedProjects.length} Projects
-                          </span>
-                          <span className="contractor-stat">
-                            <Clock className="w-4 h-4" />
-                            {contractor.availability}
-                          </span>
-                        </div>
+                      <Card className="h-full flex flex-col">
+                        <CardHeader>
+                          <div className="flex items-center gap-4">
+                            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-medium">
+                              {contractor.name[0]}
+                            </div>
+                            <div>
+                              <CardTitle className="text-lg">{contractor.name}</CardTitle>
+                              <p className="text-sm text-muted-foreground">{contractor.experience}</p>
+                            </div>
+                          </div>
+                        </CardHeader>
                         
-                        <p className="contractor-summary">
-                          {contractor.professionalSummary}
-                        </p>
+                        <CardContent className="flex-grow">
+                          <div className="flex items-center gap-4 mb-3">
+                            <Badge variant="outline" className="flex items-center gap-1">
+                              <Briefcase className="h-3 w-3" />
+                              {contractor.completedProjects.length} Projects
+                            </Badge>
+                            <Badge variant="outline" className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              {contractor.availability}
+                            </Badge>
+                          </div>
+                          
+                          <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                            {contractor.professionalSummary}
+                          </p>
+                          
+                          <div className="text-lg font-medium text-primary">
+                            ${contractor.hourlyRate}<span className="text-sm text-muted-foreground">/hr</span>
+                          </div>
+                        </CardContent>
                         
-                        <div className="contractor-rate">
-                          ${contractor.hourlyRate}<span>/hr</span>
+                        <div className="p-4 pt-0 mt-auto">
+                          <Button 
+                            variant="outline"
+                            className="w-full"
+                            onClick={() => setProfileModal({ isOpen: true, contractor })}
+                          >
+                            View Profile
+                          </Button>
                         </div>
-                      </div>
-                      
-                      <div className="contractor-card-footer">
-                        <button 
-                          className="view-profile-btn"
-                          onClick={() => setProfileModal({ isOpen: true, contractor })}
-                        >
-                          View Profile
-                        </button>
-                      </div>
+                      </Card>
                     </motion.div>
                   ))}
                 </div>
@@ -1089,47 +695,259 @@ const BusinessDashboard = () => {
             initial="hidden"
             animate="visible"
             variants={containerVariants}
-            className="pt-4"
+            className="p-6"
           >
-            <motion.div
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="content-header mb-8 text-center"
-            >
-              <h1 className="text-3xl font-bold text-purple-900 mb-3">Post a New Contract</h1>
-              <p className="text-violet-600 text-xl max-w-lg mx-auto">Find the perfect professional for your project</p>
-              <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto mt-4 rounded-full"></div>
-            </motion.div>
-            
-            <ContractPostingForm />
+            <Card className="mb-6">
+              <CardHeader>
+                <CardTitle className="text-3xl font-bold text-primary">Post a New Contract</CardTitle>
+                <p className="text-muted-foreground">Find the perfect professional for your project</p>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleContractSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Contract Name</Label>
+                      <Input
+                        id="name"
+                        name="name"
+                        value={contractForm.name}
+                        onChange={handleInputChange}
+                        placeholder="E.g., Website Redesign Project"
+                        required
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="requiredExperience">Required Experience</Label>
+                      <Select name="requiredExperience" onValueChange={(value) => setContractForm(prev => ({ ...prev, requiredExperience: value }))}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select experience level" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="0-2 years">0-2 years</SelectItem>
+                          <SelectItem value="3-5 years">3-5 years</SelectItem>
+                          <SelectItem value="5-10 years">5-10 years</SelectItem>
+                          <SelectItem value="10+ years">10+ years</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="location">Location</Label>
+                      <Input
+                        id="location"
+                        name="location"
+                        value={contractForm.location}
+                        onChange={handleInputChange}
+                        placeholder="E.g., Remote, New York, etc."
+                        required
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="startDate">Start Date</Label>
+                      <Input
+                        id="startDate"
+                        name="startDate"
+                        type="date"
+                        value={contractForm.startDate}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="endDate">End Date</Label>
+                      <Input
+                        id="endDate"
+                        name="endDate"
+                        type="date"
+                        value={contractForm.endDate}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="paymentAmount">Payment Amount ($)</Label>
+                      <Input
+                        id="paymentAmount"
+                        name="paymentAmount"
+                        type="number"
+                        value={contractForm.paymentAmount}
+                        onChange={handleInputChange}
+                        placeholder="E.g., 25"
+                        required
+                      />
+                    </div>
+                    
+                    <div className="space-y-2 md:col-span-2">
+                      <Label htmlFor="description">Project Description</Label>
+                      <Textarea
+                        id="description"
+                        name="description"
+                        value={contractForm.description}
+                        onChange={handleInputChange}
+                        rows={5}
+                        placeholder="Describe the project, requirements, and expectations..."
+                        required
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-end">
+                    <Button type="submit">
+                      Post Your Contract
+                    </Button>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
           </motion.div>
         )}
 
-        {/* Add notifications content */}
+        {/* Notifications panel */}
         {activeItem === 'notifications' && (
           <motion.div
             initial="hidden"
             animate="visible"
             variants={containerVariants}
-            className="pt-4"
+            className="p-6"
           >
-            <motion.div
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="content-header mb-8 text-center"
-            >
-              <h1 className="text-4xl font-bold text-purple-900 mb-3">Notifications Center</h1>
-              <p className="text-purple-600 text-xl">Stay updated on your contracts and payments</p>
-              <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto mt-4 rounded-full"></div>
-            </motion.div>
-            
-            <NotificationsPanel />
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-3xl font-bold text-primary">Notifications Center</CardTitle>
+                <p className="text-muted-foreground">Stay updated on your contracts and payments</p>
+              </CardHeader>
+              <CardContent>
+                <div className="flex justify-between items-center mb-6">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">{unreadCount} unread</span>
+                    {unreadCount > 0 && (
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        className="text-xs text-primary hover:text-primary/80 transition-colors font-medium"
+                        onClick={() => setNotifications(prev => prev.map(n => ({ ...n, isRead: true })))}
+                      >
+                        Mark all as read
+                      </Button>
+                    )}
+                  </div>
+                </div>
+                
+                <div className="flex gap-2 overflow-x-auto pb-4">
+                  <Button
+                    variant={activeFilter === 'all' ? "secondary" : "outline"}
+                    size="sm"
+                    onClick={() => setActiveFilter('all')}
+                  >
+                    All
+                  </Button>
+                  <Button
+                    variant={activeFilter === 'payment' ? "secondary" : "outline"}
+                    size="sm"
+                    onClick={() => setActiveFilter('payment')}
+                  >
+                    Payments
+                  </Button>
+                  <Button
+                    variant={activeFilter === 'contract' ? "secondary" : "outline"}
+                    size="sm"
+                    onClick={() => setActiveFilter('contract')}
+                  >
+                    Contracts
+                  </Button>
+                  <Button
+                    variant={activeFilter === 'message' ? "secondary" : "outline"}
+                    size="sm"
+                    onClick={() => setActiveFilter('message')}
+                  >
+                    Messages
+                  </Button>
+                  <Button
+                    variant={activeFilter === 'meeting' ? "secondary" : "outline"}
+                    size="sm"
+                    onClick={() => setActiveFilter('meeting')}
+                  >
+                    Meetings
+                  </Button>
+                </div>
+                
+                <div className="border rounded-md">
+                  {getFilteredNotifications().length === 0 ? (
+                    <div className="p-12 text-center">
+                      <Bell className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                      <p className="text-muted-foreground">No notifications to display</p>
+                    </div>
+                  ) : (
+                    <ScrollArea className="max-h-[600px]">
+                      <div className="divide-y">
+                        {getFilteredNotifications().map((notification) => (
+                          <motion.div 
+                            key={notification.id}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className={`p-4 relative ${!notification.isRead ? 'bg-muted/40' : ''}`}
+                          >
+                            <div className="flex gap-4">
+                              <div className={`flex-shrink-0 rounded-full p-2 ${
+                                notification.type === 'success' ? 'bg-green-100 text-green-600' :
+                                notification.type === 'error' ? 'bg-red-100 text-red-600' :
+                                notification.type === 'warning' ? 'bg-yellow-100 text-yellow-600' :
+                                'bg-blue-100 text-blue-600'
+                              }`}>
+                                {notification.type === 'success' && <CheckCircle className="h-5 w-5" />}
+                                {notification.type === 'error' && <XCircle className="h-5 w-5" />}
+                                {notification.type === 'warning' && <AlertCircle className="h-5 w-5" />}
+                                {notification.type === 'info' && <Info className="h-5 w-5" />}
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex justify-between">
+                                  <h3 className={`font-medium ${!notification.isRead ? 'text-primary' : ''}`}>
+                                    {notification.title}
+                                  </h3>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-6 w-6"
+                                    onClick={() => markAsRead(notification.id)}
+                                  >
+                                    <X className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                                <p className="text-sm text-muted-foreground mt-1">{notification.message}</p>
+                                <p className="text-xs text-muted-foreground mt-2">{notification.date}</p>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </ScrollArea>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
           </motion.div>
         )}
-      </div>
+        
+        {/* Placeholder for other sections */}
+        {(activeItem === 'contract-status' || activeItem === 'send-payment') && (
+          <div className="p-6 text-center">
+            <Card className="p-12">
+              <CardContent>
+                <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-xl font-medium text-primary mb-2">
+                  {activeItem === 'contract-status' ? 'Contract Status' : 'Send Payment'}
+                </h3>
+                <p className="text-muted-foreground">This feature is coming soon.</p>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+      </main>
 
+      {/* Profile Modal - keep this existing implementation */}
       {profileModal.isOpen && profileModal.contractor && (
         <ProfileModal 
           contractor={profileModal.contractor} 
