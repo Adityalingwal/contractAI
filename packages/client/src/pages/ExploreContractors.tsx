@@ -1,11 +1,41 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './ExploreContractors.css'; // You'll need to create this CSS file
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import './ExploreContractors.css'; 
+import ContractorDashboard from './ContractorDashboard';
 
 const ExploreContractors: React.FC = () => {
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const location = useLocation();
+  
+  // Function to render the appropriate content based on active tab
+  const renderContent = () => {
+    switch(activeTab) {
+      case 'createProfile':
+        return <ContractorDashboard />;
+      case 'dashboard':
+      default:
+        return (
+          <>
+            <div className="content-header">
+              <h1>Explore Contractors</h1>
+            </div>
+            <div className="content-body">
+              <p>Welcome to the Explore Contractors dashboard. Select an option from the sidebar to get started.</p>
+              {/* Display data from location state if available */}
+              {location.state?.contractorData && (
+                <div className="mt-4">
+                  <h2>Recently Added Contractor:</h2>
+                  <pre>{JSON.stringify(location.state.contractorData, null, 2)}</pre>
+                </div>
+              )}
+            </div>
+          </>
+        );
+    }
+  };
+
   return (
     <div className="dashboard-container">
-      {/* Left Sidebar */}
       <div className="sidebar">
         <div className="sidebar-header">
           <h3>Contractor Portal</h3>
@@ -14,10 +44,13 @@ const ExploreContractors: React.FC = () => {
         <div className="sidebar-menu">
           <ul>
             <li>
-              <Link to="/dashboard" className="menu-item active">
+              <button
+                onClick={() => setActiveTab('dashboard')} 
+                className={`menu-item ${activeTab === 'dashboard' ? 'active' : ''}`}
+              >
                 <i className="fas fa-tachometer-alt"></i>
                 <span>Dashboard</span>
-              </Link>
+              </button>
             </li>
             <li>
               <Link to="/payment-status" className="menu-item">
@@ -37,9 +70,17 @@ const ExploreContractors: React.FC = () => {
                 <span>My Contracts</span>
               </Link>
             </li>
+            <li>
+              <button
+                onClick={() => setActiveTab('createProfile')} 
+                className={`menu-item ${activeTab === 'createProfile' ? 'active' : ''}`}
+              >
+                <i className="fas fa-file-contract"></i>
+                <span>Create Profile</span>
+              </button>
+            </li>
           </ul>
           
-          {/* Home link at the bottom */}
           <div className="home-link-container">
             <Link to="/" className="menu-item home-link">
               <i className="fas fa-home"></i>
@@ -49,16 +90,8 @@ const ExploreContractors: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="main-content">
-        <div className="content-header">
-          <h1>Explore Contractors</h1>
-        </div>
-        
-        <div className="content-body">
-          {/* Your main page content will go here */}
-          <p>Welcome to the Explore Contractors dashboard. Select an option from the sidebar to get started.</p>
-        </div>
+        {renderContent()}
       </div>
     </div>
   );

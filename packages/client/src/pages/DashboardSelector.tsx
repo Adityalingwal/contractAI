@@ -65,7 +65,7 @@ const DashboardSelector = () => {
               title="Contractor Dashboard"
               description="View your assignments, track payments, and manage your profile with ease."
               buttonText="Access Contractor Dashboard"
-              to="/contractor"
+              to="/explore-contractors"
               delay={0.1}
               color="bg-purple-600"
             />

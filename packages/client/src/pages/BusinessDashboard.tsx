@@ -1130,7 +1130,6 @@ const BusinessDashboard = () => {
         )}
       </div>
 
-      {/* Modal */}
       {profileModal.isOpen && profileModal.contractor && (
         <ProfileModal 
           contractor={profileModal.contractor} 

@@ -48,7 +48,7 @@ VALUES
   (1, NULL, 'Backend API Development', 'Develop new backend API endpoints for customer management', 'open', '2024-10-30'),
   (2, NULL, 'Database Optimization', 'Optimize database queries and architecture for performance', 'open', '2024-11-05');
 
--- Insert sample invoices (run this after tasks, contractors and companies are inserted)
+-- Insert sample invoices
 INSERT INTO invoices (task_id, contractor_id, company_id, invoice_date, amount, tax_deduction, payment_method, status, payment_date)
 VALUES 
   (1, 1, 1, '2023-12-20', 5000.00, 500.00, 'ACH', 'paid', '2023-12-25'),
