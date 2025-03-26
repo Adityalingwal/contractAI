@@ -30,7 +30,7 @@ const DashboardSelector = () => {
             }}
           >
             <motion.h1 
-              className="text-3xl md:text-4xl font-display font-bold mb-4 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
+              className="text-3xl md:text-4xl font-display font-bold mb-4 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent text-center"
               initial={{ scale: 0.95 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -38,7 +38,7 @@ const DashboardSelector = () => {
               Choose Your Role
             </motion.h1>
             <motion.p 
-              className="text-xl text-muted-foreground max-w-2xl mx-auto"
+              className="text-xl text-muted-foreground max-w-2xl mx-auto text-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
@@ -117,9 +117,9 @@ const DashboardCard = ({ icon, title, description, buttonText, to, delay, color 
           {icon}
         </motion.div>
       </motion.div>
-      <div className="p-8 flex-grow">
+      <div className="p-8 flex-grow text-center">
         <motion.h2 
-          className="text-2xl font-semibold mb-4"
+          className="text-2xl font-semibold mb-4 text-center"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: delay + 0.2 }}
@@ -127,7 +127,7 @@ const DashboardCard = ({ icon, title, description, buttonText, to, delay, color 
           {title}
         </motion.h2>
         <motion.p 
-          className="text-muted-foreground mb-6"
+          className="text-muted-foreground mb-6 text-center"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: delay + 0.3 }}
