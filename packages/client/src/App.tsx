@@ -6,10 +6,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Landing from "./pages/Landing";
 import NotFound from "./pages/NotFound";
 import BusinessDashboard from "./pages/BusinessDashboard";
-import ContractorDashboard from "./pages/ContractorDashboard";
 import DashboardSelector from "./pages/DashboardSelector";
-import ExploreContractors from './pages/ExploreContractors';
-
+import ContractorForm from "./pages/ContractorForm";
+import ContractorDashboard from "./pages/ContractorDashboard";
 
 const queryClient = new QueryClient();
 
@@ -23,9 +22,9 @@ const App = () => (
           <Route path="/" element={<Landing />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/business" element={<BusinessDashboard />} />
-          <Route path="/contractor" element={<ContractorDashboard />} />
+          <Route path="/contractor" element={<ContractorForm />} />
           <Route path="/dashboard-selector" element={<DashboardSelector />} /> 
-          <Route path="/explore-contractors" element={<ExploreContractors />} />
+          <Route path="/explore-contractors" element={<ContractorDashboard />} />
         </Routes>
       </Router>
     </TooltipProvider>
