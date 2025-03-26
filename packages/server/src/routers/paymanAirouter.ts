@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { RouteConfig } from '../types';
 import { contractAiError } from '../error/contractAiError';
-import { paymanService } from '../services/payman-service/paymanService';
+import { createPayee, sendPayment, searchPayees } from '../services/payman-service/paymanService';
 import {
   CreatePayeeRequest,
   CreatePayeeResponse,
@@ -13,21 +13,17 @@ import {
 
 const paymanRouter = Router();
 
+
 async function createPayeeHandler(req: CreatePayeeRequest): Promise<CreatePayeeResponse> {
-  // Validate required fields
   if (!req.type || !req.name) {
     throw new contractAiError('Type and name are required for creating a payee');
   }
 
-  // If type is US_ACH, validate required bank details
   if (req.type === 'US_ACH' && (!req.accountNumber || !req.routingNumber || !req.accountType)) {
     throw new contractAiError('Account number, routing number, and account type are required for ACH payees');
   }
 
-  // Create payee via Payman service
-  const payee = await paymanService.createPayee(req);
-
-  // If we have a contractorId, we could store this association in your database
+  const payee = await createPayee(req);
   if (req.contractorId) {
     // Store the payee ID with the contractor record in your database
     // This is pseudocode - implement according to your database schema
@@ -41,23 +37,20 @@ async function createPayeeHandler(req: CreatePayeeRequest): Promise<CreatePayeeR
 }
 
 async function sendPaymentHandler(req: SendPaymentRequest): Promise<SendPaymentResponse> {
-  // Validate required fields
   if (req.amountDecimal === undefined || !req.payeeId) {
     throw new contractAiError('Amount and payee ID are required for sending a payment');
   }
 
-  // Send payment via Payman service
-  const payment = await paymanService.sendPayment({
+  const payment = await sendPayment({
     amountDecimal: req.amountDecimal,
     payeeId: req.payeeId,
     memo: req.memo,
     metadata: req.metadata
   });
 
-  // If we have an invoiceId, update the invoice status to 'paid'
   if (req.invoiceId) {
     // This is pseudocode - implement according to your database schema and services
-    // await invoiceService.markInvoiceAsPaid(req.invoiceId);
+    // await markInvoiceAsPaid(req.invoiceId);
   }
 
   return {
@@ -67,8 +60,7 @@ async function sendPaymentHandler(req: SendPaymentRequest): Promise<SendPaymentR
 }
 
 async function getPayeesHandler(req: GetPayeesRequest): Promise<GetPayeesResponse> {
-  // Search for payees with optional filters
-  const result = await paymanService.searchPayees({
+  const result = await searchPayees({
     name: req.name,
     type: req.type
   });
