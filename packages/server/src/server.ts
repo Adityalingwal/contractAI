@@ -10,6 +10,7 @@ import { taskRouterConfig } from './routers/taskRouter';
 import { skillRouterConfig } from './routers/skillRouter';
 import { contractorSkillRouterConfig } from './routers/contractorSkillRouter';
 import { invoiceRouterConfig } from './routers/invoiceRouter';
+import { paymanRouterConfig } from './routers/paymanAirouter';
 
 const app: Application = express();
 
@@ -32,6 +33,7 @@ app.use('/task', taskRouterConfig.router);
 app.use('/skill', skillRouterConfig.router);
 app.use('/contractorSkill', contractorSkillRouterConfig.router);
 app.use('/invoice', invoiceRouterConfig.router);
+app.use('/payman', paymanRouterConfig.router);
 
 const routeConfigs = [
   contractorRouterConfig,
@@ -40,6 +42,7 @@ const routeConfigs = [
   skillRouterConfig,
   contractorSkillRouterConfig,
   invoiceRouterConfig,
+  paymanRouterConfig,
 ];
 
 routeConfigs.forEach(routeConfig => {
