@@ -70,6 +70,12 @@ async function deleteContractorHandler(req: DeleteContractorRequest): Promise<De
   return { success: true };
 }
 
+export async function getAllContractsHandler(): Promise<any> {
+  console.log('sucessful get the request and return the response');
+  return { message : 'success' };
+}
+
+
 export const contractorRouterConfig: RouteConfig = {
   router: contractorRouter,
   endpoints: {
@@ -92,6 +98,10 @@ export const contractorRouterConfig: RouteConfig = {
     '/deleteContractor': {
       handler: deleteContractorHandler,
       isUserScoped: false,
+    },
+    '/getAllContracts': {
+      handler: getAllContractsHandler,
+      isUserScoped: false,
     }
   }
-};
+}

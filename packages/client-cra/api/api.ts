@@ -14,3 +14,7 @@ export const sendPayment = async (req: any): Promise<any> => {
 export const getPayees = async (req?: any): Promise<any> => {
   return await post('/payman/getPayees', req);
 };
+
+export const getAllContracts = async (): Promise<any> => {
+  return await post('/contractor/getAllContracts');
+};
