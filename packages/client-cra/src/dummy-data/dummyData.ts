@@ -1,4 +1,5 @@
 import { ContractorProfile, Notification } from '../types/businessDashboardTypes'
+import { Gig } from '../types/gigsTypes'
 
 export const dummyPayments = [
   {
@@ -204,3 +205,37 @@ export const dummyNotifications: Notification[] = [
     relatedTo: 'meeting',
   },
 ];
+
+
+export const dummyGigs: Gig[] = [
+  {
+    id: 1,
+    title: 'Web Development Project',
+    category: 'Web Development',
+    description:
+      'Need a React developer to build a responsive website with multiple pages, contact forms, and user authentication. Must be completed within 2-3 weeks.',
+    budget: '$1500',
+    details:
+      'In-depth Details:\n\nThis project involves creating a fully responsive website for a local business. The website should include:\n• 5-7 pages (Home, About, Services, Contact, etc.)\n• A secure login system for users\n• Basic data collection using a form\n• Integration with a third-party API\n\nWe are looking for someone with experience in:\n• React & TypeScript\n• Responsive design with Tailwind CSS\n• Integrating forms and authentication\n\nTimeline: 2-3 weeks\nBudget: $1500\nPayment will be delivered in milestones upon completion of key project parts.',
+  },
+  {
+    id: 2,
+    title: 'Mobile App UI Design',
+    category: 'UI/UX Design',
+    description:
+      'Looking for a designer to create wireframes and high-fidelity mockups for a cross-platform mobile app.',
+    budget: '$1000',
+    details:
+      'In-depth Details:\n\nThis project is focused on designing a mobile app that will be used for event management. The designer should:\n• Provide wireframes for at least 5 main screens\n• Create high-fidelity mockups in Figma\n• Deliver a design system (colors, typography, components)\n\nKey Skills:\n• Strong UI/UX portfolio\n• Familiarity with Figma\n• Experience designing mobile-first applications\n\nTimeline: 2 weeks\nBudget: $1000\nPayment is negotiable based on scope and additional features.',
+  },
+  {
+    id: 3,
+    title: 'E-commerce Marketing Strategy',
+    category: 'Digital Marketing',
+    description:
+      'Seeking an experienced digital marketer to develop a strategy for boosting sales on our e-commerce platform.',
+    budget: '$800',
+    details:
+      'In-depth Details:\n\nWe have an online store selling handmade crafts. We need:\n• A comprehensive marketing plan focusing on social media ads\n• Keyword research for SEO\n• Email marketing campaign strategy\n• Recommendations for increasing conversion rates\n\nPreferred Skills:\n• Experience with Google Ads, Facebook Ads, and Instagram marketing\n• Knowledge of e-commerce best practices\n\nTimeline: 1-2 weeks\nBudget: $800\nPayment terms can be discussed based on milestones and performance metrics.',
+  },
+]

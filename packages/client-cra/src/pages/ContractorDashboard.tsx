@@ -8,6 +8,7 @@ import ContractorForm from './ContractorForm';
 import { MyContracts } from '../components/MyContracts';
 import { PaymentStatus } from '../components/PaymentStatus';
 import { EditProfile } from '../components/EditProfile';
+import { ApplyGigs } from './ApplyGigs';
 
 const ContractorDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('createProfile');
@@ -33,6 +34,8 @@ const ContractorDashboard: React.FC = () => {
         return <EditProfile />;
       case 'myContracts':
         return <MyContracts />;
+      case 'applyForGigs':
+        return <ApplyGigs />
       default:
         return <div className="p-6">Hello</div>;
     }
@@ -87,6 +90,14 @@ const ContractorDashboard: React.FC = () => {
             >
               <FileText className="h-4 w-4 mr-2" />
               My Contracts
+            </Button>
+            <Button
+              variant={activeTab === 'applyForGigs' ? 'secondary' : 'ghost'}
+              className="w-full justify-start"
+              onClick={() => setActiveTab('applyForGigs')}
+            >
+              <FileText className="h-4 w-4 mr-2" />
+              Apply for Gigs
             </Button>
           </nav>
         </div>
