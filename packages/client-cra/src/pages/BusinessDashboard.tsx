@@ -35,197 +35,28 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../components/ui/select";
+} from '../components/ui/select';
 import { Badge } from '../components/ui/badge';
 import { ScrollArea } from '../components/ui/scroll-area';
 import { Textarea } from '../components/ui/textarea';
-import { getAllContracts } from '../api/api'
-
-interface ContractorProfile {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  experience: string;
-  hourlyRate: number;
-  availability: string;
-  completedProjects: {
-    projectName: string;
-    clientName: string;
-    completionDate: string;
-    description: string;
-    feedback: string;
-  }[];
-  professionalSummary: string;
-}
-
-// Add this dummy data after the ContractorProfile interface and before the BusinessDashboard component
-const dummyContractors: ContractorProfile[] = [
-  {
-    id: 1,
-    name: "Sarah Johnson",
-    email: "sarah.j@example.com",
-    phone: "+1 (555) 123-4567",
-    experience: "5-10 years",
-    hourlyRate: 75,
-    availability: "full-time",
-    completedProjects: [
-      {
-        projectName: "E-commerce Platform Redesign",
-        clientName: "TechCorp Inc.",
-        completionDate: "2023-12-15",
-        description: "Complete redesign of client's e-commerce platform",
-        feedback: "Excellent work and communication"
-      }
-    ],
-    professionalSummary: "Senior full-stack developer specialized in React and Node.js with extensive e-commerce experience."
-  },
-  {
-    id: 2,
-    name: "Michael Chen",
-    email: "m.chen@example.com",
-    phone: "+1 (555) 234-5678",
-    experience: "3-5 years",
-    hourlyRate: 60,
-    availability: "contract",
-    completedProjects: [
-      {
-        projectName: "Mobile App Development",
-        clientName: "HealthTech Solutions",
-        completionDate: "2024-01-20",
-        description: "Healthcare monitoring mobile application",
-        feedback: "Great attention to detail"
-      }
-    ],
-    professionalSummary: "Mobile app developer with focus on React Native and iOS development. Healthcare industry expert."
-  },
-  {
-    id: 3,
-    name: "Emily Rodriguez",
-    email: "e.rodriguez@example.com",
-    phone: "+1 (555) 345-6789",
-    experience: "10+ years",
-    hourlyRate: 95,
-    availability: "freelance",
-    completedProjects: [
-      {
-        projectName: "AI Integration Project",
-        clientName: "DataSmart Analytics",
-        completionDate: "2024-02-01",
-        description: "Implementation of ML models in production",
-        feedback: "Outstanding technical expertise"
-      }
-    ],
-    professionalSummary: "AI/ML specialist with extensive experience in Python and TensorFlow. Led multiple successful AI implementations."
-  }
-];
-
-// Add this new interface for the modal state
-interface ProfileModalState {
-  isOpen: boolean;
-  contractor: ContractorProfile | null;
-}
-
-// Add this new interface for notifications
-interface Notification {
-  id: number;
-  type: 'success' | 'error' | 'warning' | 'info';
-  title: string;
-  message: string;
-  date: string;
-  isRead: boolean;
-  relatedTo?: string;
-}
-
-// Add dummy notifications data
-const dummyNotifications: Notification[] = [
-  {
-    id: 1,
-    type: 'success',
-    title: 'Payment Approved',
-    message: 'Your payment of $750 to Sarah Johnson has been approved and is being processed.',
-    date: '2024-07-10 09:15 AM',
-    isRead: false,
-    relatedTo: 'payment'
-  },
-  {
-    id: 2,
-    type: 'success',
-    title: 'Payment Sent',
-    message: 'Payment of $850 has been successfully sent to Michael Chen.',
-    date: '2024-07-09 02:30 PM',
-    isRead: true,
-    relatedTo: 'payment'
-  },
-  {
-    id: 3,
-    type: 'error',
-    title: 'Payment Failed',
-    message: 'Payment to Emily Rodriguez failed. Please check your payment method.',
-    date: '2024-07-08 11:45 AM',
-    isRead: false,
-    relatedTo: 'payment'
-  },
-  {
-    id: 4,
-    type: 'info',
-    title: 'Contract Accepted',
-    message: 'Emily Rodriguez has accepted your contract proposal for the AI Integration Project.',
-    date: '2024-07-07 03:20 PM',
-    isRead: true,
-    relatedTo: 'contract'
-  },
-  {
-    id: 5,
-    type: 'warning',
-    title: 'Contract Expiring Soon',
-    message: 'Your contract with Sarah Johnson will expire in 5 days. Consider renewal.',
-    date: '2024-07-06 10:10 AM',
-    isRead: false,
-    relatedTo: 'contract'
-  },
-  {
-    id: 6,
-    type: 'info',
-    title: 'New Message',
-    message: 'You have received a new message from Michael Chen regarding the Mobile App project.',
-    date: '2024-07-05 04:45 PM',
-    isRead: true,
-    relatedTo: 'message'
-  },
-  {
-    id: 7,
-    type: 'success',
-    title: 'Milestone Completed',
-    message: 'Sarah Johnson has completed the first milestone for the E-commerce Platform Redesign.',
-    date: '2024-07-04 01:30 PM',
-    isRead: false,
-    relatedTo: 'contract'
-  },
-  {
-    id: 8,
-    type: 'warning',
-    title: 'Upcoming Meeting',
-    message: 'Reminder: You have a scheduled meeting with Emily Rodriguez tomorrow at 2:00 PM.',
-    date: '2024-07-03 09:00 AM',
-    isRead: true,
-    relatedTo: 'meeting'
-  }
-];
+import { getAllContracts } from '../api/api';
+import {
+  ContractorProfile,
+  ProfileModalState,
+  Notification,
+} from '../types/businessDashboardTypes';
+import { dummyContractors, dummyNotifications } from '../dummy-data/dummyData';
 
 const BusinessDashboard = () => {
-  // State for search and filters
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
     hourlyRate: '',
     experience: '',
-    availability: ''
+    availability: '',
   });
-  
-  // Add state to track active sidebar item
+
   const [activeItem, setActiveItem] = useState('find-contractors');
-  
-  // Add state for the contract form
+
   const [contractForm, setContractForm] = useState({
     name: '',
     description: '',
@@ -235,42 +66,45 @@ const BusinessDashboard = () => {
     endDate: '',
     paymentType: 'hourly',
     paymentAmount: '',
-    skills: ''
+    skills: '',
   });
 
-  // This would be replaced with actual API call to fetch contractor profiles
   const [contractors, setContractors] = useState<ContractorProfile[]>([]);
 
-  // Add new state for the profile modal
   const [profileModal, setProfileModal] = useState<ProfileModalState>({
     isOpen: false,
-    contractor: null
+    contractor: null,
   });
 
-  // Add notification state
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [activeFilter, setActiveFilter] = useState<string>('all');
 
-  // Update useEffect to also load notifications
   useEffect(() => {
-    // Simulating API calls with dummy data
     setContractors(dummyContractors);
     setNotifications(dummyNotifications);
   }, []);
 
-  // Add this function to filter contractors based on search query and filters
   const filteredContractors = contractors.filter(contractor => {
-    const matchesSearch = contractor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    const matchesSearch =
+      contractor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       contractor.professionalSummary.toLowerCase().includes(searchQuery.toLowerCase()) ||
       contractor.experience.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesHourlyRate = !filters.hourlyRate || (() => {
-      const [min, max] = filters.hourlyRate.split('-').map(num => num === '+' ? Infinity : Number(num));
-      return contractor.hourlyRate >= min && (max === Infinity ? true : contractor.hourlyRate <= max);
-    })();
+    const matchesHourlyRate =
+      !filters.hourlyRate ||
+      (() => {
+        const [min, max] = filters.hourlyRate
+          .split('-')
+          .map(num => (num === '+' ? Infinity : Number(num)));
+        return (
+          contractor.hourlyRate >= min && (max === Infinity ? true : contractor.hourlyRate <= max)
+        );
+      })();
 
-    const matchesExperience = !filters.experience || contractor.experience.includes(filters.experience);
-    const matchesAvailability = !filters.availability || contractor.availability === filters.availability;
+    const matchesExperience =
+      !filters.experience || contractor.experience.includes(filters.experience);
+    const matchesAvailability =
+      !filters.availability || contractor.availability === filters.availability;
 
     return matchesSearch && matchesHourlyRate && matchesExperience && matchesAvailability;
   });
@@ -282,28 +116,29 @@ const BusinessDashboard = () => {
   const handleFilterChange = (value: string, filterType: string) => {
     setFilters(prev => ({
       ...prev,
-      [filterType]: value
+      [filterType]: value,
     }));
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setContractForm(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const handleContractSubmit = async(e: React.FormEvent) => {
+  const handleContractSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await getAllContracts()
+    const response = await getAllContracts();
 
-    if(!response.message){
-      alert('fetched successfully')
+    if (!response.message) {
+      alert('fetched successfully');
     }
- 
-  
+
     alert('Contract posted successfully!');
     setContractForm({
       name: '',
@@ -314,20 +149,18 @@ const BusinessDashboard = () => {
       endDate: '',
       paymentType: 'hourly',
       paymentAmount: '',
-      skills: ''
+      skills: '',
     });
   };
 
-  // Add a function to mark notifications as read
   const markAsRead = (id: number) => {
-    setNotifications(prev => 
-      prev.map(notification => 
+    setNotifications(prev =>
+      prev.map(notification =>
         notification.id === id ? { ...notification, isRead: true } : notification
       )
     );
   };
 
-  // Add a function to filter notifications
   const getFilteredNotifications = () => {
     if (activeFilter === 'all') {
       return notifications;
@@ -342,9 +175,9 @@ const BusinessDashboard = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
@@ -353,10 +186,10 @@ const BusinessDashboard = () => {
       y: 0,
       opacity: 1,
       transition: {
-        type: "spring",
-        stiffness: 100
-      }
-    }
+        type: 'spring',
+        stiffness: 100,
+      },
+    },
   };
 
   const cardVariants = {
@@ -365,23 +198,28 @@ const BusinessDashboard = () => {
       scale: 1,
       opacity: 1,
       transition: {
-        type: "spring",
-        stiffness: 100
-      }
+        type: 'spring',
+        stiffness: 100,
+      },
     },
     hover: {
       scale: 1.02,
-      boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
+      boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
       transition: {
-        type: "spring",
+        type: 'spring',
         stiffness: 400,
-        damping: 10
-      }
-    }
+        damping: 10,
+      },
+    },
   };
 
-  // Add this new component for the profile modal
-  const ProfileModal = ({ contractor, onClose }: { contractor: ContractorProfile; onClose: () => void }) => (
+  const ProfileModal = ({
+    contractor,
+    onClose,
+  }: {
+    contractor: ContractorProfile;
+    onClose: () => void;
+  }) => (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -395,7 +233,6 @@ const BusinessDashboard = () => {
         className="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
       >
         <div className="p-6 space-y-6">
-          {/* Header */}
           <div className="flex justify-between items-center border-b pb-4">
             <div className="flex items-center gap-4">
               <div className="h-16 w-16 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white text-2xl font-bold">
@@ -411,7 +248,6 @@ const BusinessDashboard = () => {
             </Button>
           </div>
 
-          {/* Contact Information */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-purple-900">Contact Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -426,7 +262,6 @@ const BusinessDashboard = () => {
             </div>
           </div>
 
-          {/* Professional Details */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-purple-900">Professional Details</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -444,7 +279,6 @@ const BusinessDashboard = () => {
             </div>
           </div>
 
-          {/* Completed Projects */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-purple-900">Completed Projects</h3>
             <div className="space-y-4">
@@ -469,8 +303,7 @@ const BusinessDashboard = () => {
 
   return (
     <div className="flex h-screen bg-background">
-      {/* Enhanced Left Sidebar - updated with more professional colors */}
-      <motion.div 
+      <motion.div
         className="w-64 border-r bg-card flex flex-col shadow-sm"
         initial={{ x: -50, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
@@ -482,60 +315,61 @@ const BusinessDashboard = () => {
             <h3 className="font-semibold text-lg text-primary">Business Portal</h3>
           </div>
         </div>
-        
+
         <div className="py-4 flex-grow">
           <nav className="space-y-2 px-2">
-            <Button 
-              variant={activeItem === 'find-contractors' ? "secondary" : "ghost"} 
+            <Button
+              variant={activeItem === 'find-contractors' ? 'secondary' : 'ghost'}
               className="w-full justify-start"
               onClick={() => setActiveItem('find-contractors')}
             >
               <Briefcase className="h-4 w-4 mr-2" />
               <span>Find Contractors</span>
             </Button>
-            
-            <Button 
-              variant={activeItem === 'post-contract' ? "secondary" : "ghost"} 
+
+            <Button
+              variant={activeItem === 'post-contract' ? 'secondary' : 'ghost'}
               className="w-full justify-start"
               onClick={() => setActiveItem('post-contract')}
             >
               <PlusCircle className="h-4 w-4 mr-2" />
               <span>Post a Contract</span>
             </Button>
-            
-            <Button 
-              variant={activeItem === 'contract-status' ? "secondary" : "ghost"} 
+
+            <Button
+              variant={activeItem === 'contract-status' ? 'secondary' : 'ghost'}
               className="w-full justify-start"
               onClick={() => setActiveItem('contract-status')}
             >
               <FileText className="h-4 w-4 mr-2" />
               <span>Contract Status</span>
             </Button>
-            
-            <Button 
-              variant={activeItem === 'send-payment' ? "secondary" : "ghost"} 
+
+            <Button
+              variant={activeItem === 'send-payment' ? 'secondary' : 'ghost'}
               className="w-full justify-start"
               onClick={() => setActiveItem('send-payment')}
             >
               <CreditCard className="h-4 w-4 mr-2" />
               <span>Send Payment</span>
             </Button>
-            
-            <Button 
-              variant={activeItem === 'notifications' ? "secondary" : "ghost"} 
+
+            <Button
+              variant={activeItem === 'notifications' ? 'secondary' : 'ghost'}
               className="w-full justify-start"
               onClick={() => setActiveItem('notifications')}
             >
               <Bell className="h-4 w-4 mr-2" />
               <span>Notifications</span>
               {unreadCount > 0 && (
-                <Badge variant="secondary" className="ml-auto">{unreadCount}</Badge>
+                <Badge variant="secondary" className="ml-auto">
+                  {unreadCount}
+                </Badge>
               )}
             </Button>
           </nav>
         </div>
-        
-        {/* Home link at the bottom */}
+
         <div className="px-2 py-4 border-t mt-auto">
           <Button variant="ghost" className="w-full justify-start" asChild>
             <Link to="/">
@@ -546,7 +380,6 @@ const BusinessDashboard = () => {
         </div>
       </motion.div>
 
-      {/* Main Content - updated with more professional styling */}
       <main className="flex-1 overflow-auto bg-background">
         {activeItem === 'find-contractors' && (
           <motion.div
@@ -557,11 +390,14 @@ const BusinessDashboard = () => {
           >
             <Card className="mb-6">
               <CardHeader>
-                <CardTitle className="text-3xl font-bold text-primary">Find Expert Contractors</CardTitle>
-                <p className="text-muted-foreground">Connect with skilled professionals for your projects</p>
+                <CardTitle className="text-3xl font-bold text-primary">
+                  Find Expert Contractors
+                </CardTitle>
+                <p className="text-muted-foreground">
+                  Connect with skilled professionals for your projects
+                </p>
               </CardHeader>
               <CardContent>
-                {/* Search Box */}
                 <motion.div variants={itemVariants} className="mb-6">
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -574,13 +410,12 @@ const BusinessDashboard = () => {
                   </div>
                 </motion.div>
 
-                {/* Filters */}
                 <motion.div variants={itemVariants} className="mb-6 space-y-4">
                   <h3 className="text-lg font-medium">Filter Results</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                       <Label className="mb-2 block">Hourly Rate</Label>
-                      <Select onValueChange={(value) => handleFilterChange(value, 'hourlyRate')}>
+                      <Select onValueChange={value => handleFilterChange(value, 'hourlyRate')}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select range" />
                         </SelectTrigger>
@@ -595,7 +430,7 @@ const BusinessDashboard = () => {
 
                     <div>
                       <Label className="mb-2 block">Experience</Label>
-                      <Select onValueChange={(value) => handleFilterChange(value, 'experience')}>
+                      <Select onValueChange={value => handleFilterChange(value, 'experience')}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select experience" />
                         </SelectTrigger>
@@ -610,7 +445,7 @@ const BusinessDashboard = () => {
 
                     <div>
                       <Label className="mb-2 block">Availability</Label>
-                      <Select onValueChange={(value) => handleFilterChange(value, 'availability')}>
+                      <Select onValueChange={value => handleFilterChange(value, 'availability')}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select availability" />
                         </SelectTrigger>
@@ -627,7 +462,6 @@ const BusinessDashboard = () => {
               </CardContent>
             </Card>
 
-            {/* Results Section */}
             <motion.div variants={itemVariants}>
               {filteredContractors.length === 0 ? (
                 <Card className="p-12 text-center">
@@ -637,12 +471,8 @@ const BusinessDashboard = () => {
                 </Card>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredContractors.map((contractor) => (
-                    <motion.div
-                      key={contractor.id}
-                      variants={cardVariants}
-                      whileHover="hover"
-                    >
+                  {filteredContractors.map(contractor => (
+                    <motion.div key={contractor.id} variants={cardVariants} whileHover="hover">
                       <Card className="h-full flex flex-col">
                         <CardHeader>
                           <div className="flex items-center gap-4">
@@ -651,11 +481,13 @@ const BusinessDashboard = () => {
                             </div>
                             <div>
                               <CardTitle className="text-lg">{contractor.name}</CardTitle>
-                              <p className="text-sm text-muted-foreground">{contractor.experience}</p>
+                              <p className="text-sm text-muted-foreground">
+                                {contractor.experience}
+                              </p>
                             </div>
                           </div>
                         </CardHeader>
-                        
+
                         <CardContent className="flex-grow">
                           <div className="flex items-center gap-4 mb-3">
                             <Badge variant="outline" className="flex items-center gap-1">
@@ -667,18 +499,19 @@ const BusinessDashboard = () => {
                               {contractor.availability}
                             </Badge>
                           </div>
-                          
+
                           <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
                             {contractor.professionalSummary}
                           </p>
-                          
+
                           <div className="text-lg font-medium text-primary">
-                            ${contractor.hourlyRate}<span className="text-sm text-muted-foreground">/hr</span>
+                            ${contractor.hourlyRate}
+                            <span className="text-sm text-muted-foreground">/hr</span>
                           </div>
                         </CardContent>
-                        
+
                         <div className="p-4 pt-0 mt-auto">
-                          <Button 
+                          <Button
                             variant="outline"
                             className="w-full"
                             onClick={() => setProfileModal({ isOpen: true, contractor })}
@@ -704,8 +537,12 @@ const BusinessDashboard = () => {
           >
             <Card className="mb-6">
               <CardHeader>
-                <CardTitle className="text-3xl font-bold text-primary">Post a New Contract</CardTitle>
-                <p className="text-muted-foreground">Find the perfect professional for your project</p>
+                <CardTitle className="text-3xl font-bold text-primary">
+                  Post a New Contract
+                </CardTitle>
+                <p className="text-muted-foreground">
+                  Find the perfect professional for your project
+                </p>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleContractSubmit} className="space-y-6">
@@ -721,10 +558,15 @@ const BusinessDashboard = () => {
                         required
                       />
                     </div>
-                    
+
                     <div className="space-y-2">
                       <Label htmlFor="requiredExperience">Required Experience</Label>
-                      <Select name="requiredExperience" onValueChange={(value) => setContractForm(prev => ({ ...prev, requiredExperience: value }))}>
+                      <Select
+                        name="requiredExperience"
+                        onValueChange={value =>
+                          setContractForm(prev => ({ ...prev, requiredExperience: value }))
+                        }
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select experience level" />
                         </SelectTrigger>
@@ -736,7 +578,7 @@ const BusinessDashboard = () => {
                         </SelectContent>
                       </Select>
                     </div>
-                    
+
                     <div className="space-y-2">
                       <Label htmlFor="location">Location</Label>
                       <Input
@@ -748,7 +590,7 @@ const BusinessDashboard = () => {
                         required
                       />
                     </div>
-                    
+
                     <div className="space-y-2">
                       <Label htmlFor="startDate">Start Date</Label>
                       <Input
@@ -760,7 +602,7 @@ const BusinessDashboard = () => {
                         required
                       />
                     </div>
-                    
+
                     <div className="space-y-2">
                       <Label htmlFor="endDate">End Date</Label>
                       <Input
@@ -772,7 +614,7 @@ const BusinessDashboard = () => {
                         required
                       />
                     </div>
-                    
+
                     <div className="space-y-2">
                       <Label htmlFor="paymentAmount">Payment Amount ($)</Label>
                       <Input
@@ -785,7 +627,7 @@ const BusinessDashboard = () => {
                         required
                       />
                     </div>
-                    
+
                     <div className="space-y-2 md:col-span-2">
                       <Label htmlFor="description">Project Description</Label>
                       <Textarea
@@ -799,11 +641,9 @@ const BusinessDashboard = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <div className="flex justify-end">
-                    <Button type="submit">
-                      Post Your Contract
-                    </Button>
+                    <Button type="submit">Post Your Contract</Button>
                   </div>
                 </form>
               </CardContent>
@@ -811,7 +651,6 @@ const BusinessDashboard = () => {
           </motion.div>
         )}
 
-        {/* Notifications panel */}
         {activeItem === 'notifications' && (
           <motion.div
             initial="hidden"
@@ -821,7 +660,9 @@ const BusinessDashboard = () => {
           >
             <Card>
               <CardHeader>
-                <CardTitle className="text-3xl font-bold text-primary">Notifications Center</CardTitle>
+                <CardTitle className="text-3xl font-bold text-primary">
+                  Notifications Center
+                </CardTitle>
                 <p className="text-muted-foreground">Stay updated on your contracts and payments</p>
               </CardHeader>
               <CardContent>
@@ -829,56 +670,58 @@ const BusinessDashboard = () => {
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-muted-foreground">{unreadCount} unread</span>
                     {unreadCount > 0 && (
-                      <Button 
-                        variant="ghost" 
+                      <Button
+                        variant="ghost"
                         size="sm"
                         className="text-xs text-primary hover:text-primary/80 transition-colors font-medium"
-                        onClick={() => setNotifications(prev => prev.map(n => ({ ...n, isRead: true })))}
+                        onClick={() =>
+                          setNotifications(prev => prev.map(n => ({ ...n, isRead: true })))
+                        }
                       >
                         Mark all as read
                       </Button>
                     )}
                   </div>
                 </div>
-                
+
                 <div className="flex gap-2 overflow-x-auto pb-4">
                   <Button
-                    variant={activeFilter === 'all' ? "secondary" : "outline"}
+                    variant={activeFilter === 'all' ? 'secondary' : 'outline'}
                     size="sm"
                     onClick={() => setActiveFilter('all')}
                   >
                     All
                   </Button>
                   <Button
-                    variant={activeFilter === 'payment' ? "secondary" : "outline"}
+                    variant={activeFilter === 'payment' ? 'secondary' : 'outline'}
                     size="sm"
                     onClick={() => setActiveFilter('payment')}
                   >
                     Payments
                   </Button>
                   <Button
-                    variant={activeFilter === 'contract' ? "secondary" : "outline"}
+                    variant={activeFilter === 'contract' ? 'secondary' : 'outline'}
                     size="sm"
                     onClick={() => setActiveFilter('contract')}
                   >
                     Contracts
                   </Button>
                   <Button
-                    variant={activeFilter === 'message' ? "secondary" : "outline"}
+                    variant={activeFilter === 'message' ? 'secondary' : 'outline'}
                     size="sm"
                     onClick={() => setActiveFilter('message')}
                   >
                     Messages
                   </Button>
                   <Button
-                    variant={activeFilter === 'meeting' ? "secondary" : "outline"}
+                    variant={activeFilter === 'meeting' ? 'secondary' : 'outline'}
                     size="sm"
                     onClick={() => setActiveFilter('meeting')}
                   >
                     Meetings
                   </Button>
                 </div>
-                
+
                 <div className="border rounded-md">
                   {getFilteredNotifications().length === 0 ? (
                     <div className="p-12 text-center">
@@ -888,28 +731,39 @@ const BusinessDashboard = () => {
                   ) : (
                     <ScrollArea className="max-h-[600px]">
                       <div className="divide-y">
-                        {getFilteredNotifications().map((notification) => (
-                          <motion.div 
+                        {getFilteredNotifications().map(notification => (
+                          <motion.div
                             key={notification.id}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             className={`p-4 relative ${!notification.isRead ? 'bg-muted/40' : ''}`}
                           >
                             <div className="flex gap-4">
-                              <div className={`flex-shrink-0 rounded-full p-2 ${
-                                notification.type === 'success' ? 'bg-green-100 text-green-600' :
-                                notification.type === 'error' ? 'bg-red-100 text-red-600' :
-                                notification.type === 'warning' ? 'bg-yellow-100 text-yellow-600' :
-                                'bg-blue-100 text-blue-600'
-                              }`}>
-                                {notification.type === 'success' && <CheckCircle className="h-5 w-5" />}
+                              <div
+                                className={`flex-shrink-0 rounded-full p-2 ${
+                                  notification.type === 'success'
+                                    ? 'bg-green-100 text-green-600'
+                                    : notification.type === 'error'
+                                      ? 'bg-red-100 text-red-600'
+                                      : notification.type === 'warning'
+                                        ? 'bg-yellow-100 text-yellow-600'
+                                        : 'bg-blue-100 text-blue-600'
+                                }`}
+                              >
+                                {notification.type === 'success' && (
+                                  <CheckCircle className="h-5 w-5" />
+                                )}
                                 {notification.type === 'error' && <XCircle className="h-5 w-5" />}
-                                {notification.type === 'warning' && <AlertCircle className="h-5 w-5" />}
+                                {notification.type === 'warning' && (
+                                  <AlertCircle className="h-5 w-5" />
+                                )}
                                 {notification.type === 'info' && <Info className="h-5 w-5" />}
                               </div>
                               <div className="flex-1">
                                 <div className="flex justify-between">
-                                  <h3 className={`font-medium ${!notification.isRead ? 'text-primary' : ''}`}>
+                                  <h3
+                                    className={`font-medium ${!notification.isRead ? 'text-primary' : ''}`}
+                                  >
                                     {notification.title}
                                   </h3>
                                   <Button
@@ -921,8 +775,12 @@ const BusinessDashboard = () => {
                                     <X className="h-4 w-4" />
                                   </Button>
                                 </div>
-                                <p className="text-sm text-muted-foreground mt-1">{notification.message}</p>
-                                <p className="text-xs text-muted-foreground mt-2">{notification.date}</p>
+                                <p className="text-sm text-muted-foreground mt-1">
+                                  {notification.message}
+                                </p>
+                                <p className="text-xs text-muted-foreground mt-2">
+                                  {notification.date}
+                                </p>
                               </div>
                             </div>
                           </motion.div>
@@ -935,8 +793,7 @@ const BusinessDashboard = () => {
             </Card>
           </motion.div>
         )}
-        
-        {/* Placeholder for other sections */}
+
         {(activeItem === 'contract-status' || activeItem === 'send-payment') && (
           <div className="p-6 text-center">
             <Card className="p-12">
@@ -952,11 +809,10 @@ const BusinessDashboard = () => {
         )}
       </main>
 
-      {/* Profile Modal - keep this existing implementation */}
       {profileModal.isOpen && profileModal.contractor && (
-        <ProfileModal 
-          contractor={profileModal.contractor} 
-          onClose={() => setProfileModal({ isOpen: false, contractor: null })} 
+        <ProfileModal
+          contractor={profileModal.contractor}
+          onClose={() => setProfileModal({ isOpen: false, contractor: null })}
         />
       )}
     </div>
