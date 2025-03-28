@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
+import { Button } from '../components/ui/button';
 import './ContractorDashboard.css';
 import { Briefcase, FileText, User, FileCheck, Home, CreditCard } from 'lucide-react';
 import ContractorForm from './ContractorForm';

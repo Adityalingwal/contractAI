@@ -1,9 +1,9 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Logo } from "@/components/common/Logo";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Logo } from "../../components/common/Logo";
 
 export function Footer() {
   const fadeIn = {

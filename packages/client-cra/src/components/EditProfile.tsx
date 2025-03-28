@@ -1,4 +1,4 @@
-import { dummyContractorProfile } from "@/dummy-data/dummyData";
+import { dummyContractorProfile } from "../dummy-data/dummyData";
 import { useState } from "react";
 import { Card, CardHeader, CardContent, CardTitle } from "./ui/card";
 import { Label } from "./ui/label";

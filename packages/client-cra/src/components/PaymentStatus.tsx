@@ -1,4 +1,4 @@
-import { dummyPayments } from '@/dummy-data/dummyData';
+import { dummyPayments } from '../dummy-data/dummyData';
 import { TableBody, TableCell, TableHead, TableHeader, TableRow, Table } from './ui/table';
 import { Card, CardHeader, CardContent, CardTitle } from './ui/card';
 import { Clock, CreditCard, CheckCircle, AlertCircle } from 'lucide-react';

@@ -39,7 +39,7 @@ import {
 import { Badge } from '../components/ui/badge';
 import { ScrollArea } from '../components/ui/scroll-area';
 import { Textarea } from '../components/ui/textarea';
-import { getAllContracts } from '../../api/api'
+import { getAllContracts } from '../api/api'
 
 interface ContractorProfile {
   id: number;

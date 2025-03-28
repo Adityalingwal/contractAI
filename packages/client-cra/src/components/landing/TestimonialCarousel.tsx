@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../components/ui/button";
 
 const testimonials = [
   {
@@ -90,38 +90,7 @@ export function TestimonialCarousel() {
           <Quote className="h-12 w-12 opacity-20" />
         </div>
         
-        <AnimatePresence initial={false} custom={direction} mode="wait">
-          <motion.div
-            key={currentIndex}
-            custom={direction}
-            variants={slideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{
-              x: { type: "spring", stiffness: 300, damping: 30 },
-              opacity: { duration: 0.5 }
-            }}
-            className="absolute inset-0 flex items-center justify-center p-12"
-          >
-            <div className="text-center max-w-3xl mx-auto">
-              <p className="text-xl md:text-2xl italic mb-8 text-foreground">
-                "{testimonials[currentIndex].text}"
-              </p>
-              <div className="flex flex-col items-center">
-                <div className="h-16 w-16 rounded-full overflow-hidden mb-4 border-2 border-white shadow-lg">
-                  <img 
-                    src={testimonials[currentIndex].image} 
-                    alt={testimonials[currentIndex].name}
-                    className="h-full w-full object-cover" 
-                  />
-                </div>
-                <h4 className="font-semibold text-lg">{testimonials[currentIndex].name}</h4>
-                <p className="text-muted-foreground">{testimonials[currentIndex].position}</p>
-              </div>
-            </div>
-          </motion.div>
-        </AnimatePresence>
+       
 
         <Button 
           variant="outline" 

@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, Check, ClipboardCheck, CreditCard, FileText, LightbulbIcon, Shield, Users } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Logo } from "@/components/common/Logo";
-import { TestimonialCarousel } from "@/components/landing/TestimonialCarousel";
-import { HowItWorks } from "@/components/landing/HowItWorks";
-import { Footer } from "@/components/landing/Footer";
-import { AnimatedBackground } from "@/components/landing/AnimatedBackground";
+import { Button } from "../components/ui/button";
+import { Logo } from "../components/common/Logo";
+import { TestimonialCarousel } from "../components/landing/TestimonialCarousel";
+import { HowItWorks } from "../components/landing/HowItWorks";
+import { Footer } from "../components/landing/Footer";
+import { AnimatedBackground } from "../components/landing/AnimatedBackground";
 
 const container = {
   hidden: { opacity: 0 },
