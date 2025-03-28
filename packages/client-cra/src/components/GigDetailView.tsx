@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from './ui/button'
 import {
   Card,
@@ -9,8 +9,22 @@ import {
   CardFooter,
 } from './ui/card'
 import { GigDetailViewProps } from '../types/gigsTypes'
+import { ProfileModal } from './ProflleModal'
 
 export function GigDetailView({ gig, onBack }: GigDetailViewProps) {
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
+
+  const handleApplyClick = () => {
+    setIsProfileModalOpen(true)
+  }
+
+  const handleProfileSubmit = (profileData: any) => {
+    console.log('Profile submitted:', profileData)
+    // Here you would handle the profile submission,
+    // e.g., save to database, send application, etc.
+    setIsProfileModalOpen(false)
+  }
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
       <div className="flex items-center space-x-4">
@@ -134,9 +148,16 @@ export function GigDetailView({ gig, onBack }: GigDetailViewProps) {
           <Button variant="outline" onClick={onBack}>
             Cancel
           </Button>
-          <Button>Apply Now</Button>
+          <Button onClick={handleApplyClick}>Apply Now</Button>
         </CardFooter>
       </Card>
+
+      {/* Profile Modal */}
+      <ProfileModal 
+        isOpen={isProfileModalOpen} 
+        onClose={() => setIsProfileModalOpen(false)}
+        onSubmit={handleProfileSubmit}
+      />
     </div>
   )
 }
