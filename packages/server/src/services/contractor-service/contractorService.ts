@@ -22,9 +22,7 @@ import {
     return fetchContractorByEmail(email);
   }
 
-  export async function getAllContractors(): Promise<Contractor[]> {
-    return fetchAllContractors();
-  }
+
   
   export async function createOrUpdateContractor(contractor: Contractor): Promise<Contractor> {
     return upsertContractor(contractor);
