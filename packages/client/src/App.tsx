@@ -6,7 +6,6 @@ import Landing from "./pages/Landing";
 import NotFound from "./pages/NotFound";
 import BusinessDashboard from "./pages/BusinessDashboard";
 import DashboardSelector from "./pages/DashboardSelector";
-import ContractorForm from "./pages/ContractorForm";
 import ContractorDashboard from "./pages/ContractorDashboard";
 
 const queryClient = new QueryClient();
@@ -20,7 +19,6 @@ const App = () => (
           <Route path="/" element={<Landing />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/business" element={<BusinessDashboard />} />
-          <Route path="/contractor" element={<ContractorForm />} />
           <Route path="/dashboard-selector" element={<DashboardSelector />} /> 
           <Route path="/explore-contractors" element={<ContractorDashboard />} />
         </Routes>

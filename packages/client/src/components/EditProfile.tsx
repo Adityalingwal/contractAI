@@ -24,8 +24,8 @@ export const EditProfile: React.FC = () => {
       fullName: 'John Doe',
       email: 'john.doe@example.com',
       phone: '+1 (555) 123-4567',
-      bio: 'Experienced web developer with 5+ years of experience in React and TypeScript.',
-      skills: 'React, TypeScript, Node.js, CSS, HTML',
+      bio: 'Tell us about yourself.',
+      skills: 'What Skills do you have?',
     },
   });
 
@@ -35,95 +35,97 @@ export const EditProfile: React.FC = () => {
   };
 
   return (
-    <Card className="border border-gray-700 shadow-md rounded-md bg-gray-800 text-white">
-      <CardHeader className="bg-gray-900 text-white p-4 rounded-t-md border-b border-gray-700">
-        <CardTitle className="text-xl font-bold text-white">Edit Your Profile</CardTitle>
-      </CardHeader>
-      <CardContent className="p-6">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          <div>
-            <Label htmlFor="fullName" className="block text-sm font-semibold text-white">
-              Full Name
-            </Label>
-            <Input
-              id="fullName"
-              className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm
-                         focus:border-teal-400 focus:ring-teal-400 text-white placeholder-gray-400"
-              {...register('fullName', { required: 'Full name is required' })}
-            />
-            {errors.fullName && (
-              <p className="mt-1 text-xs text-red-400">{errors.fullName.message}</p>
-            )}
-          </div>
+    <div className="w-full max-w-3xl mx-auto p-4">
+      <Card className="border border-blue-200 shadow-md rounded-md bg-white text-blue-900">
+        <CardHeader className="bg-blue-600 text-white p-4 rounded-t-md border-b">
+          <CardTitle className="text-xl font-bold text-white">Edit Your Profile</CardTitle>
+        </CardHeader>
+        <CardContent className="p-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <div>
+              <Label htmlFor="fullName" className="block text-sm font-semibold text-black">
+                Full Name
+              </Label>
+              <Input
+                id="fullName"
+                className="mt-1 block w-full bg-white border border-blue-300 rounded-md shadow-sm
+                           focus:border-blue-500 focus:ring-blue-500 text-blue-900 placeholder-blue-400"
+                {...register('fullName', { required: 'Full name is required' })}
+              />
+              {errors.fullName && (
+                <p className="mt-1 text-xs text-red-500">{errors.fullName.message}</p>
+              )}
+            </div>
 
-          <div>
-            <Label htmlFor="email" className="block text-sm font-semibold text-white">
-              Email
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm
-                         focus:border-teal-400 focus:ring-teal-400 text-white placeholder-gray-400"
-              {...register('email', {
-                required: 'Email is required',
-                pattern: {
-                  value: /^\S+@\S+$/i,
-                  message: 'Invalid email address',
-                },
-              })}
-            />
-            {errors.email && (
-              <p className="mt-1 text-xs text-red-400">{errors.email.message}</p>
-            )}
-          </div>
+            <div>
+              <Label htmlFor="email" className="block text-sm font-semibold text-blue-800">
+                Email
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                className="mt-1 block w-full bg-white border border-blue-300 rounded-md shadow-sm
+                           focus:border-blue-500 focus:ring-blue-500 text-blue-900 placeholder-blue-400"
+                {...register('email', {
+                  required: 'Email is required',
+                  pattern: {
+                    value: /^\S+@\S+$/i,
+                    message: 'Invalid email address',
+                  },
+                })}
+              />
+              {errors.email && (
+                <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
+              )}
+            </div>
 
-          <div>
-            <Label htmlFor="phone" className="block text-sm font-semibold text-white">
-              Phone Number
-            </Label>
-            <Input
-              id="phone"
-              className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm
-                         focus:border-teal-400 focus:ring-teal-400 text-white placeholder-gray-400"
-              {...register('phone')}
-            />
-          </div>
+            <div>
+              <Label htmlFor="phone" className="block text-sm font-semibold text-blue-800">
+                Phone Number
+              </Label>
+              <Input
+                id="phone"
+                className="mt-1 block w-full bg-white border border-blue-300 rounded-md shadow-sm
+                           focus:border-blue-500 focus:ring-blue-500 text-blue-900 placeholder-blue-400"
+                {...register('phone')}
+              />
+            </div>
 
-          <div>
-            <Label htmlFor="bio" className="block text-sm font-semibold text-white">
-              Bio
-            </Label>
-            <Textarea
-              id="bio"
-              rows={4}
-              className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm
-                       focus:border-teal-400 focus:ring-teal-400 text-white placeholder-gray-400"
-              {...register('bio')}
-            />
-          </div>
+            <div>
+              <Label htmlFor="bio" className="block text-sm font-semibold text-blue-800">
+                Bio
+              </Label>
+              <Textarea
+                id="bio"
+                rows={4}
+                className="mt-1 block w-full bg-white border border-blue-300 rounded-md shadow-sm
+                         focus:border-blue-500 focus:ring-blue-500 text-blue-900 placeholder-blue-400"
+                {...register('bio')}
+              />
+            </div>
 
-          <div>
-            <Label htmlFor="skills" className="block text-sm font-semibold text-white">
-              Skills (comma separated)
-            </Label>
-            <Textarea
-              id="skills"
-              rows={2}
-              className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm
-                       focus:border-teal-400 focus:ring-teal-400 text-white placeholder-gray-400"
-              {...register('skills')}
-            />
-          </div>
+            <div>
+              <Label htmlFor="skills" className="block text-sm font-semibold text-blue-800">
+                Skills (comma separated)
+              </Label>
+              <Textarea
+                id="skills"
+                rows={2}
+                className="mt-1 block w-full bg-white border border-blue-300 rounded-md shadow-sm
+                         focus:border-blue-500 focus:ring-blue-500 text-blue-900 placeholder-blue-400"
+                {...register('skills')}
+              />
+            </div>
 
-          <Button
-            type="submit"
-            className="w-full bg-teal-600 text-white hover:bg-teal-700 border-none"
-          >
-            Update Profile
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+            <Button
+              type="submit"
+              className="w-full bg-blue-600 text-white hover:bg-blue-700 border-none"
+            >
+              Update Profile
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 };

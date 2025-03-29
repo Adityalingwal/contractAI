@@ -59,8 +59,8 @@ export function GigDetailView({ gig, onBack }: GigDetailViewProps) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
-      <div className="flex items-center space-x-4">
+    <div className="mx-auto px-4 py-6 space-y-6">
+      <div className="flex items-center space-x-1">
         <Button variant="ghost" onClick={onBack} className="flex items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -100,7 +100,7 @@ export function GigDetailView({ gig, onBack }: GigDetailViewProps) {
         <CardContent className="p-6 space-y-6">
           {/* Overview */}
           <div>
-            <h3 className="text-lg font-semibold mb-2">Overview</h3>
+            <h3 className="text-lg font-semibold ">Overview</h3>
             <p className="leading-relaxed">{gig.description}</p>
           </div>
 
@@ -113,7 +113,7 @@ export function GigDetailView({ gig, onBack }: GigDetailViewProps) {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-2">
                     <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -178,10 +178,10 @@ export function GigDetailView({ gig, onBack }: GigDetailViewProps) {
         </CardContent>
 
         <CardFooter className="p-6 flex justify-end space-x-4">
-          <Button variant="outline" onClick={onBack}>
+          <Button variant="outline" onClick={onBack} className="border-blue-500 text-blue-500 hover:bg-blue-50">
             Cancel
           </Button>
-          <Button onClick={handleApplyClick}>Apply Now</Button>
+          <Button onClick={handleApplyClick} className="bg-blue-500 hover:bg-blue-600">Apply Now</Button>
         </CardFooter>
       </Card>
 

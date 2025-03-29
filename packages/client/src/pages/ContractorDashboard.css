@@ -98,4 +98,8 @@
 
 .home-link:hover {
   background-color: rgba(52, 152, 219, 0.1);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: black !important;
 }                                                  
