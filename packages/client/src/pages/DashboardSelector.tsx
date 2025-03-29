@@ -8,17 +8,25 @@ import { Footer } from "@/components/landing/Footer";
 const DashboardSelector = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md shadow-subtle">
-        <div className="container flex justify-between items-center h-16 px-4 md:px-6">
-          <Link to="/">
-            <Logo />
+      {/* Back Button Header */}
+      <header className="bg-white/80 backdrop-blur-md shadow-subtle py-3">
+        <div className="container flex items-center h-10 px-4 md:px-6">
+          <Link 
+            to="/" 
+            className="flex items-center text-slate-700 hover:text-blue-700 transition-colors"
+            onClick={(e) => {
+              e.preventDefault();
+              window.history.back();
+            }}
+          >
+            <ArrowRight className="h-5 w-5 rotate-180 mr-2" />
+            <span className="font-medium">Back</span>
           </Link>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow flex items-center justify-center py-20 px-4 bg-gradient-to-b from-slate-50 to-slate-100/80">
+      <main className="flex-grow flex items-center justify-center  px-4 bg-gradient-to-b from-slate-50 to-slate-100/80">
         <div className="container max-w-6xl mx-auto">
           <motion.div 
             className="text-center mb-16"
@@ -29,17 +37,26 @@ const DashboardSelector = () => {
               ease: "easeOut"
             }}
           >
+            <motion.div
+              className="mb-4 flex justify-center"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="h-20 w-20 rounded-full bg-blue-700 flex items-center justify-center text-white mb-3">
+                <Cpu className="h-10 w-10" />
+              </div>
+            </motion.div>
+            
             <motion.h1 
-              className="text-3xl md:text-4xl font-display font-bold mb-4 bg-gradient-to-r from-blue-700 to-indigo-800 bg-clip-text text-transparent text-center flex items-center justify-center gap-3"
+              className="text-3xl md:text-4xl font-display font-bold mb-2 -mt-2 bg-gradient-to-r from-blue-700 to-indigo-800 bg-clip-text text-transparent text-center"
               initial={{ scale: 0.95 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <span className="flex items-center">
-                <Cpu className="inline-block mr-2 h-7 w-7 text-blue-700" />
-                Contractor AI
-              </span>
+              Contractor AI
             </motion.h1>
+            
             <motion.p 
               className="text-xl text-slate-600 max-w-2xl mx-auto text-center"
               initial={{ opacity: 0 }}
@@ -50,16 +67,16 @@ const DashboardSelector = () => {
             </motion.p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 max-w-8xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 max-w-8xl px-4 -mt-5">
             {/* Business Dashboard Card */}
             <DashboardCard 
-              icon={<Building2 className="h-8 w-8" />}
+              icon={<Building2 className="h-8 w-8 " />}
               title="Business Dashboard"
               description="Manage your contracts, assign tasks, and process payments all in one place."
               buttonText="Access Business Dashboard"
               to="/business"
               delay={0}
-              color="bg-blue-700"
+              color="bg-blue-600"
             />
             
             {/* Contractor Dashboard Card */}
@@ -70,7 +87,7 @@ const DashboardSelector = () => {
               buttonText="Access Contractor Dashboard"
               to="/explore-contractors"
               delay={0.1}
-              color="bg-indigo-800"
+              color="bg-indigo-600"
             />
           </div>
         </div>
@@ -107,10 +124,6 @@ const DashboardCard = ({ icon, title, description, buttonText, to, delay, color 
     >
       <motion.div 
         className={`h-28 ${color} flex items-center justify-center`}
-        whileHover={{ 
-          scale: 1.05,
-          transition: { duration: 0.2 }
-        }}
       >
         <motion.div 
           className="h-16 w-16 rounded-full bg-white/20 flex items-center justify-center text-white"
