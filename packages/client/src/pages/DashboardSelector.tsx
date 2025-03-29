@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Building2, User } from "lucide-react";
+import { ArrowRight, Building2, User, Cpu } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Logo } from "../components/common/Logo";
 import { Footer } from "@/components/landing/Footer";
@@ -18,7 +18,7 @@ const DashboardSelector = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow flex items-center justify-center py-20 px-4 bg-gradient-to-b from-white to-indigo-50/50">
+      <main className="flex-grow flex items-center justify-center py-20 px-4 bg-gradient-to-b from-slate-50 to-slate-100/80">
         <div className="container max-w-6xl mx-auto">
           <motion.div 
             className="text-center mb-16"
@@ -30,15 +30,18 @@ const DashboardSelector = () => {
             }}
           >
             <motion.h1 
-              className="text-3xl md:text-4xl font-display font-bold mb-4 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent text-center"
+              className="text-3xl md:text-4xl font-display font-bold mb-4 bg-gradient-to-r from-blue-700 to-indigo-800 bg-clip-text text-transparent text-center flex items-center justify-center gap-3"
               initial={{ scale: 0.95 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              Choose Your Role
+              <span className="flex items-center">
+                <Cpu className="inline-block mr-2 h-7 w-7 text-blue-700" />
+                Contractor AI
+              </span>
             </motion.h1>
             <motion.p 
-              className="text-xl text-muted-foreground max-w-2xl mx-auto text-center"
+              className="text-xl text-slate-600 max-w-2xl mx-auto text-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
@@ -56,7 +59,7 @@ const DashboardSelector = () => {
               buttonText="Access Business Dashboard"
               to="/business"
               delay={0}
-              color="bg-indigo-600"
+              color="bg-blue-700"
             />
             
             {/* Contractor Dashboard Card */}
@@ -67,7 +70,7 @@ const DashboardSelector = () => {
               buttonText="Access Contractor Dashboard"
               to="/explore-contractors"
               delay={0.1}
-              color="bg-purple-600"
+              color="bg-indigo-800"
             />
           </div>
         </div>
@@ -89,7 +92,7 @@ interface DashboardCardProps {
 const DashboardCard = ({ icon, title, description, buttonText, to, delay, color }: DashboardCardProps) => {
   return (
     <motion.div 
-      className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 flex flex-col h-full hover:shadow-2xl transition-shadow duration-300"
+      className="bg-white rounded-2xl shadow-md overflow-hidden border border-slate-200 flex flex-col h-full hover:shadow-lg transition-shadow duration-300"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ 
@@ -119,7 +122,7 @@ const DashboardCard = ({ icon, title, description, buttonText, to, delay, color 
       </motion.div>
       <div className="p-8 flex-grow text-center">
         <motion.h2 
-          className="text-2xl font-semibold mb-4 text-center"
+          className="text-2xl font-semibold mb-4 text-center text-slate-800"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: delay + 0.2 }}
@@ -127,7 +130,7 @@ const DashboardCard = ({ icon, title, description, buttonText, to, delay, color 
           {title}
         </motion.h2>
         <motion.p 
-          className="text-muted-foreground mb-6 text-center"
+          className="text-slate-600 mb-6 text-center"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: delay + 0.3 }}
@@ -141,7 +144,7 @@ const DashboardCard = ({ icon, title, description, buttonText, to, delay, color 
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
           >
-            <Button className={`w-full ${color} hover:opacity-90 transition-opacity duration-300`}>
+            <Button className={`w-full ${color} hover:bg-opacity-90 transition-opacity duration-300 text-white`}>
               {buttonText}
               <motion.div
                 initial={{ x: 0 }}

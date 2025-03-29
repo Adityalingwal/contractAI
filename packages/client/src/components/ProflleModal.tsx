@@ -47,15 +47,15 @@ export function ProfileModal({ isOpen, onClose, onSubmit, isSubmitting = false }
         <form onSubmit={handleSubmit} className="space-y-6 py-4 flex flex-col h-full">
           {/* Personal Information */}
           <div className="space-y-4">
-            <h3 className="font-medium text-lg">Personal Information</h3>
+            <h3 className="font-medium text-lg text-gray-700">Personal Information</h3>
             
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="fullName">Full Name *</Label>
+                <Label htmlFor="fullName" className="text-gray-600">Full Name *</Label>
                 <Input id="fullName" name="fullName" required />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="professionalTitle">Professional Title *</Label>
+                <Label htmlFor="professionalTitle" className="text-gray-600">Professional Title *</Label>
                 <Input 
                   id="professionalTitle" 
                   name="professionalTitle" 
@@ -66,7 +66,7 @@ export function ProfileModal({ isOpen, onClose, onSubmit, isSubmitting = false }
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email Address *</Label>
+              <Label htmlFor="email" className="text-gray-600">Email Address *</Label>
               <Input 
                 id="email" 
                 name="email" 
@@ -77,7 +77,7 @@ export function ProfileModal({ isOpen, onClose, onSubmit, isSubmitting = false }
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="bio">Professional Bio *</Label>
+              <Label htmlFor="bio" className="text-gray-600">Professional Bio *</Label>
               <Textarea 
                 id="bio" 
                 name="bio" 
@@ -90,16 +90,16 @@ export function ProfileModal({ isOpen, onClose, onSubmit, isSubmitting = false }
 
           {/* Skills & Experience */}
           <div className="space-y-4">
-            <h3 className="font-medium text-lg">Skills & Experience</h3>
+            <h3 className="font-medium text-lg text-gray-700">Skills & Experience</h3>
             
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="experienceLevel">Experience Level *</Label>
+                <Label htmlFor="experienceLevel" className="text-gray-600">Experience Level *</Label>
                 <Select name="experienceLevel" defaultValue="intermediate">
-                  <SelectTrigger>
+                  <SelectTrigger className="text-black font-medium">
                     <SelectValue placeholder="Select experience level" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white [&>*]:text-black [&>*]:font-medium [&>*]:!opacity-100">
                     <SelectItem value="entry">Entry Level (0-2 years)</SelectItem>
                     <SelectItem value="intermediate">Intermediate (2-5 years)</SelectItem>
                     <SelectItem value="expert">Expert (5+ years)</SelectItem>
@@ -107,7 +107,7 @@ export function ProfileModal({ isOpen, onClose, onSubmit, isSubmitting = false }
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="hourlyRate">Hourly Rate (USD) *</Label>
+                <Label htmlFor="hourlyRate" className="text-gray-600">Hourly Rate (USD) *</Label>
                 <Input 
                   id="hourlyRate" 
                   name="hourlyRate" 
@@ -119,7 +119,7 @@ export function ProfileModal({ isOpen, onClose, onSubmit, isSubmitting = false }
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="skills">Skills *</Label>
+              <Label htmlFor="skills" className="text-gray-600">Skills *</Label>
               <Textarea 
                 id="skills" 
                 name="skills" 
@@ -129,7 +129,7 @@ export function ProfileModal({ isOpen, onClose, onSubmit, isSubmitting = false }
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="portfolioLink">Portfolio Link</Label>
+              <Label htmlFor="portfolioLink" className="text-gray-600">Portfolio Link</Label>
               <Input 
                 id="portfolioLink" 
                 name="portfolioLink" 
@@ -141,16 +141,16 @@ export function ProfileModal({ isOpen, onClose, onSubmit, isSubmitting = false }
 
           {/* Availability */}
           <div className="space-y-4">
-            <h3 className="font-medium text-lg">Availability</h3>
+            <h3 className="font-medium text-lg text-gray-700">Availability</h3>
             
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="availability">Availability *</Label>
+                <Label htmlFor="availability" className="text-gray-600">Availability *</Label>
                 <Select name="availability" defaultValue="fullTime">
-                  <SelectTrigger>
+                  <SelectTrigger className="text-black font-medium">
                     <SelectValue placeholder="Select availability" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white [&>*]:text-black [&>*]:font-medium [&>*]:!opacity-100">
                     <SelectItem value="fullTime">Full-time (40+ hrs/week)</SelectItem>
                     <SelectItem value="partTime">Part-time (20-30 hrs/week)</SelectItem>
                     <SelectItem value="limited">Limited (10-20 hrs/week)</SelectItem>
@@ -158,7 +158,7 @@ export function ProfileModal({ isOpen, onClose, onSubmit, isSubmitting = false }
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="startDate">Available From *</Label>
+                <Label htmlFor="startDate" className="text-gray-600">Available From *</Label>
                 <Input 
                   id="startDate" 
                   name="startDate" 
