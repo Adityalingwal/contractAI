@@ -10,18 +10,52 @@ import {
 } from './ui/card'
 import { GigDetailViewProps } from '../types/gigsTypes'
 import { ProfileModal } from './ProflleModal'
+import { submitProfile } from '../api/api'
+import { useToast } from './ui/use-toast' 
 
 export function GigDetailView({ gig, onBack }: GigDetailViewProps) {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const { toast } = useToast()
 
   const handleApplyClick = () => {
     setIsProfileModalOpen(true)
   }
 
-  const handleProfileSubmit = (profileData: any) => {
-    console.log('Profile submitted:', profileData)
-   
-    setIsProfileModalOpen(false)
+  const handleProfileSubmit = async (profileData: any) => {
+    try {
+      setIsSubmitting(true)
+      
+      // Format date correctly for API (converting from HTML date input)
+      const formattedData = {
+        ...profileData,
+        hourlyRate: Number(profileData.hourlyRate),
+        availableFrom: profileData.startDate // Rename from startDate to match API
+      }
+      
+      // Submit the profile data to the API
+      await submitProfile({ profileData: formattedData })
+      
+      // Show success message
+      toast({
+        title: "Profile Submitted",
+        description: "Your contractor profile has been successfully created.",
+        value: "success",
+      })
+      
+      // Close the modal
+      setIsProfileModalOpen(false)
+      
+    } catch (error) {
+      console.error('Error submitting profile:', error)
+      toast({
+        title: "Submission Failed",
+        description: "There was a problem creating your profile. Please try again.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -156,6 +190,7 @@ export function GigDetailView({ gig, onBack }: GigDetailViewProps) {
         isOpen={isProfileModalOpen} 
         onClose={() => setIsProfileModalOpen(false)}
         onSubmit={handleProfileSubmit}
+        isSubmitting={isSubmitting}
       />
     </div>
   )

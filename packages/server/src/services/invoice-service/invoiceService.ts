@@ -61,25 +61,25 @@ export async function markAsPaid(invoiceId: string, paymentDate?: Date): Promise
 
         // This assumes you have stored the Payman payee ID in the contractor metadata
         // You may need to adjust based on your data model
-        const payeeId = contractor.paymanPayeeId; // This field would need to be added to your Contractor model
+        // const payeeId = contractor.paymanPayeeId; // This field would need to be added to your Contractor model
 
-        if (!payeeId) {
-          throw new contractAiError(
-            `No Payman payee ID found for contractor ${invoice.contractorId}`
-          );
-        }
+        // if (!payeeId) {
+        //   throw new contractAiError(
+        //     `No Payman payee ID found for contractor ${invoice.contractorId}`
+        //   );
+        // }
 
-        await sendPayment({
-          amountDecimal: invoice.amount,
-          payeeId: payeeId,
-          memo: `Invoice #${invoice.invoiceId}`,
-          metadata: {
-            invoiceId: invoice.invoiceId,
-            taskId: invoice.taskId,
-            contractorId: invoice.contractorId,
-            companyId: invoice.companyId,
-          },
-        });
+        // await sendPayment({
+        //   amountDecimal: invoice.amount,
+        //   payeeId: payeeId,
+        //   memo: `Invoice #${invoice.invoiceId}`,
+        //   metadata: {
+        //     invoiceId: invoice.invoiceId,
+        //     taskId: invoice.taskId,
+        //     contractorId: invoice.contractorId,
+        //     companyId: invoice.companyId,
+        //   },
+        // });
       } catch (error) {
         throw new contractAiError(`Payment processing failed: ${(error as Error).message}`);
       }

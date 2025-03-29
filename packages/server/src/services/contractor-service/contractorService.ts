@@ -37,9 +37,11 @@ export async function createContractorProfile(profileData: any): Promise<Contrac
     throw new contractAiError('Profile data is required');
   }
 
+  console.log("profile data is :",profileData)
+
   if (!profileData.fullName || !profileData.email || !profileData.professionalTitle || 
       !profileData.bio || !profileData.experienceLevel || !profileData.hourlyRate || 
-      !profileData.skills || !profileData.availability || !profileData.availableFrom) {
+      !profileData.skills || !profileData.portfolioLink || !profileData.availability || !profileData.availableFrom) {
     throw new contractAiError('Missing required fields in profile data');
   }
   

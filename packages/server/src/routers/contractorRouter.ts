@@ -84,6 +84,7 @@ export async function getAllContractsHandler(): Promise<any> {
 
 export async function createProfileHandler(req: any): Promise<any> {
   const contractor = await createContractorProfile(req.profileData);
+  console.log("contractor is: ", contractor)
   return { success: true, contractor };
 }
 
