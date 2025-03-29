@@ -36,7 +36,7 @@ export function ProfileModal({ isOpen, onClose, onSubmit, isSubmitting = false }
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !isSubmitting && !open && onClose()}>
-      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[90vw] w-full max-h-[90vh] h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">Complete Your Professional Profile</DialogTitle>
           <DialogDescription>
@@ -44,7 +44,7 @@ export function ProfileModal({ isOpen, onClose, onSubmit, isSubmitting = false }
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6 py-4">
+        <form onSubmit={handleSubmit} className="space-y-6 py-4 flex flex-col h-full">
           {/* Personal Information */}
           <div className="space-y-4">
             <h3 className="font-medium text-lg">Personal Information</h3>
@@ -170,10 +170,20 @@ export function ProfileModal({ isOpen, onClose, onSubmit, isSubmitting = false }
           </div>
 
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={onClose} 
+              disabled={isSubmitting}
+              className="border-blue-500 text-blue-500 hover:bg-blue-50"
+            >
               Cancel
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button 
+              type="submit" 
+              disabled={isSubmitting}
+              className="bg-blue-500 hover:bg-blue-600"
+            >
               {isSubmitting ? (
                 <>
                   <span className="mr-2">

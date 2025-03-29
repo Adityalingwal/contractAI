@@ -6,33 +6,41 @@ import { Badge } from "./ui/badge";
 
 export const MyContracts: React.FC = () => {
     return (
-      <div className="p-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-3xl font-bold text-primary">My Contracts</CardTitle>     
-            <p className="text-muted-foreground">Track and manage your active and completed contracts</p>
+      <div className="w-full">
+        <Card className="border shadow-sm bg-white">
+          <CardHeader className="border-b pb-4">
+            <CardTitle className="text-3xl font-bold text-blue-600">My Contracts</CardTitle>     
+            <p className="text-gray-600">Track and manage your active and completed contracts</p>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-0">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Contract ID</TableHead>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Start Date</TableHead>
-                  <TableHead>End Date</TableHead>
+                <TableRow className="bg-gray-50 hover:bg-gray-50">
+                  <TableHead className="font-medium text-gray-700">Contract ID</TableHead>
+                  <TableHead className="font-medium text-gray-700">Title</TableHead>
+                  <TableHead className="font-medium text-gray-700">Status</TableHead>
+                  <TableHead className="font-medium text-gray-700">Start Date</TableHead>
+                  <TableHead className="font-medium text-gray-700">End Date</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {dummyContracts.map((contract) => (
-                  <TableRow key={contract.id}>
-                    <TableCell className="font-medium">{contract.id}</TableCell>
+                  <TableRow 
+                    key={contract.id}
+                    className="border-b hover:bg-blue-50 transition-colors"
+                  >
+                    <TableCell className="font-medium text-gray-900">{contract.id}</TableCell>
                     <TableCell>{contract.title}</TableCell>
                     <TableCell>
                       <Badge variant={
                         contract.status === 'Completed' ? 'secondary' : 
-                        contract.status === 'In Progress' ? 'outline' : 
+                        contract.status === 'In Progress' ? 'default' : 
                         'destructive'
+                      }
+                      className={
+                        contract.status === 'Completed' ? 'bg-green-100 text-green-700 hover:bg-green-200' : 
+                        contract.status === 'In Progress' ? 'bg-blue-100 text-blue-700 hover:bg-blue-200' : 
+                        'bg-red-100 text-red-700 hover:bg-red-200'
                       }>
                         {contract.status}
                       </Badge>

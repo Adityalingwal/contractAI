@@ -21,11 +21,11 @@ export const EditProfile: React.FC = () => {
     formState: { errors },
   } = useForm<ProfileFormData>({
     defaultValues: {
-      fullName: 'John Doe',
-      email: 'john.doe@example.com',
-      phone: '+1 (555) 123-4567',
-      bio: 'Tell us about yourself.',
-      skills: 'What Skills do you have?',
+      fullName: '',
+      email: '',
+      phone: '',
+      bio: '',
+      skills: '',
     },
   });
 
@@ -35,84 +35,92 @@ export const EditProfile: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-4">
-      <Card className="border border-blue-200 shadow-md rounded-md bg-white text-blue-900">
-        <CardHeader className="bg-blue-600 text-white p-4 rounded-t-md border-b">
-          <CardTitle className="text-xl font-bold text-white">Edit Your Profile</CardTitle>
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+      <Card className="border border-black-200 shadow-md rounded-md bg-white text-blue-900">
+        <CardHeader className="text-white p-3 rounded-t-md border-b">
+          <CardTitle className="text-lg font-bold text-white">Edit Your Profile</CardTitle>
         </CardHeader>
-        <CardContent className="p-6">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            <div>
-              <Label htmlFor="fullName" className="block text-sm font-semibold text-black">
-                Full Name
-              </Label>
-              <Input
-                id="fullName"
-                className="mt-1 block w-full bg-white border border-blue-300 rounded-md shadow-sm
-                           focus:border-blue-500 focus:ring-blue-500 text-blue-900 placeholder-blue-400"
-                {...register('fullName', { required: 'Full name is required' })}
-              />
-              {errors.fullName && (
-                <p className="mt-1 text-xs text-red-500">{errors.fullName.message}</p>
-              )}
+        <CardContent className="p-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* Personal Info */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="fullName" className="block text-sm font-semibold text-black">
+                  Full Name
+                </Label>
+                <Input
+                  id="fullName"
+                  placeholder="John Doe"
+                  className="mt-1 block w-full bg-white border rounded-md shadow-sm
+                           focus:border-blue-500 focus:ring-blue-500 text-blue-900 placeholder-black"
+                  {...register('fullName', { required: 'Full name is required' })}
+                />
+                {errors.fullName && (
+                  <p className="mt-1 text-xs text-red-500">{errors.fullName.message}</p>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="email" className="block text-sm font-semibold text-black">
+                  Email
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="john.doe@example.com"
+                  className="mt-1 block w-full bg-white border rounded-md shadow-sm
+                           focus:border-blue-500 focus:ring-blue-500 text-blue-900 placeholder-black"
+                  {...register('email', {
+                    required: 'Email is required',
+                    pattern: {
+                      value: /^\S+@\S+$/i,
+                      message: 'Invalid email address',
+                    },
+                  })}
+                />
+                {errors.email && (
+                  <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
+                )}
+              </div>
             </div>
 
             <div>
-              <Label htmlFor="email" className="block text-sm font-semibold text-blue-800">
-                Email
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                className="mt-1 block w-full bg-white border border-blue-300 rounded-md shadow-sm
-                           focus:border-blue-500 focus:ring-blue-500 text-blue-900 placeholder-blue-400"
-                {...register('email', {
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^\S+@\S+$/i,
-                    message: 'Invalid email address',
-                  },
-                })}
-              />
-              {errors.email && (
-                <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
-              )}
-            </div>
-
-            <div>
-              <Label htmlFor="phone" className="block text-sm font-semibold text-blue-800">
+              <Label htmlFor="phone" className="block text-sm font-semibold text-black">
                 Phone Number
               </Label>
               <Input
                 id="phone"
-                className="mt-1 block w-full bg-white border border-blue-300 rounded-md shadow-sm
-                           focus:border-blue-500 focus:ring-blue-500 text-blue-900 placeholder-blue-400"
+                placeholder="+1 (555) 123-4567"
+                className="mt-1 block w-full bg-white border rounded-md shadow-sm
+                           focus:border-blue-500 focus:ring-blue-500 text-blue-900 placeholder-black"
                 {...register('phone')}
               />
             </div>
 
             <div>
-              <Label htmlFor="bio" className="block text-sm font-semibold text-blue-800">
+              <Label htmlFor="bio" className="block text-sm font-semibold text-black">
                 Bio
               </Label>
               <Textarea
                 id="bio"
-                rows={4}
-                className="mt-1 block w-full bg-white border border-blue-300 rounded-md shadow-sm
-                         focus:border-blue-500 focus:ring-blue-500 text-blue-900 placeholder-blue-400"
+                rows={3}
+                placeholder="Tell us about yourself."
+                className="mt-1 block w-full bg-white border rounded-md shadow-sm
+                         focus:border-blue-500 focus:ring-blue-500 text-blue-900 placeholder-black"
                 {...register('bio')}
               />
             </div>
 
             <div>
-              <Label htmlFor="skills" className="block text-sm font-semibold text-blue-800">
+              <Label htmlFor="skills" className="block text-sm font-semibold text-black">
                 Skills (comma separated)
               </Label>
               <Textarea
                 id="skills"
                 rows={2}
-                className="mt-1 block w-full bg-white border border-blue-300 rounded-md shadow-sm
-                         focus:border-blue-500 focus:ring-blue-500 text-blue-900 placeholder-blue-400"
+                placeholder="What skills do you have?"
+                className="mt-1 block w-full bg-white border rounded-md shadow-sm
+                         focus:border-blue-500 focus:ring-blue-500 text-blue-900 placeholder-black"
                 {...register('skills')}
               />
             </div>

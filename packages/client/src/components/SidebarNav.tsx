@@ -1,16 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Button } from '../components/ui/button';
-import { Badge } from '../components/ui/badge';
-import {
-  Briefcase,
-  PlusCircle,
-  FileText,
-  CreditCard,
-  Bell,
-  Home,
-} from 'lucide-react';
+import { Button } from './ui/button';
+import { Link } from 'react-router-dom';
+import { Briefcase, Users, PlusSquare, Bell, FileCheck, CreditCard, Home } from 'lucide-react';
 
 interface SidebarNavProps {
   activeItem: string;
@@ -19,81 +11,112 @@ interface SidebarNavProps {
 }
 
 const SidebarNav: React.FC<SidebarNavProps> = ({ activeItem, setActiveItem, unreadCount }) => {
+  const buttonVariants = {
+    hover: { 
+      scale: 1.05, 
+      backgroundColor: "rgba(75, 85, 99, 0.1)",
+      transition: { duration: 0.2 }
+    },
+    tap: { scale: 0.95 }
+  };
+
   return (
     <motion.div
-      className="w-64 border-r bg-card flex flex-col shadow-sm"
+      className="w-64 border-r bg-white flex flex-col shadow-lg"
       initial={{ x: -50, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
     >
-      <div className="p-4 border-b">
+      <div className="p-4">
         <div className="flex items-center gap-2">
-          <Briefcase className="h-5 w-5 text-primary" />
-          <h3 className="font-semibold text-lg text-primary">Business Portal</h3>
+          <motion.div
+            initial={{ rotate: 0 }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+          >
+            <Briefcase className="h-5 w-5 text-blue-600" />
+          </motion.div>
+          <h3 className="font-semibold text-lg text-black">Business Portal</h3>
         </div>
       </div>
 
+      <div className="border-b mx-2 mb-2"></div>
+
       <div className="py-4 flex-grow">
         <nav className="space-y-2 px-2">
-          <Button
-            variant={activeItem === 'find-contractors' ? 'secondary' : 'ghost'}
-            className="w-full justify-start"
-            onClick={() => setActiveItem('find-contractors')}
-          >
-            <Briefcase className="h-4 w-4 mr-2" />
-            <span>Find Contractors</span>
-          </Button>
-
-          <Button
-            variant={activeItem === 'post-contract' ? 'secondary' : 'ghost'}
-            className="w-full justify-start"
-            onClick={() => setActiveItem('post-contract')}
-          >
-            <PlusCircle className="h-4 w-4 mr-2" />
-            <span>Post a Contract</span>
-          </Button>
-
-          <Button
-            variant={activeItem === 'contract-status' ? 'secondary' : 'ghost'}
-            className="w-full justify-start"
-            onClick={() => setActiveItem('contract-status')}
-          >
-            <FileText className="h-4 w-4 mr-2" />
-            <span>Contract Status</span>
-          </Button>
-
-          <Button
-            variant={activeItem === 'send-payment' ? 'secondary' : 'ghost'}
-            className="w-full justify-start"
-            onClick={() => setActiveItem('send-payment')}
-          >
-            <CreditCard className="h-4 w-4 mr-2" />
-            <span>Send Payment</span>
-          </Button>
-
-          <Button
-            variant={activeItem === 'notifications' ? 'secondary' : 'ghost'}
-            className="w-full justify-start"
-            onClick={() => setActiveItem('notifications')}
-          >
-            <Bell className="h-4 w-4 mr-2" />
-            <span>Notifications</span>
-            {unreadCount > 0 && (
-              <Badge variant="secondary" className="ml-auto">
-                {unreadCount}
-              </Badge>
-            )}
-          </Button>
+          <motion.div whileHover="hover" whileTap="tap" variants={buttonVariants}>
+            <Button
+              variant={activeItem === 'find-contractors' ? 'secondary' : 'ghost'}
+              className={`w-full justify-start ${activeItem === 'find-contractors' ? 'bg-blue-100 text-blue-900 hover:bg-blue-200' : 'hover:bg-blue-50 text-black'}`}
+              onClick={() => setActiveItem('find-contractors')}
+            >
+              <Users className="h-4 w-4 mr-2 text-blue-600" />
+              Find Contractors
+            </Button>
+          </motion.div>
+          
+          <motion.div whileHover="hover" whileTap="tap" variants={buttonVariants}>
+            <Button
+              variant={activeItem === 'post-contract' ? 'secondary' : 'ghost'}
+              className={`w-full justify-start ${activeItem === 'post-contract' ? 'bg-blue-100 text-blue-900 hover:bg-blue-200' : 'hover:bg-blue-50 text-black'}`}
+              onClick={() => setActiveItem('post-contract')}
+            >
+              <PlusSquare className="h-4 w-4 mr-2 text-blue-600" />
+              Post Contract
+            </Button>
+          </motion.div>
+          
+          <motion.div whileHover="hover" whileTap="tap" variants={buttonVariants}>
+            <Button
+              variant={activeItem === 'notifications' ? 'secondary' : 'ghost'}
+              className={`w-full justify-start ${activeItem === 'notifications' ? 'bg-blue-100 text-blue-900 hover:bg-blue-200' : 'hover:bg-blue-50 text-black'}`}
+              onClick={() => setActiveItem('notifications')}
+            >
+              <div className="relative">
+                <Bell className="h-4 w-4 mr-2 text-blue-600" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                    {unreadCount}
+                  </span>
+                )}
+              </div>
+              Notifications
+            </Button>
+          </motion.div>
+          
+          <motion.div whileHover="hover" whileTap="tap" variants={buttonVariants}>
+            <Button
+              variant={activeItem === 'contract-status' ? 'secondary' : 'ghost'}
+              className={`w-full justify-start ${activeItem === 'contract-status' ? 'bg-blue-100 text-blue-900 hover:bg-blue-200' : 'hover:bg-blue-50 text-black'}`}
+              onClick={() => setActiveItem('contract-status')}
+            >
+              <FileCheck className="h-4 w-4 mr-2 text-blue-600" />
+              Contract Status
+            </Button>
+          </motion.div>
+          
+          <motion.div whileHover="hover" whileTap="tap" variants={buttonVariants}>
+            <Button
+              variant={activeItem === 'send-payment' ? 'secondary' : 'ghost'}
+              className={`w-full justify-start ${activeItem === 'send-payment' ? 'bg-blue-100 text-blue-900 hover:bg-blue-200' : 'hover:bg-blue-50 text-black'}`}
+              onClick={() => setActiveItem('send-payment')}
+            >
+              <CreditCard className="h-4 w-4 mr-2 text-blue-600" />
+              Send Payment
+            </Button>
+          </motion.div>
         </nav>
       </div>
 
       <div className="px-2 py-4 border-t mt-auto">
-        <Button variant="ghost" className="w-full justify-start" asChild>
-          <Link to="/">
-            <Home className="h-4 w-4 mr-2" />
-            <span>Return to Home</span>
-          </Link>
-        </Button>
+        <motion.div whileHover="hover" whileTap="tap" variants={buttonVariants}>
+          <Button variant="ghost" className="w-full justify-start text-black hover:bg-blue-50" asChild>
+            <Link to="/">
+              <Home className="h-4 w-4 mr-2 text-blue-600" />
+              <span>Return to Home</span>
+            </Link>
+          </Button>
+        </motion.div>
       </div>
     </motion.div>
   );

@@ -62,11 +62,11 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="p-6"
+      className="container mx-auto p-4 md:p-6"
     >
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle className="text-3xl font-bold text-primary">
+      <Card className="mb-6 w-full -mt-8">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-2xl md:text-3xl font-bold text-primary">
             Find Expert Contractors
           </CardTitle>
           <p className="text-muted-foreground">
@@ -74,11 +74,11 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
           </p>
         </CardHeader>
         <CardContent>
-          <motion.div variants={itemVariants} className="mb-6">
+          <motion.div variants={itemVariants} className="mb-4 md:mb-6">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                className="pl-10"
+                className="pl-10 w-full"
                 placeholder="Search contractors by name or experience..."
                 value={searchQuery}
                 onChange={handleSearch}
@@ -86,16 +86,16 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
             </div>
           </motion.div>
 
-          <motion.div variants={itemVariants} className="mb-6 space-y-4">
+          <motion.div variants={itemVariants} className="mb-4 md:mb-6 space-y-3 md:space-y-4">
             <h3 className="text-lg font-medium">Filter Results</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
               <div>
                 <Label className="mb-2 block">Hourly Rate</Label>
                 <Select onValueChange={value => handleFilterChange(value, 'hourlyRate')}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select range" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent style={{ backgroundColor: 'white', opacity: 1 }} className="border border-border shadow-lg z-[100]">
                     <SelectItem value="0-25">$0 - $25</SelectItem>
                     <SelectItem value="26-50">$26 - $50</SelectItem>
                     <SelectItem value="51-100">$51 - $100</SelectItem>
@@ -110,7 +110,7 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
                   <SelectTrigger>
                     <SelectValue placeholder="Select experience" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent style={{ backgroundColor: 'white', opacity: 1 }} className="border border-border shadow-lg z-[100]">
                     <SelectItem value="0-2">0-2 years</SelectItem>
                     <SelectItem value="3-5">3-5 years</SelectItem>
                     <SelectItem value="5-10">5-10 years</SelectItem>
@@ -125,7 +125,7 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
                   <SelectTrigger>
                     <SelectValue placeholder="Select availability" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent style={{ backgroundColor: 'white', opacity: 1 }} className="border border-border shadow-lg z-[100]">
                     <SelectItem value="full-time">Full-time</SelectItem>
                     <SelectItem value="part-time">Part-time</SelectItem>
                     <SelectItem value="contract">Contract</SelectItem>
@@ -138,15 +138,15 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
         </CardContent>
       </Card>
 
-      <motion.div variants={itemVariants}>
+      <motion.div variants={itemVariants} className="w-full">
         {filteredContractors.length === 0 ? (
-          <Card className="p-12 text-center">
-            <Briefcase className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-xl font-medium text-primary mb-2">No contractors found</h3>
+          <Card className="p-8 md:p-12 text-center w-full">
+            <Briefcase className="h-10 w-10 md:h-12 md:w-12 text-muted-foreground mx-auto mb-3 md:mb-4" />
+            <h3 className="text-lg md:text-xl font-medium text-primary mb-2">No contractors found</h3>
             <p className="text-muted-foreground">Try adjusting your search or filters</p>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {filteredContractors.map(contractor => (
               <ContractorCard
                 key={contractor.id}

@@ -10,7 +10,6 @@ import {
 import { dummyContractors, dummyNotifications } from '../dummy-data/dummyData';
 
 import SidebarNav from '../components/SidebarNav';
-import ProfileModal from '../components/ProfileModal';
 import FindContractorsView from '../components/FindContractorView';
 import PostContractView from '../components/PostContractView';
 import NotificationsView from '../components/NotificationsView';
@@ -195,19 +194,49 @@ const BusinessDashboard = () => {
     }
   };
 
+  // Animation variants to match ContractorDashboard
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.5,
+        ease: "easeOut" 
+      }
+    }
+  };
+
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen bg-gradient-to-br from-blue-50 to-white">
       <SidebarNav
         activeItem={activeItem}
         setActiveItem={setActiveItem}
         unreadCount={unreadCount}
       />
 
-      <main className="flex-1 overflow-auto bg-background">{renderActiveView()}</main>
-
-      {profileModal.isOpen && profileModal.contractor && (
-        <ProfileModal contractor={profileModal.contractor} onClose={closeProfileModal} />
-      )}
+      <main className="flex-1 overflow-auto bg-white p-6">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+          className="h-full w-full mx-auto bg-white text-black p-6"
+        >
+          <motion.div variants={itemVariants}>
+            {renderActiveView()}
+          </motion.div>
+        </motion.div>
+      </main>
     </div>
   );
 };

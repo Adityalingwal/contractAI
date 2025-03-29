@@ -61,7 +61,7 @@ const PostContractView: React.FC<PostContractViewProps> = ({
       variants={containerVariants}
       className="p-6"
     >
-      <Card className="mb-6">
+      <Card className="mb-6 -mt-7">
         <CardHeader>
           <CardTitle className="text-3xl font-bold text-primary">
             Post a New Gig
@@ -73,8 +73,8 @@ const PostContractView: React.FC<PostContractViewProps> = ({
         <CardContent>
           <form onSubmit={handleContractSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="title">Gig Title</Label>
+              <div className="space-y-2 ">
+                <Label htmlFor="title" className="text-black font-medium">Gig Title</Label>
                 <Input
                   id="title"
                   name="title"
@@ -86,7 +86,7 @@ const PostContractView: React.FC<PostContractViewProps> = ({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="experience_level">Experience Level</Label>
+                <Label htmlFor="experience_level" className="text-black font-medium">Experience Level</Label>
                 <Select
                   name="experience_level"
                   value={contractForm.experience_level}
@@ -106,7 +106,7 @@ const PostContractView: React.FC<PostContractViewProps> = ({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="estimated_duration">Estimated Duration</Label>
+                <Label htmlFor="estimated_duration" className="text-black font-medium">Estimated Duration</Label>
                 <Input
                   id="estimated_duration"
                   name="estimated_duration"
@@ -118,7 +118,7 @@ const PostContractView: React.FC<PostContractViewProps> = ({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="hourly_rate">Hourly Rate ($)</Label>
+                <Label htmlFor="hourly_rate" className="text-black font-medium">Hourly Rate ($)</Label>
                 <Input
                   id="hourly_rate"
                   name="hourly_rate"
@@ -131,7 +131,7 @@ const PostContractView: React.FC<PostContractViewProps> = ({
               </div>
 
               <div className="space-y-2 md:col-span-2">
-                <Label htmlFor="required_skills">Required Skills</Label>
+                <Label htmlFor="required_skills" className="text-black font-medium">Required Skills</Label>
                 <Textarea
                   id="required_skills"
                   name="required_skills"
@@ -144,7 +144,7 @@ const PostContractView: React.FC<PostContractViewProps> = ({
               </div>
 
               <div className="space-y-2 md:col-span-2">
-                <Label htmlFor="description">Project Description</Label>
+                <Label htmlFor="description" className="text-black font-medium">Project Description</Label>
                 <Textarea
                   id="description"
                   name="description"
@@ -158,7 +158,7 @@ const PostContractView: React.FC<PostContractViewProps> = ({
             </div>
 
             <div className="flex justify-end">
-              <Button type="submit">Post Your Gig</Button>
+              <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white">Post Your Gig</Button>
             </div>
           </form>
         </CardContent>

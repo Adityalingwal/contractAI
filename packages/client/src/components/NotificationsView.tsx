@@ -45,7 +45,7 @@ const NotificationsView: React.FC<NotificationsViewProps> = ({
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="p-6"
+      className="p-6 -mt-8"
     >
       <Card>
         <CardHeader>
