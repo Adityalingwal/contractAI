@@ -5,35 +5,38 @@ import { mapToContractor } from './utils';
 export async function upsertContractor(contractor: Contractor): Promise<Contractor> {
   const query = contractor.contractorId
     ? `UPDATE contractors SET 
-        first_name = $1, 
-        last_name = $2, 
-        email = $3, 
-        phone = $4, 
-        address = $5, 
-        tax_id = $6, 
-        bank_account = $7, 
-        linkedin_profile = $8, 
-        profile_picture = $9, 
-        resume = $10 
-      WHERE contractor_id = $11 
+        full_name = $1, 
+        email = $2, 
+        professional_title = $3, 
+        bio = $4, 
+        experience_level = $5, 
+        hourly_rate = $6, 
+        skills = $7, 
+        portfolio_link = $8, 
+        availability = $9, 
+        available_from = $10,
+        linkedin_profile = $11
+      WHERE contractor_id = $12 
       RETURNING *`
     : `INSERT INTO contractors 
-        (first_name, last_name, email, phone, address, tax_id, bank_account, linkedin_profile, profile_picture, resume)
+        (full_name, email, professional_title, bio, experience_level, hourly_rate, skills, 
+         portfolio_link, availability, available_from, linkedin_profile)
       VALUES 
-        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
       RETURNING *`;
 
   const values = [
-    contractor.firstName,
-    contractor.lastName,
+    contractor.fullName,
     contractor.email,
-    contractor.phone || null,
-    contractor.address || null,
-    contractor.taxId || null,
-    contractor.bankAccount || null,
+    contractor.professionalTitle,
+    contractor.bio,
+    contractor.experienceLevel,
+    contractor.hourlyRate,
+    contractor.skills,
+    contractor.portfolioLink || null,
+    contractor.availability,
+    contractor.availableFrom,
     contractor.linkedinProfile || null,
-    contractor.profilePicture || null,
-    contractor.resume || null,
   ];
 
   if (contractor.contractorId) {

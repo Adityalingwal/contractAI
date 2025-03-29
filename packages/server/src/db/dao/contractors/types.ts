@@ -1,31 +1,33 @@
 export interface Contractor {
-  contractorId?: string;
-  firstName: string;
-  lastName: string;
+  contractorId?: string; 
+  fullName: string;
   email: string;
-  phone?: string;
-  address?: string;
-  taxId?: string;
-  bankAccount?: string;
+  professionalTitle: string;
+  bio: string;
+  experienceLevel: 'entry' | 'intermediate' | 'expert';
+  hourlyRate: number;
+  skills: string;
+  portfolioLink?: string;
+  availability: 'fullTime' | 'partTime' | 'limited';
+  availableFrom: Date;
   linkedinProfile?: string;
-  profilePicture?: string;
-  resume?: string;
-  paymanPayeeId?: string; // Add this field to store Payman payee ID
   createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface ContractorDB {
   contractor_id: string;
-  first_name: string;
-  last_name: string;
+  full_name: string;
   email: string;
-  phone: string | null;
-  address: string | null;
-  tax_id: string | null;
-  bank_account: string | null;
-  linkedin_profile: string | null;
-  profile_picture: string | null;
-  resume: string | null;
-  payman_payee_id: string | null; // Add this for database mapping
+  professional_title: string;
+  bio: string;
+  experience_level: 'entry' | 'intermediate' | 'expert';
+  hourly_rate: number;
+  skills: string;
+  portfolio_link?: string;
+  availability: 'fullTime' | 'partTime' | 'limited';
+  available_from: Date;
+  linkedin_profile?: string;
   created_at: Date;
+  updated_at: Date;
 }

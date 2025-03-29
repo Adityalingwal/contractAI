@@ -18,3 +18,7 @@ export const getPayees = async (req?: any): Promise<any> => {
 export const getAllContracts = async (): Promise<any> => {
   return await post('/contractor/getAllContracts');
 };
+
+export const submitProfile = async (req: any): Promise<any> => {
+  return await post('/contractor/createProfile', req);
+}

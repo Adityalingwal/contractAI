@@ -20,8 +20,7 @@ export function GigDetailView({ gig, onBack }: GigDetailViewProps) {
 
   const handleProfileSubmit = (profileData: any) => {
     console.log('Profile submitted:', profileData)
-    // Here you would handle the profile submission,
-    // e.g., save to database, send application, etc.
+   
     setIsProfileModalOpen(false)
   }
 

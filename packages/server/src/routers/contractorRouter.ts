@@ -6,7 +6,8 @@ import {
   getContractorById,
   getContractorByEmail,
   createOrUpdateContractor,
-  removeContractor
+  removeContractor,
+  createContractorProfile,
 } from '../services/contractor-service/contractorService';
 import {
   GetContractorRequest,
@@ -16,7 +17,7 @@ import {
   UpsertContractorResponse,
   DeleteContractorRequest,
   DeleteContractorResponse,
-  GetAllContractorsResponse
+  GetAllContractorsResponse,
 } from '../api-types/apiTypes';
 
 const contractorRouter = Router();
@@ -31,50 +32,60 @@ async function getContractorHandler(req: GetContractorRequest): Promise<GetContr
   if (!contractorId) {
     throw new contractAiError('contractorId is required');
   }
-  
+
   const contractor = await getContractorById(contractorId);
   return { contractor };
 }
 
-async function getContractorByEmailHandler(req: GetContractorByEmailRequest): Promise<GetContractorResponse> {
+async function getContractorByEmailHandler(
+  req: GetContractorByEmailRequest
+): Promise<GetContractorResponse> {
   const { email } = req;
   if (!email) {
     throw new contractAiError('email is required');
   }
-  
+
   const contractor = await getContractorByEmail(email);
   if (!contractor) {
     throw new contractAiError(`Contractor with email ${email} not found`);
   }
-  
+
   return { contractor };
 }
 
-async function upsertContractorHandler(req: UpsertContractorRequest): Promise<UpsertContractorResponse> {
+async function upsertContractorHandler(
+  req: UpsertContractorRequest
+): Promise<UpsertContractorResponse> {
   const { contractor } = req;
   if (!contractor) {
     throw new contractAiError('contractor data is required');
   }
-  
+
   const updatedContractor = await createOrUpdateContractor(contractor);
   return { contractor: updatedContractor };
 }
 
-async function deleteContractorHandler(req: DeleteContractorRequest): Promise<DeleteContractorResponse> {
+async function deleteContractorHandler(
+  req: DeleteContractorRequest
+): Promise<DeleteContractorResponse> {
   const { contractorId } = req;
   if (!contractorId) {
     throw new contractAiError('contractorId is required');
   }
-  
+
   await removeContractor(contractorId);
   return { success: true };
 }
 
 export async function getAllContractsHandler(): Promise<any> {
   console.log('sucessful get the request and return the response');
-  return { message : 'success' };
+  return { message: 'success' };
 }
 
+export async function createProfileHandler(req: any): Promise<any> {
+  const contractor = await createContractorProfile(req.profileData);
+  return { success: true, contractor };
+}
 
 export const contractorRouterConfig: RouteConfig = {
   router: contractorRouter,
@@ -102,6 +113,10 @@ export const contractorRouterConfig: RouteConfig = {
     '/getAllContracts': {
       handler: getAllContractsHandler,
       isUserScoped: false,
-    }
-  }
-}
+    },
+    '/createProfile': {
+      handler: createProfileHandler,
+      isUserScoped: false,
+    },
+  },
+};
