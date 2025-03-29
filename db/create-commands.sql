@@ -1,5 +1,3 @@
-
-
 CREATE TYPE task_status AS ENUM ('open', 'assigned', 'in_progress', 'completed', 'cancelled');
 CREATE TYPE payment_type AS ENUM ('ACH', 'USDC', 'TEST_RAILS');
 CREATE TYPE invoice_status AS ENUM ('pending', 'paid', 'failed');
@@ -25,7 +23,7 @@ CREATE TABLE contractors (
 
 CREATE TABLE gigs (
     gig_id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    company_id uuid NOT NULL,
+    company_id uuid DEFAULT gen_random_uuid(),  
     title VARCHAR(100) NOT NULL,
     description TEXT NOT NULL,
     required_skills TEXT NOT NULL,

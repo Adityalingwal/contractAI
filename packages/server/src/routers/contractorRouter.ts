@@ -2,7 +2,6 @@ import { Router } from 'express';
 import { RouteConfig } from '../types';
 import { contractAiError } from '../error/contractAiError';
 import {
-  getAllContractors,
   getContractorById,
   getContractorByEmail,
   createOrUpdateContractor,
@@ -19,11 +18,15 @@ import {
   DeleteContractorResponse,
   GetAllContractorsResponse,
 } from '../api-types/apiTypes';
+import { postContract } from '../services/contractor-service/contractorService';
+import { fetchAllContractors } from '../db/dao/contractors/contractorsDao';
+import { fetchAllGigs } from '../db/dao/gigs/gigsDao';
 
 const contractorRouter = Router();
 
 async function getAllContractorsHandler(): Promise<GetAllContractorsResponse> {
-  const contractors = await getAllContractors();
+  const contractors = await fetchAllContractors();
+  console.log('contractors are: ', contractors);
   return { contractors };
 }
 
@@ -84,8 +87,20 @@ export async function getAllContractsHandler(): Promise<any> {
 
 export async function createProfileHandler(req: any): Promise<any> {
   const contractor = await createContractorProfile(req.profileData);
-  console.log("contractor is: ", contractor)
+  console.log('contractor is: ', contractor);
   return { success: true, contractor };
+}
+
+export async function postContractHandler(req: any): Promise<any> {
+  const contract = await postContract(req);
+  console.log('contract is: ', contract);
+  return { success: true, contract };
+}
+
+export async function getAllGigsHandler(): Promise<any> {
+  const gigs = await fetchAllGigs();
+  console.log('gigs are: ', gigs);
+  return { gigs };
 }
 
 export const contractorRouterConfig: RouteConfig = {
@@ -119,5 +134,13 @@ export const contractorRouterConfig: RouteConfig = {
       handler: createProfileHandler,
       isUserScoped: false,
     },
+    '/postContract': {
+      handler: postContractHandler,
+      isUserScoped: false,
+    },
+    '/getAllGigs': {
+      handler: getAllGigsHandler,
+      isUserScoped: false,
+    }
   },
 };

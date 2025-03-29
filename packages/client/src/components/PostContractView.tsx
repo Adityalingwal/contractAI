@@ -15,15 +15,12 @@ import {
 
 interface PostContractViewProps {
   contractForm: {
-    name: string;
+    title: string;
     description: string;
-    requiredExperience: string;
-    location: string;
-    startDate: string;
-    endDate: string;
-    paymentType: string;
-    paymentAmount: string;
-    skills: string;
+    required_skills: string;
+    experience_level: string; // entry, intermediate, expert
+    estimated_duration: string;
+    hourly_rate: string;
   };
   handleInputChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -31,15 +28,12 @@ interface PostContractViewProps {
   handleContractSubmit: (e: React.FormEvent) => void;
   setContractForm: React.Dispatch<
     React.SetStateAction<{
-      name: string;
+      title: string;
       description: string;
-      requiredExperience: string;
-      location: string;
-      startDate: string;
-      endDate: string;
-      paymentType: string;
-      paymentAmount: string;
-      skills: string;
+      required_skills: string;
+      experience_level: string;
+      estimated_duration: string;
+      hourly_rate: string;
     }>
   >;
 }
@@ -70,7 +64,7 @@ const PostContractView: React.FC<PostContractViewProps> = ({
       <Card className="mb-6">
         <CardHeader>
           <CardTitle className="text-3xl font-bold text-primary">
-            Post a New Contract
+            Post a New Gig
           </CardTitle>
           <p className="text-muted-foreground">
             Find the perfect professional for your project
@@ -80,11 +74,11 @@ const PostContractView: React.FC<PostContractViewProps> = ({
           <form onSubmit={handleContractSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label htmlFor="name">Contract Name</Label>
+                <Label htmlFor="title">Gig Title</Label>
                 <Input
-                  id="name"
-                  name="name"
-                  value={contractForm.name}
+                  id="title"
+                  name="title"
+                  value={contractForm.title}
                   onChange={handleInputChange}
                   placeholder="E.g., Website Redesign Project"
                   required
@@ -92,70 +86,59 @@ const PostContractView: React.FC<PostContractViewProps> = ({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="requiredExperience">Required Experience</Label>
+                <Label htmlFor="experience_level">Experience Level</Label>
                 <Select
-                  name="requiredExperience"
+                  name="experience_level"
+                  value={contractForm.experience_level}
                   onValueChange={value =>
-                    setContractForm(prev => ({ ...prev, requiredExperience: value }))
+                    setContractForm(prev => ({ ...prev, experience_level: value }))
                   }
                 >
-                  <SelectTrigger>
+                  <SelectTrigger id="experience_level">
                     <SelectValue placeholder="Select experience level" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="0-2 years">0-2 years</SelectItem>
-                    <SelectItem value="3-5 years">3-5 years</SelectItem>
-                    <SelectItem value="5-10 years">5-10 years</SelectItem>
-                    <SelectItem value="10+ years">10+ years</SelectItem>
+                    <SelectItem value="entry">Entry Level</SelectItem>
+                    <SelectItem value="intermediate">Intermediate</SelectItem>
+                    <SelectItem value="expert">Expert</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="location">Location</Label>
+                <Label htmlFor="estimated_duration">Estimated Duration</Label>
                 <Input
-                  id="location"
-                  name="location"
-                  value={contractForm.location}
+                  id="estimated_duration"
+                  name="estimated_duration"
+                  value={contractForm.estimated_duration}
                   onChange={handleInputChange}
-                  placeholder="E.g., Remote, New York, etc."
+                  placeholder="E.g., 2 weeks, 3 months"
                   required
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="startDate">Start Date</Label>
+                <Label htmlFor="hourly_rate">Hourly Rate ($)</Label>
                 <Input
-                  id="startDate"
-                  name="startDate"
-                  type="date"
-                  value={contractForm.startDate}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="endDate">End Date</Label>
-                <Input
-                  id="endDate"
-                  name="endDate"
-                  type="date"
-                  value={contractForm.endDate}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="paymentAmount">Payment Amount ($)</Label>
-                <Input
-                  id="paymentAmount"
-                  name="paymentAmount"
+                  id="hourly_rate"
+                  name="hourly_rate"
                   type="number"
-                  value={contractForm.paymentAmount}
+                  value={contractForm.hourly_rate}
                   onChange={handleInputChange}
                   placeholder="E.g., 25"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="required_skills">Required Skills</Label>
+                <Textarea
+                  id="required_skills"
+                  name="required_skills"
+                  value={contractForm.required_skills}
+                  onChange={handleInputChange}
+                  rows={2}
+                  placeholder="E.g., React, Node.js, PostgreSQL (comma separated)"
                   required
                 />
               </div>
@@ -175,7 +158,7 @@ const PostContractView: React.FC<PostContractViewProps> = ({
             </div>
 
             <div className="flex justify-end">
-              <Button type="submit">Post Your Contract</Button>
+              <Button type="submit">Post Your Gig</Button>
             </div>
           </form>
         </CardContent>
