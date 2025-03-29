@@ -1,44 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import './BusinessDashboard.css';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { Input } from '../components/ui/input';
-import { Label } from '../components/ui/label';
-import {
-  Search,
-  Filter,
-  DollarSign,
-  Star,
-  Clock,
-  Briefcase,
-  Mail,
-  Phone,
-  X,
-  Home,
-  CreditCard,
-  FileText,
-  Bell,
-  PlusCircle,
-  CheckCircle,
-  AlertCircle,
-  XCircle,
-  Calendar,
-  Users,
-  MessageSquare,
-  Info,
-} from 'lucide-react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../components/ui/select';
-import { Badge } from '../components/ui/badge';
-import { ScrollArea } from '../components/ui/scroll-area';
-import { Textarea } from '../components/ui/textarea';
 import { getAllContracts } from '../api/api';
 import {
   ContractorProfile,
@@ -47,16 +9,22 @@ import {
 } from '../types/businessDashboardTypes';
 import { dummyContractors, dummyNotifications } from '../dummy-data/dummyData';
 
+import SidebarNav from '../components/SidebarNav';
+import ProfileModal from '../components/ProfileModal';
+import FindContractorsView from '../components/FindContractorView';
+import PostContractView from '../components/PostContractView';
+import NotificationsView from '../components/NotificationsView';
+import ComingSoonView from '../components/ComingSoonView';
+
 const BusinessDashboard = () => {
+  // --- State Management ---
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
     hourlyRate: '',
     experience: '',
     availability: '',
   });
-
   const [activeItem, setActiveItem] = useState('find-contractors');
-
   const [contractForm, setContractForm] = useState({
     name: '',
     description: '',
@@ -68,22 +36,22 @@ const BusinessDashboard = () => {
     paymentAmount: '',
     skills: '',
   });
-
   const [contractors, setContractors] = useState<ContractorProfile[]>([]);
-
   const [profileModal, setProfileModal] = useState<ProfileModalState>({
     isOpen: false,
     contractor: null,
   });
-
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [activeFilter, setActiveFilter] = useState<string>('all');
 
+  // --- Effects ---
   useEffect(() => {
+    // In a real app, fetch data here
     setContractors(dummyContractors);
     setNotifications(dummyNotifications);
   }, []);
 
+  // --- Derived State & Calculations ---
   const filteredContractors = contractors.filter(contractor => {
     const matchesSearch =
       contractor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -109,6 +77,16 @@ const BusinessDashboard = () => {
     return matchesSearch && matchesHourlyRate && matchesExperience && matchesAvailability;
   });
 
+  const getFilteredNotifications = () => {
+    if (activeFilter === 'all') {
+      return notifications;
+    }
+    return notifications.filter(notification => notification.relatedTo === activeFilter);
+  };
+
+  const unreadCount = notifications.filter(notification => !notification.isRead).length;
+
+  // --- Handlers ---
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
@@ -133,24 +111,27 @@ const BusinessDashboard = () => {
   const handleContractSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await getAllContracts();
-
-    if (!response.message) {
-      alert('fetched successfully');
+    try {
+      const response = await getAllContracts();
+      console.log('Contracts fetched:', response);
+      
+      // Submit contract logic would go here
+      alert('Contract posted successfully!');
+      setContractForm({
+        name: '',
+        description: '',
+        requiredExperience: '',
+        location: '',
+        startDate: '',
+        endDate: '',
+        paymentType: 'hourly',
+        paymentAmount: '',
+        skills: '',
+      });
+    } catch (error) {
+      console.error('Error posting contract:', error);
+      alert('Error posting contract');
     }
-
-    alert('Contract posted successfully!');
-    setContractForm({
-      name: '',
-      description: '',
-      requiredExperience: '',
-      location: '',
-      startDate: '',
-      endDate: '',
-      paymentType: 'hourly',
-      paymentAmount: '',
-      skills: '',
-    });
   };
 
   const markAsRead = (id: number) => {
@@ -161,659 +142,73 @@ const BusinessDashboard = () => {
     );
   };
 
-  const getFilteredNotifications = () => {
-    if (activeFilter === 'all') {
-      return notifications;
+  const markAllAsRead = () => {
+    setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
+  };
+
+  const openProfileModal = (contractor: ContractorProfile) => {
+    setProfileModal({ isOpen: true, contractor });
+  };
+
+  const closeProfileModal = () => {
+    setProfileModal({ isOpen: false, contractor: null });
+  };
+
+  // --- Render Logic ---
+  const renderActiveView = () => {
+    switch (activeItem) {
+      case 'find-contractors':
+        return (
+          <FindContractorsView
+            searchQuery={searchQuery}
+            handleSearch={handleSearch}
+            filters={filters}
+            handleFilterChange={handleFilterChange}
+            filteredContractors={filteredContractors}
+            onViewProfile={openProfileModal}
+          />
+        );
+      case 'post-contract':
+        return (
+          <PostContractView
+            contractForm={contractForm}
+            handleInputChange={handleInputChange}
+            handleContractSubmit={handleContractSubmit}
+            setContractForm={setContractForm}
+          />
+        );
+      case 'notifications':
+        return (
+          <NotificationsView
+            notifications={getFilteredNotifications()}
+            unreadCount={unreadCount}
+            activeFilter={activeFilter}
+            setActiveFilter={setActiveFilter}
+            markAsRead={markAsRead}
+            markAllAsRead={markAllAsRead}
+          />
+        );
+      case 'contract-status':
+        return <ComingSoonView title="Contract Status" />;
+      case 'send-payment':
+        return <ComingSoonView title="Send Payment" />;
+      default:
+        return null;
     }
-    return notifications.filter(notification => notification.relatedTo === activeFilter);
   };
-
-  const unreadCount = notifications.filter(notification => !notification.isRead).length;
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: 'spring',
-        stiffness: 100,
-      },
-    },
-  };
-
-  const cardVariants = {
-    hidden: { scale: 0.95, opacity: 0 },
-    visible: {
-      scale: 1,
-      opacity: 1,
-      transition: {
-        type: 'spring',
-        stiffness: 100,
-      },
-    },
-    hover: {
-      scale: 1.02,
-      boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
-      transition: {
-        type: 'spring',
-        stiffness: 400,
-        damping: 10,
-      },
-    },
-  };
-
-  const ProfileModal = ({
-    contractor,
-    onClose,
-  }: {
-    contractor: ContractorProfile;
-    onClose: () => void;
-  }) => (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
-    >
-      <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.95, opacity: 0 }}
-        className="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
-      >
-        <div className="p-6 space-y-6">
-          <div className="flex justify-between items-center border-b pb-4">
-            <div className="flex items-center gap-4">
-              <div className="h-16 w-16 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white text-2xl font-bold">
-                {contractor.name[0]}
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold text-purple-900">{contractor.name}</h2>
-                <p className="text-purple-600">{contractor.experience}</p>
-              </div>
-            </div>
-            <Button variant="outline" onClick={onClose} className="rounded-full p-2">
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-purple-900">Contact Information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex items-center gap-2">
-                <Mail className="h-4 w-4 text-purple-500" />
-                <span>{contractor.email}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-purple-500" />
-                <span>{contractor.phone}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-purple-900">Professional Details</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex items-center gap-2">
-                <DollarSign className="h-4 w-4 text-purple-500" />
-                <span>${contractor.hourlyRate}/hr</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-purple-500" />
-                <span>{contractor.availability}</span>
-              </div>
-            </div>
-            <div className="bg-purple-50 p-4 rounded-lg">
-              <p className="text-purple-900">{contractor.professionalSummary}</p>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-purple-900">Completed Projects</h3>
-            <div className="space-y-4">
-              {contractor.completedProjects.map((project, index) => (
-                <div key={index} className="bg-gray-50 p-4 rounded-lg space-y-2">
-                  <h4 className="font-semibold text-purple-900">{project.projectName}</h4>
-                  <p className="text-sm text-gray-600">Client: {project.clientName}</p>
-                  <p className="text-sm text-gray-600">Completed: {project.completionDate}</p>
-                  <p className="text-sm">{project.description}</p>
-                  <div className="flex items-center gap-2 text-yellow-500">
-                    <Star className="h-4 w-4 fill-current" />
-                    <span className="text-sm italic">{project.feedback}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    </motion.div>
-  );
 
   return (
     <div className="flex h-screen bg-background">
-      <motion.div
-        className="w-64 border-r bg-card flex flex-col shadow-sm"
-        initial={{ x: -50, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="p-4 border-b">
-          <div className="flex items-center gap-2">
-            <Briefcase className="h-5 w-5 text-primary" />
-            <h3 className="font-semibold text-lg text-primary">Business Portal</h3>
-          </div>
-        </div>
+      <SidebarNav
+        activeItem={activeItem}
+        setActiveItem={setActiveItem}
+        unreadCount={unreadCount}
+      />
 
-        <div className="py-4 flex-grow">
-          <nav className="space-y-2 px-2">
-            <Button
-              variant={activeItem === 'find-contractors' ? 'secondary' : 'ghost'}
-              className="w-full justify-start"
-              onClick={() => setActiveItem('find-contractors')}
-            >
-              <Briefcase className="h-4 w-4 mr-2" />
-              <span>Find Contractors</span>
-            </Button>
-
-            <Button
-              variant={activeItem === 'post-contract' ? 'secondary' : 'ghost'}
-              className="w-full justify-start"
-              onClick={() => setActiveItem('post-contract')}
-            >
-              <PlusCircle className="h-4 w-4 mr-2" />
-              <span>Post a Contract</span>
-            </Button>
-
-            <Button
-              variant={activeItem === 'contract-status' ? 'secondary' : 'ghost'}
-              className="w-full justify-start"
-              onClick={() => setActiveItem('contract-status')}
-            >
-              <FileText className="h-4 w-4 mr-2" />
-              <span>Contract Status</span>
-            </Button>
-
-            <Button
-              variant={activeItem === 'send-payment' ? 'secondary' : 'ghost'}
-              className="w-full justify-start"
-              onClick={() => setActiveItem('send-payment')}
-            >
-              <CreditCard className="h-4 w-4 mr-2" />
-              <span>Send Payment</span>
-            </Button>
-
-            <Button
-              variant={activeItem === 'notifications' ? 'secondary' : 'ghost'}
-              className="w-full justify-start"
-              onClick={() => setActiveItem('notifications')}
-            >
-              <Bell className="h-4 w-4 mr-2" />
-              <span>Notifications</span>
-              {unreadCount > 0 && (
-                <Badge variant="secondary" className="ml-auto">
-                  {unreadCount}
-                </Badge>
-              )}
-            </Button>
-          </nav>
-        </div>
-
-        <div className="px-2 py-4 border-t mt-auto">
-          <Button variant="ghost" className="w-full justify-start" asChild>
-            <Link to="/">
-              <Home className="h-4 w-4 mr-2" />
-              <span>Return to Home</span>
-            </Link>
-          </Button>
-        </div>
-      </motion.div>
-
-      <main className="flex-1 overflow-auto bg-background">
-        {activeItem === 'find-contractors' && (
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={containerVariants}
-            className="p-6"
-          >
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle className="text-3xl font-bold text-primary">
-                  Find Expert Contractors
-                </CardTitle>
-                <p className="text-muted-foreground">
-                  Connect with skilled professionals for your projects
-                </p>
-              </CardHeader>
-              <CardContent>
-                <motion.div variants={itemVariants} className="mb-6">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      className="pl-10"
-                      placeholder="Search contractors by name or experience..."
-                      value={searchQuery}
-                      onChange={handleSearch}
-                    />
-                  </div>
-                </motion.div>
-
-                <motion.div variants={itemVariants} className="mb-6 space-y-4">
-                  <h3 className="text-lg font-medium">Filter Results</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                      <Label className="mb-2 block">Hourly Rate</Label>
-                      <Select onValueChange={value => handleFilterChange(value, 'hourlyRate')}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select range" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="0-25">$0 - $25</SelectItem>
-                          <SelectItem value="26-50">$26 - $50</SelectItem>
-                          <SelectItem value="51-100">$51 - $100</SelectItem>
-                          <SelectItem value="100+">$100+</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div>
-                      <Label className="mb-2 block">Experience</Label>
-                      <Select onValueChange={value => handleFilterChange(value, 'experience')}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select experience" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="0-2">0-2 years</SelectItem>
-                          <SelectItem value="3-5">3-5 years</SelectItem>
-                          <SelectItem value="5-10">5-10 years</SelectItem>
-                          <SelectItem value="10+">10+ years</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div>
-                      <Label className="mb-2 block">Availability</Label>
-                      <Select onValueChange={value => handleFilterChange(value, 'availability')}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select availability" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="full-time">Full-time</SelectItem>
-                          <SelectItem value="part-time">Part-time</SelectItem>
-                          <SelectItem value="contract">Contract</SelectItem>
-                          <SelectItem value="freelance">Freelance</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </motion.div>
-              </CardContent>
-            </Card>
-
-            <motion.div variants={itemVariants}>
-              {filteredContractors.length === 0 ? (
-                <Card className="p-12 text-center">
-                  <Briefcase className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-xl font-medium text-primary mb-2">No contractors found</h3>
-                  <p className="text-muted-foreground">Try adjusting your search or filters</p>
-                </Card>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredContractors.map(contractor => (
-                    <motion.div key={contractor.id} variants={cardVariants} whileHover="hover">
-                      <Card className="h-full flex flex-col">
-                        <CardHeader>
-                          <div className="flex items-center gap-4">
-                            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-medium">
-                              {contractor.name[0]}
-                            </div>
-                            <div>
-                              <CardTitle className="text-lg">{contractor.name}</CardTitle>
-                              <p className="text-sm text-muted-foreground">
-                                {contractor.experience}
-                              </p>
-                            </div>
-                          </div>
-                        </CardHeader>
-
-                        <CardContent className="flex-grow">
-                          <div className="flex items-center gap-4 mb-3">
-                            <Badge variant="outline" className="flex items-center gap-1">
-                              <Briefcase className="h-3 w-3" />
-                              {contractor.completedProjects.length} Projects
-                            </Badge>
-                            <Badge variant="outline" className="flex items-center gap-1">
-                              <Clock className="h-3 w-3" />
-                              {contractor.availability}
-                            </Badge>
-                          </div>
-
-                          <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
-                            {contractor.professionalSummary}
-                          </p>
-
-                          <div className="text-lg font-medium text-primary">
-                            ${contractor.hourlyRate}
-                            <span className="text-sm text-muted-foreground">/hr</span>
-                          </div>
-                        </CardContent>
-
-                        <div className="p-4 pt-0 mt-auto">
-                          <Button
-                            variant="outline"
-                            className="w-full"
-                            onClick={() => setProfileModal({ isOpen: true, contractor })}
-                          >
-                            View Profile
-                          </Button>
-                        </div>
-                      </Card>
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-
-        {activeItem === 'post-contract' && (
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={containerVariants}
-            className="p-6"
-          >
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle className="text-3xl font-bold text-primary">
-                  Post a New Contract
-                </CardTitle>
-                <p className="text-muted-foreground">
-                  Find the perfect professional for your project
-                </p>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleContractSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Contract Name</Label>
-                      <Input
-                        id="name"
-                        name="name"
-                        value={contractForm.name}
-                        onChange={handleInputChange}
-                        placeholder="E.g., Website Redesign Project"
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="requiredExperience">Required Experience</Label>
-                      <Select
-                        name="requiredExperience"
-                        onValueChange={value =>
-                          setContractForm(prev => ({ ...prev, requiredExperience: value }))
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select experience level" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="0-2 years">0-2 years</SelectItem>
-                          <SelectItem value="3-5 years">3-5 years</SelectItem>
-                          <SelectItem value="5-10 years">5-10 years</SelectItem>
-                          <SelectItem value="10+ years">10+ years</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="location">Location</Label>
-                      <Input
-                        id="location"
-                        name="location"
-                        value={contractForm.location}
-                        onChange={handleInputChange}
-                        placeholder="E.g., Remote, New York, etc."
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="startDate">Start Date</Label>
-                      <Input
-                        id="startDate"
-                        name="startDate"
-                        type="date"
-                        value={contractForm.startDate}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="endDate">End Date</Label>
-                      <Input
-                        id="endDate"
-                        name="endDate"
-                        type="date"
-                        value={contractForm.endDate}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="paymentAmount">Payment Amount ($)</Label>
-                      <Input
-                        id="paymentAmount"
-                        name="paymentAmount"
-                        type="number"
-                        value={contractForm.paymentAmount}
-                        onChange={handleInputChange}
-                        placeholder="E.g., 25"
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2 md:col-span-2">
-                      <Label htmlFor="description">Project Description</Label>
-                      <Textarea
-                        id="description"
-                        name="description"
-                        value={contractForm.description}
-                        onChange={handleInputChange}
-                        rows={5}
-                        placeholder="Describe the project, requirements, and expectations..."
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end">
-                    <Button type="submit">Post Your Contract</Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-          </motion.div>
-        )}
-
-        {activeItem === 'notifications' && (
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={containerVariants}
-            className="p-6"
-          >
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-3xl font-bold text-primary">
-                  Notifications Center
-                </CardTitle>
-                <p className="text-muted-foreground">Stay updated on your contracts and payments</p>
-              </CardHeader>
-              <CardContent>
-                <div className="flex justify-between items-center mb-6">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">{unreadCount} unread</span>
-                    {unreadCount > 0 && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-xs text-primary hover:text-primary/80 transition-colors font-medium"
-                        onClick={() =>
-                          setNotifications(prev => prev.map(n => ({ ...n, isRead: true })))
-                        }
-                      >
-                        Mark all as read
-                      </Button>
-                    )}
-                  </div>
-                </div>
-
-                <div className="flex gap-2 overflow-x-auto pb-4">
-                  <Button
-                    variant={activeFilter === 'all' ? 'secondary' : 'outline'}
-                    size="sm"
-                    onClick={() => setActiveFilter('all')}
-                  >
-                    All
-                  </Button>
-                  <Button
-                    variant={activeFilter === 'payment' ? 'secondary' : 'outline'}
-                    size="sm"
-                    onClick={() => setActiveFilter('payment')}
-                  >
-                    Payments
-                  </Button>
-                  <Button
-                    variant={activeFilter === 'contract' ? 'secondary' : 'outline'}
-                    size="sm"
-                    onClick={() => setActiveFilter('contract')}
-                  >
-                    Contracts
-                  </Button>
-                  <Button
-                    variant={activeFilter === 'message' ? 'secondary' : 'outline'}
-                    size="sm"
-                    onClick={() => setActiveFilter('message')}
-                  >
-                    Messages
-                  </Button>
-                  <Button
-                    variant={activeFilter === 'meeting' ? 'secondary' : 'outline'}
-                    size="sm"
-                    onClick={() => setActiveFilter('meeting')}
-                  >
-                    Meetings
-                  </Button>
-                </div>
-
-                <div className="border rounded-md">
-                  {getFilteredNotifications().length === 0 ? (
-                    <div className="p-12 text-center">
-                      <Bell className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                      <p className="text-muted-foreground">No notifications to display</p>
-                    </div>
-                  ) : (
-                    <ScrollArea className="max-h-[600px]">
-                      <div className="divide-y">
-                        {getFilteredNotifications().map(notification => (
-                          <motion.div
-                            key={notification.id}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className={`p-4 relative ${!notification.isRead ? 'bg-muted/40' : ''}`}
-                          >
-                            <div className="flex gap-4">
-                              <div
-                                className={`flex-shrink-0 rounded-full p-2 ${
-                                  notification.type === 'success'
-                                    ? 'bg-green-100 text-green-600'
-                                    : notification.type === 'error'
-                                      ? 'bg-red-100 text-red-600'
-                                      : notification.type === 'warning'
-                                        ? 'bg-yellow-100 text-yellow-600'
-                                        : 'bg-blue-100 text-blue-600'
-                                }`}
-                              >
-                                {notification.type === 'success' && (
-                                  <CheckCircle className="h-5 w-5" />
-                                )}
-                                {notification.type === 'error' && <XCircle className="h-5 w-5" />}
-                                {notification.type === 'warning' && (
-                                  <AlertCircle className="h-5 w-5" />
-                                )}
-                                {notification.type === 'info' && <Info className="h-5 w-5" />}
-                              </div>
-                              <div className="flex-1">
-                                <div className="flex justify-between">
-                                  <h3
-                                    className={`font-medium ${!notification.isRead ? 'text-primary' : ''}`}
-                                  >
-                                    {notification.title}
-                                  </h3>
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-6 w-6"
-                                    onClick={() => markAsRead(notification.id)}
-                                  >
-                                    <X className="h-4 w-4" />
-                                  </Button>
-                                </div>
-                                <p className="text-sm text-muted-foreground mt-1">
-                                  {notification.message}
-                                </p>
-                                <p className="text-xs text-muted-foreground mt-2">
-                                  {notification.date}
-                                </p>
-                              </div>
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </ScrollArea>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        )}
-
-        {(activeItem === 'contract-status' || activeItem === 'send-payment') && (
-          <div className="p-6 text-center">
-            <Card className="p-12">
-              <CardContent>
-                <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-xl font-medium text-primary mb-2">
-                  {activeItem === 'contract-status' ? 'Contract Status' : 'Send Payment'}
-                </h3>
-                <p className="text-muted-foreground">This feature is coming soon.</p>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-      </main>
+      <main className="flex-1 overflow-auto bg-background">{renderActiveView()}</main>
 
       {profileModal.isOpen && profileModal.contractor && (
-        <ProfileModal
-          contractor={profileModal.contractor}
-          onClose={() => setProfileModal({ isOpen: false, contractor: null })}
-        />
+        <ProfileModal contractor={profileModal.contractor} onClose={closeProfileModal} />
       )}
     </div>
   );
