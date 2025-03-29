@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, Building2, User } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Logo } from "@/components/common/Logo";
+import { Button } from "../components/ui/button";
+import { Logo } from "../components/common/Logo";
 import { Footer } from "@/components/landing/Footer";
 
 const DashboardSelector = () => {

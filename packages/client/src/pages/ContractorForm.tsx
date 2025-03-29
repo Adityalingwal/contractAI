@@ -1,9 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
 
 interface FormData {
   full_name: string;
@@ -28,13 +28,13 @@ const ContractorForm: React.FC = () => {
   return (
     <Card className="border border-gray-700 shadow-md rounded-md bg-gray-800 text-white">
       <CardHeader className="bg-gray-900 text-white p-4 rounded-t-md border-b border-gray-700">
-        <CardTitle className="text-xl font-bold">Contractor Profile</CardTitle>
+        <CardTitle className="text-xl font-bold text-white">Contractor Profile</CardTitle>
       </CardHeader>
       <CardContent className="p-6">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {/* Full Name Field */}
           <div>
-            <Label htmlFor="full_name" className="block text-sm font-medium text-teal-300">
+            <Label htmlFor="full_name" className="block text-sm font-semibold text-white">
               Full Name
             </Label>
             <Input
@@ -51,7 +51,7 @@ const ContractorForm: React.FC = () => {
 
           {/* Email Field */}
           <div>
-            <Label htmlFor="email" className="block text-sm font-medium text-teal-300">
+            <Label htmlFor="email" className="block text-sm font-semibold text-white">
               Email
             </Label>
             <Input
@@ -75,7 +75,7 @@ const ContractorForm: React.FC = () => {
 
           {/* LinkedIn Profile Field */}
           <div>
-            <Label htmlFor="linkedin_profile" className="block text-sm font-medium text-teal-300">
+            <Label htmlFor="linkedin_profile" className="block text-sm font-semibold text-white">
               LinkedIn Profile
             </Label>
             <Input

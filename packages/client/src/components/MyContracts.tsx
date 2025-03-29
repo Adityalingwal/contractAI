@@ -1,7 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
-import { dummyContracts } from "@/dummy-data/dummyData";
+import { dummyContracts } from "../dummy-data/dummyData";
 import { Badge } from "./ui/badge";
 
 export const MyContracts: React.FC = () => {
