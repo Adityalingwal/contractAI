@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './BusinessDashboard.css';
-import { getAllContracts } from '../api/api';
+import { getAllContracts, postContract } from '../api/api';
 import {
   ContractorProfile,
   ProfileModalState,
@@ -25,17 +25,16 @@ const BusinessDashboard = () => {
     availability: '',
   });
   const [activeItem, setActiveItem] = useState('find-contractors');
+  
   const [contractForm, setContractForm] = useState({
-    name: '',
+    title: '',
     description: '',
-    requiredExperience: '',
-    location: '',
-    startDate: '',
-    endDate: '',
-    paymentType: 'hourly',
-    paymentAmount: '',
-    skills: '',
+    required_skills: '',
+    experience_level: '',
+    estimated_duration: '',
+    hourly_rate: '',
   });
+  
   const [contractors, setContractors] = useState<ContractorProfile[]>([]);
   const [profileModal, setProfileModal] = useState<ProfileModalState>({
     isOpen: false,
@@ -44,14 +43,11 @@ const BusinessDashboard = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [activeFilter, setActiveFilter] = useState<string>('all');
 
-  // --- Effects ---
   useEffect(() => {
-    // In a real app, fetch data here
     setContractors(dummyContractors);
     setNotifications(dummyNotifications);
   }, []);
 
-  // --- Derived State & Calculations ---
   const filteredContractors = contractors.filter(contractor => {
     const matchesSearch =
       contractor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -86,7 +82,6 @@ const BusinessDashboard = () => {
 
   const unreadCount = notifications.filter(notification => !notification.isRead).length;
 
-  // --- Handlers ---
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
@@ -112,25 +107,29 @@ const BusinessDashboard = () => {
     e.preventDefault();
 
     try {
-      const response = await getAllContracts();
-      console.log('Contracts fetched:', response);
+      const contractData = {
+        title: contractForm.title,
+        description: contractForm.description,
+        required_skills: contractForm.required_skills,
+        experience_level: contractForm.experience_level,
+        estimated_duration: contractForm.estimated_duration,
+        hourly_rate: contractForm.hourly_rate
+      };
       
-      // Submit contract logic would go here
-      alert('Contract posted successfully!');
+      const response = await postContract({ contractData });
+      
+      alert('Gig posted successfully!');
+      
       setContractForm({
-        name: '',
+        title: '',
         description: '',
-        requiredExperience: '',
-        location: '',
-        startDate: '',
-        endDate: '',
-        paymentType: 'hourly',
-        paymentAmount: '',
-        skills: '',
+        required_skills: '',
+        experience_level: '',
+        estimated_duration: '',
+        hourly_rate: ''
       });
     } catch (error) {
-      console.error('Error posting contract:', error);
-      alert('Error posting contract');
+      alert('Error posting gig');
     }
   };
 
@@ -154,7 +153,6 @@ const BusinessDashboard = () => {
     setProfileModal({ isOpen: false, contractor: null });
   };
 
-  // --- Render Logic ---
   const renderActiveView = () => {
     switch (activeItem) {
       case 'find-contractors':

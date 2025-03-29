@@ -19,6 +19,7 @@ import {
   DeleteContractorResponse,
   GetAllContractorsResponse,
 } from '../api-types/apiTypes';
+import { postContract } from '../services/contractor-service/contractorService';
 
 const contractorRouter = Router();
 
@@ -84,8 +85,14 @@ export async function getAllContractsHandler(): Promise<any> {
 
 export async function createProfileHandler(req: any): Promise<any> {
   const contractor = await createContractorProfile(req.profileData);
-  console.log("contractor is: ", contractor)
+  console.log('contractor is: ', contractor);
   return { success: true, contractor };
+}
+
+export async function postContractHandler(req: any): Promise<any> {
+  const contract = await postContract(req);
+  console.log('contract is: ', contract);
+  return { success: true, contract };
 }
 
 export const contractorRouterConfig: RouteConfig = {
@@ -117,6 +124,10 @@ export const contractorRouterConfig: RouteConfig = {
     },
     '/createProfile': {
       handler: createProfileHandler,
+      isUserScoped: false,
+    },
+    '/postContract': {
+      handler: postContractHandler,
       isUserScoped: false,
     },
   },
