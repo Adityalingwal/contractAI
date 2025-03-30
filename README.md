@@ -1,6 +1,6 @@
 # ContractorAI
 
-![ContractorAI Logo](https://example.com/logo.png) <!-- Replace with your actual logo URL -->
+<img src="./packages/client/images/Screenshot 2025-03-30 185108.png" width="150">
 
 ## Transform Your Contractor Management
 
@@ -9,7 +9,7 @@ ContractorAI is a comprehensive platform designed to streamline and automate con
 ## Key Features
 
 ### 🚀 AI-Driven Matching
-![AI Matching](https://example.com/ai-matching.png) <!-- Add an image showing AI matching visualization -->
+<img src="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png" width="250" alt="AI Matching">
 - Intelligent algorithm that finds the perfect talent for specialized projects
 - Saves countless hours on screening candidates
 - Delivers better talent for your specific needs
@@ -20,7 +20,7 @@ ContractorAI is a comprehensive platform designed to streamline and automate con
 - Simple and intuitive user experience
 
 ### 💸 Payment Automation
-![Payment Process](https://example.com/payment-process.png) <!-- Add an image showing payment flow -->
+<img src="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png" width="250" alt="Payment Process">
 - Eliminate payment delays
 - Multiple payment options including crypto (USDC) and ACH
 - Reduce finance team workload by up to 80%
@@ -37,7 +37,7 @@ ContractorAI is a comprehensive platform designed to streamline and automate con
 3. **Invoicing & Approval** - Generate and approve invoices for completed tasks
 4. **Automated Payments** - Seamless payment processing via ACH/USDC with compliance tracking
 
-![How It Works](https://example.com/how-it-works.png) <!-- Add a flow diagram showing the process -->
+<img src="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png" width="400" alt="How It Works">
 
 ## Getting Started
 
@@ -92,7 +92,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 - Framer Motion for animations
 - Lucide for icons
 
-![Tech Stack](https://example.com/tech-stack.png) <!-- Add an image showing the tech stack logos -->
+<img src="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png" width="350" alt="Tech Stack">
 
 ## Testimonials
 
@@ -108,7 +108,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 For questions or support, please contact us at [support@contractorai.com](mailto:support@contractorai.com)
 
-![Contact](https://example.com/contact.png) <!-- Add a contact/support image -->
+<img src="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png" width="250" alt="Contact">
 
 ## License
 
