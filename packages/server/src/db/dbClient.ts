@@ -3,13 +3,8 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-const connectionString = process.env.DATABASE_URL;
-const updatedConnectionString = connectionString?.includes('sslmode=') 
-  ? connectionString 
-  : `${connectionString}${connectionString?.includes('?') ? '&' : '?'}sslmode=require`;
-
 export const pool = new Pool({
-  connectionString: updatedConnectionString,
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   }
