@@ -10,7 +10,6 @@ import { dummyNotifications } from '../dummy-data/dummyData';
 import SidebarNav from '../components/SidebarNav';
 import FindContractorsView from '../components/FindContractorView';
 import PostContractView from '../components/PostContractView';
-import NotificationsView from '../components/NotificationsView';
 import ComingSoonView from '../components/ComingSoonView';
 
 export interface ContractorProfile {
@@ -53,14 +52,12 @@ const BusinessDashboard = () => {
     contractor: null,
   });
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [activeFilter, setActiveFilter] = useState<string>('all');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setNotifications(dummyNotifications);
     
-    // Fetch contractors from API
     const fetchContractors = async () => {
       setIsLoading(true);
       setError(null);
@@ -93,13 +90,6 @@ const BusinessDashboard = () => {
 
     fetchContractors();
   }, []);
-
-  const getFilteredNotifications = () => {
-    if (activeFilter === 'all') {
-      return notifications;
-    }
-    return notifications.filter(notification => notification.relatedTo === activeFilter);
-  };
 
   const unreadCount = notifications.filter(notification => !notification.isRead).length;
 
@@ -143,18 +133,6 @@ const BusinessDashboard = () => {
     }
   };
 
-  const markAsRead = (id: number) => {
-    setNotifications(prev =>
-      prev.map(notification =>
-        notification.id === id ? { ...notification, isRead: true } : notification
-      )
-    );
-  };
-
-  const markAllAsRead = () => {
-    setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
-  };
-
   const openProfileModal = (contractor: ContractorProfile) => {
     setProfileModal({ isOpen: true, contractor });
   };
@@ -179,17 +157,7 @@ const BusinessDashboard = () => {
             setContractForm={setContractForm}
           />
         );
-      case 'notifications':
-        return (
-          <NotificationsView
-            notifications={getFilteredNotifications()}
-            unreadCount={unreadCount}
-            activeFilter={activeFilter}
-            setActiveFilter={setActiveFilter}
-            markAsRead={markAsRead}
-            markAllAsRead={markAllAsRead}
-          />
-        );
+      
       case 'contract-status':
         return <ComingSoonView title="Contract Status" />;
       case 'send-payment':

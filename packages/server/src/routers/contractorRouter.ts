@@ -8,7 +8,8 @@ import {
   removeContractor,
   createContractorProfile,
   assignContractToContractor,
-  getContractorAssignments
+  getContractorAssignments,
+  submitGigCompletion
 } from '../services/contractor-service/contractorService';
 import {
   GetContractorRequest,
@@ -106,27 +107,39 @@ export async function getAllGigsHandler(): Promise<any> {
 }
 
 export async function assignContractHandler(req: any): Promise<any> {
-  console.log("Server received assignment request:", req);
-  
+  console.log('Server received assignment request:', req);
+
   if (!req.gigId || !req.contractorId) {
-    console.error("Missing required IDs:", { gigId: req.gigId, contractorId: req.contractorId });
+    console.error('Missing required IDs:', { gigId: req.gigId, contractorId: req.contractorId });
     throw new contractAiError('Gig ID and Contractor ID are required');
   }
-  
+
   const assignment = await assignContractToContractor(req.gigId, req.contractorId);
   return { success: true, assignment };
 }
 
 export async function getContractorAssignmentsHandler(req: any): Promise<any> {
   const { contractorId } = req;
-  
+
   if (!contractorId) {
     throw new contractAiError('Contractor ID is required');
   }
-  
+
   const assignments = await getContractorAssignments(contractorId);
-  console.log('assignments are: ', assignments);
+  // console.log('assignments are: ', assignments);
   return { assignments };
+}
+
+export async function submitGigCompletionHandler(req: any): Promise<any> {
+  const { assignmentId, projectLink } = req;
+  
+  if (!assignmentId || !projectLink) {
+    throw new contractAiError('Assignment ID and project link are required');
+  }
+  
+  const updatedAssignment = await submitGigCompletion(assignmentId, projectLink);
+  console.log('updatedAssignment is: ', updatedAssignment);
+  return { success: true, assignment: updatedAssignment };
 }
 
 export const contractorRouterConfig: RouteConfig = {
@@ -175,6 +188,10 @@ export const contractorRouterConfig: RouteConfig = {
     '/getContractorAssignments': {
       handler: getContractorAssignmentsHandler,
       isUserScoped: false,
+    },
+    '/submitGigCompletion': {
+      handler: submitGigCompletionHandler,
+      isUserScoped: false,
+    },
   },
-}
-}
+};

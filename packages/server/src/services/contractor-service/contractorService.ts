@@ -6,6 +6,7 @@ import {
   deleteContractor,
   assignContractToContractor as assignContract,
   getContractorAssignments as fetchContractorAssignments,
+  completeGigAssignment
 } from '../../db/dao/contractors/contractorsDao';
 import { Contractor, ContractAssignment } from '../../db/dao/contractors/types';
 import { contractAiError } from '../../error/contractAiError';
@@ -127,5 +128,26 @@ export async function getContractorAssignments(contractorId: string): Promise<an
   } catch (error) {
     console.error('Error fetching contractor assignments:', error);
     throw new contractAiError('Failed to fetch contractor assignments');
+  }
+}
+
+export async function submitGigCompletion(
+  assignmentId: string,
+  projectLink: string
+): Promise<any> {
+  if (!assignmentId) {
+    throw new contractAiError('Assignment ID is required');
+  }
+  
+  if (!projectLink) {
+    throw new contractAiError('Project link is required');
+  }
+  
+  try {
+    const updatedAssignment = await completeGigAssignment(assignmentId, projectLink);
+    return updatedAssignment;
+  } catch (error) {
+    console.error('Error completing gig assignment:', error);
+    throw new contractAiError('Failed to complete the gig assignment');
   }
 }

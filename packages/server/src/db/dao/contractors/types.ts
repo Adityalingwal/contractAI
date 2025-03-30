@@ -39,4 +39,5 @@ export interface ContractAssignment {
   assignedAt?: Date;
   status: 'assigned' | 'in_progress' | 'completed' | 'cancelled';
   completedAt?: Date;
+  projectLink?: string;
 }

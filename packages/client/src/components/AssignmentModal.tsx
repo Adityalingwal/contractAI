@@ -33,12 +33,29 @@ const AssignmentDialog: React.FC<AssignmentDialogProps> = ({
   onSubmit,
 }) => {
   const [projectLink, setProjectLink] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const isCompleted = assignment.assignmentStatus.toLowerCase() === 'completed';
 
-  const handleSubmit = () => {
-    if (onSubmit) {
-      onSubmit(projectLink);
+  const handleSubmit = async () => {
+    if (!projectLink.trim()) {
+      // You might want to add validation or a toast here
+      return;
     }
-    onClose();
+    
+    setIsSubmitting(true);
+    
+    try {
+      if (onSubmit) {
+        await onSubmit(projectLink);
+      }
+      onClose();
+    } catch (error) {
+      console.error("Error submitting project:", error);
+      // Handle error - you might want to add a toast here
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -126,17 +143,27 @@ const AssignmentDialog: React.FC<AssignmentDialogProps> = ({
                 value={projectLink}
                 onChange={e => setProjectLink(e.target.value)}
                 className="flex-1"
+                disabled={isCompleted}
               />
             </div>
+            {isCompleted && (
+              <p className="text-sm text-green-600 mt-1">
+                This assignment has already been completed.
+              </p>
+            )}
           </div>
         </div>
 
         <DialogFooter className="flex justify-between sm:justify-between gap-2">
-          <Button variant="outline" onClick={onClose}>
+          <Button variant="outline" onClick={onClose} disabled={isSubmitting}>
             Cancel
           </Button>
-          <Button type="submit" onClick={handleSubmit}>
-            Submit Project
+          <Button 
+            type="submit" 
+            onClick={handleSubmit} 
+            disabled={isSubmitting || isCompleted || !projectLink.trim()}
+          >
+            {isSubmitting ? "Submitting..." : isCompleted ? "Already Submitted" : "Submit Project"}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -187,3 +187,41 @@ export async function getContractorAssignments(contractorId: string): Promise<an
     updatedAt: row.updated_at
   }));
 }
+
+export async function completeGigAssignment(
+  assignmentId: string, 
+  projectLink: string
+): Promise<ContractAssignment> {
+  const result = await pool.query(
+    `UPDATE gig_assignments 
+     SET 
+       status = 'completed', 
+       completed_at = CURRENT_TIMESTAMP,
+       project_link = $1
+     WHERE 
+       assignment_id = $2
+     RETURNING *`,
+    [projectLink, assignmentId]
+  );
+  
+  if (result.rows.length === 0) {
+    throw new Error('Assignment not found');
+  }
+  
+  await pool.query(
+    `UPDATE gigs 
+     SET status = 'completed' 
+     WHERE gig_id = $1`,
+    [result.rows[0].gig_id]
+  );
+  
+  return {
+    assignmentId: result.rows[0].assignment_id,
+    gigId: result.rows[0].gig_id,
+    contractorId: result.rows[0].contractor_id,
+    assignedAt: result.rows[0].assigned_at,
+    status: result.rows[0].status,
+    completedAt: result.rows[0].completed_at,
+    projectLink: result.rows[0].project_link
+  };
+}

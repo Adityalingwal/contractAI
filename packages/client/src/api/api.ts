@@ -51,3 +51,7 @@ export const getContractorAssignments = async (contractorId: string): Promise<an
 export const getContractorByEmail = async (req: { email: string }): Promise<any> => {
   return await post('/contractor/getContractorByEmail', req);
 };
+
+export const submitGigCompletion = async (payload: { assignmentId: string; projectLink: string }): Promise<any> => {
+  return await post('/contractor/submitGigCompletion', payload);
+};

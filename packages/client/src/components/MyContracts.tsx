@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
-import { getContractorByEmail, getContractorAssignments } from '../api/api';
+import { getContractorByEmail, getContractorAssignments, submitGigCompletion } from '../api/api';
 import { format } from 'date-fns';
 import AssignmentModal from './AssignmentModal';
+import { toast } from './ui/use-toast';
 
 interface Assignment {
   assignmentId: string;
@@ -128,6 +129,34 @@ export const MyContracts: React.FC = () => {
     setIsDialogOpen(true);
   };
 
+  const handleSubmitProject = async (assignmentId: string, projectLink: string) => {
+    try {
+      await submitGigCompletion({ assignmentId, projectLink });
+      
+      // Update the local state to reflect the change
+      setContracts(prevContracts => 
+        prevContracts.map(contract => 
+          contract.assignmentId === assignmentId 
+            ? { ...contract, assignmentStatus: 'completed', completedAt: new Date().toISOString() } 
+            : contract
+        )
+      );
+      
+      toast({
+        title: "Success!",
+        description: "Project submitted successfully. The client has been notified.",
+        variant: "default",
+      });
+    } catch (error) {
+      console.error("Error submitting project:", error);
+      toast({
+        title: "Error",
+        description: "Failed to submit your project. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="w-full">
       <Card className="border shadow-sm bg-white">
@@ -201,6 +230,7 @@ export const MyContracts: React.FC = () => {
           assignment={selectedAssignment} 
           isOpen={isDialogOpen} 
           onClose={() => setIsDialogOpen(false)} 
+          onSubmit={(projectLink) => handleSubmitProject(selectedAssignment.assignmentId, projectLink)}
         />
       )}
     </div>

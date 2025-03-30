@@ -12,12 +12,12 @@ interface SidebarNavProps {
 
 const SidebarNav: React.FC<SidebarNavProps> = ({ activeItem, setActiveItem, unreadCount }) => {
   const buttonVariants = {
-    hover: { 
-      scale: 1.05, 
-      backgroundColor: "rgba(75, 85, 99, 0.1)",
-      transition: { duration: 0.2 }
+    hover: {
+      scale: 1.05,
+      backgroundColor: 'rgba(75, 85, 99, 0.1)',
+      transition: { duration: 0.2 },
     },
-    tap: { scale: 0.95 }
+    tap: { scale: 0.95 },
   };
 
   return (
@@ -25,14 +25,14 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ activeItem, setActiveItem, unre
       className="w-64 border-r bg-white flex flex-col shadow-lg"
       initial={{ x: -50, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       <div className="p-4">
         <div className="flex items-center gap-2">
           <motion.div
             initial={{ rotate: 0 }}
             animate={{ rotate: 360 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
+            transition={{ duration: 1.5, ease: 'easeInOut' }}
           >
             <Briefcase className="h-5 w-5 text-blue-600" />
           </motion.div>
@@ -54,7 +54,7 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ activeItem, setActiveItem, unre
               Find Contractors
             </Button>
           </motion.div>
-          
+
           <motion.div whileHover="hover" whileTap="tap" variants={buttonVariants}>
             <Button
               variant={activeItem === 'post-contract' ? 'secondary' : 'ghost'}
@@ -65,25 +65,7 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ activeItem, setActiveItem, unre
               Post Contract
             </Button>
           </motion.div>
-          
-          <motion.div whileHover="hover" whileTap="tap" variants={buttonVariants}>
-            <Button
-              variant={activeItem === 'notifications' ? 'secondary' : 'ghost'}
-              className={`w-full justify-start ${activeItem === 'notifications' ? 'bg-blue-100 text-blue-900 hover:bg-blue-200' : 'hover:bg-blue-50 text-black'}`}
-              onClick={() => setActiveItem('notifications')}
-            >
-              <div className="relative">
-                <Bell className="h-4 w-4 mr-2 text-blue-600" />
-                {unreadCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                    {unreadCount}
-                  </span>
-                )}
-              </div>
-              Notifications
-            </Button>
-          </motion.div>
-          
+
           <motion.div whileHover="hover" whileTap="tap" variants={buttonVariants}>
             <Button
               variant={activeItem === 'contract-status' ? 'secondary' : 'ghost'}
@@ -94,7 +76,7 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ activeItem, setActiveItem, unre
               Contract Status
             </Button>
           </motion.div>
-          
+
           <motion.div whileHover="hover" whileTap="tap" variants={buttonVariants}>
             <Button
               variant={activeItem === 'send-payment' ? 'secondary' : 'ghost'}
@@ -110,7 +92,11 @@ const SidebarNav: React.FC<SidebarNavProps> = ({ activeItem, setActiveItem, unre
 
       <div className="px-2 py-4 border-t mt-auto">
         <motion.div whileHover="hover" whileTap="tap" variants={buttonVariants}>
-          <Button variant="ghost" className="w-full justify-start text-black hover:bg-blue-50" asChild>
+          <Button
+            variant="ghost"
+            className="w-full justify-start text-black hover:bg-blue-50"
+            asChild
+          >
             <Link to="/">
               <Home className="h-4 w-4 mr-2 text-blue-600" />
               <span>Return to Home</span>
