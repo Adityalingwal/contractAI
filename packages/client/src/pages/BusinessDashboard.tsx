@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './BusinessDashboard.css';
-import { getAllContracts, postContract } from '../api/api';
+import { getAllContracts, postContract, getAllContractors } from '../api/api';
 import {
-  ContractorProfile,
-  ProfileModalState,
   Notification,
 } from '../types/businessDashboardTypes';
-import { dummyContractors, dummyNotifications } from '../dummy-data/dummyData';
+import { dummyNotifications } from '../dummy-data/dummyData';
 
 import SidebarNav from '../components/SidebarNav';
 import FindContractorsView from '../components/FindContractorView';
@@ -15,14 +13,29 @@ import PostContractView from '../components/PostContractView';
 import NotificationsView from '../components/NotificationsView';
 import ComingSoonView from '../components/ComingSoonView';
 
+export interface ContractorProfile {
+  contractorId: string;
+  fullName: string;
+  experienceLevel: string;
+  bio: string;
+  availability: string;
+  hourlyRate: number;
+  professionalTitle: string;
+  skills?: string;
+  portfolioLink?: string;
+  linkedinProfile?: string;
+  email?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface ProfileModalState {
+  isOpen: boolean;
+  contractor: ContractorProfile | null;
+}
+
 const BusinessDashboard = () => {
   // --- State Management ---
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filters, setFilters] = useState({
-    hourlyRate: '',
-    experience: '',
-    availability: '',
-  });
   const [activeItem, setActiveItem] = useState('find-contractors');
   
   const [contractForm, setContractForm] = useState({
@@ -41,36 +54,45 @@ const BusinessDashboard = () => {
   });
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [activeFilter, setActiveFilter] = useState<string>('all');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setContractors(dummyContractors);
+    // Only fetch notifications from dummy data for now
     setNotifications(dummyNotifications);
+    
+    // Fetch contractors from API
+    const fetchContractors = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await getAllContractors();
+        if (response && response.contractors) {
+          // Transform API data to match component expectations
+          const formattedContractors = response.contractors.map((contractor: ContractorProfile) => ({
+            id: contractor.contractorId,
+            name: contractor.fullName,
+            experience: contractor.experienceLevel,
+            completedProjects: [], // API doesn't provide this info
+            availability: contractor.availability === 'fullTime' ? 'Full-time' : contractor.availability,
+            professionalSummary: contractor.bio || contractor.professionalTitle,
+            hourlyRate: contractor.hourlyRate,
+            // Add other fields as needed
+          }));
+          setContractors(formattedContractors);
+        } else {
+          setError('No contractor data received');
+        }
+      } catch (err) {
+        console.error('Error fetching contractors:', err);
+        setError('Failed to load contractors');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchContractors();
   }, []);
-
-  const filteredContractors = contractors.filter(contractor => {
-    const matchesSearch =
-      contractor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      contractor.professionalSummary.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      contractor.experience.toLowerCase().includes(searchQuery.toLowerCase());
-
-    const matchesHourlyRate =
-      !filters.hourlyRate ||
-      (() => {
-        const [min, max] = filters.hourlyRate
-          .split('-')
-          .map(num => (num === '+' ? Infinity : Number(num)));
-        return (
-          contractor.hourlyRate >= min && (max === Infinity ? true : contractor.hourlyRate <= max)
-        );
-      })();
-
-    const matchesExperience =
-      !filters.experience || contractor.experience.includes(filters.experience);
-    const matchesAvailability =
-      !filters.availability || contractor.availability === filters.availability;
-
-    return matchesSearch && matchesHourlyRate && matchesExperience && matchesAvailability;
-  });
 
   const getFilteredNotifications = () => {
     if (activeFilter === 'all') {
@@ -80,17 +102,6 @@ const BusinessDashboard = () => {
   };
 
   const unreadCount = notifications.filter(notification => !notification.isRead).length;
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const handleFilterChange = (value: string, filterType: string) => {
-    setFilters(prev => ({
-      ...prev,
-      [filterType]: value,
-    }));
-  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -148,21 +159,15 @@ const BusinessDashboard = () => {
     setProfileModal({ isOpen: true, contractor });
   };
 
-  const closeProfileModal = () => {
-    setProfileModal({ isOpen: false, contractor: null });
-  };
-
   const renderActiveView = () => {
     switch (activeItem) {
       case 'find-contractors':
         return (
           <FindContractorsView
-            searchQuery={searchQuery}
-            handleSearch={handleSearch}
-            filters={filters}
-            handleFilterChange={handleFilterChange}
-            filteredContractors={filteredContractors}
+            contractors={contractors}
             onViewProfile={openProfileModal}
+            isLoading={isLoading}
+            error={error}
           />
         );
       case 'post-contract':
@@ -194,7 +199,6 @@ const BusinessDashboard = () => {
     }
   };
 
-  // Animation variants to match ContractorDashboard
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {

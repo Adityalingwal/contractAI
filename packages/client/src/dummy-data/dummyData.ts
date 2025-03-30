@@ -67,7 +67,7 @@ export const dummyContracts = [
   },
 ];
 
-export const dummyContractors: ContractorProfile[] = [
+export const dummyContractors = [
   {
     id: 1,
     name: 'Sarah Johnson',

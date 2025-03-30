@@ -1,19 +1,17 @@
 export interface ContractorProfile {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  experience: string;
-  hourlyRate: number;
+  contractorId: string;
+  fullName: string;
+  experienceLevel: string;
+  bio: string;
   availability: string;
-  completedProjects: {
-    projectName: string;
-    clientName: string;
-    completionDate: string;
-    description: string;
-    feedback: string;
-  }[];
-  professionalSummary: string;
+  hourlyRate: number;
+  professionalTitle: string;
+  skills?: string;
+  portfolioLink?: string;
+  linkedinProfile?: string;
+  email?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ProfileModalState {
