@@ -9,10 +9,18 @@ const app: Application = express();
 
 const clientBuildPath = path.resolve(__dirname, '../../client/dist');
 
-app.use(cors({
-  origin: ['https://contractai-3qfc.onrender.com', 'http://localhost:3000', 'https://contract-ai-client.vercel.app/'],
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: [
+      'https://contractai-3qfc.onrender.com',
+      'http://localhost:3000',
+      'https://contract-ai-client.vercel.app/',
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 
 app.use(express.static(clientBuildPath));
 app.use(express.json());
@@ -22,14 +30,12 @@ app.use('*', (req, res, next) => {
   next();
 });
 
-// Register all the router configurations
+app.options('*', cors());
+
 app.use('/contractor', contractorRouterConfig.router);
 app.use('/payment', paymanRouterConfig.router);
 
-const routeConfigs = [
-  contractorRouterConfig,
-  paymanRouterConfig,
-];
+const routeConfigs = [contractorRouterConfig, paymanRouterConfig];
 
 routeConfigs.forEach(routeConfig => {
   Object.entries(routeConfig.endpoints).forEach(([route, endpointConfig]) => {
@@ -42,20 +48,16 @@ routeConfigs.forEach(routeConfig => {
   });
 });
 
-// All other GET requests not handled before will return our React app
 app.get('/*', (req, res) => {
   res.setHeader('Content-type', 'text/html');
   res.sendFile(path.join(clientBuildPath, 'index.html'));
 });
 
-// Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  // Simple pass-through without environment checks
   next(err);
 });
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  // Log all errors directly to console
   console.error('Server error on handling request', err);
   res.status(500).send('Server error on handling request ');
 });
@@ -66,7 +68,6 @@ app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
 
-// Global error handlers - always log to console
 process.on('uncaughtException', function (err) {
   console.error('Uncaught Exception thrown', err);
 });
