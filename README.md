@@ -1,6 +1,6 @@
 # AI-Powered Contractor Hiring & Payments
 
-<img src="https://img.freepik.com/free-vector/artificial-intelligence-ai-robot-circuit-brain-logo-vector-icon-illustration_727335-212.jpg" width="150" alt="Project Logo">
+<img src="./packages/./client/images/Screenshot 2025-03-30 185108.png" width="150" alt="Project Logo">
 
 ## Overview
 AI-Powered Contractor Hiring & Payments is an intelligent platform that connects businesses with skilled contractors. It streamlines the hiring process, contract management, and payments, all in one seamless experience.
@@ -17,30 +17,7 @@ AI-Powered Contractor Hiring & Payments is an intelligent platform that connects
 - **My Contracts**: Track active and past contracts.
 - **Payment Status**: Monitor payment transactions securely.
 
-## Screenshots
-### Main Landing Page
-<img src="./packages/./client/images/Screenshot 2025-03-30 185108.png" width="500" alt="Main Landing Page">
 
-### Dashboard Selector
-<img src="./packages/client/images/Screenshot 2025-03-30 185320.png" width="500" alt="Dashboard Selector">
-
-### Business Dashboard
-<img src="./packages/client/images/Screenshot 2025-03-30 185702.png" width="500" alt="Business Dashboard">
-
-### Contractor Dashboard
-<img src="./packages/client/images/Screenshot 2025-03-30 185820.png" width="500" alt="Contractor Dashboard">
-
-### Post a Contract
-<img src="./packages/client/images/Screenshot 2025-03-30 185732.png" width="500" alt="Post a Contract">
-
-### Notifications
-<img src="./packages/client/images/Screenshot 2025-03-30 185752.png" width="500" alt="Notifications">
-
-### Edit Profile
-<img src="./packages/client/images/Screenshot 2025-03-30 185845.png" width="500" alt="Edit Profile">
-
-### Payment Status
-<img src="./packages/client/images/Screenshot 2025-03-30 185913.png" width="500" alt="Payment Status">
 
 ## Installation
 ```bash
