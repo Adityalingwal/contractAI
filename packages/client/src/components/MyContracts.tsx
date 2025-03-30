@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { getContractorByEmail, getContractorAssignments } from '../api/api';
 import { format } from 'date-fns';
+import AssignmentModal from './AssignmentModal';
 
 interface Assignment {
   assignmentId: string;
@@ -12,8 +13,12 @@ interface Assignment {
   assignmentStatus: string;
   assignedAt: string;
   completedAt: string | null;
-  hourlyRate: number;
+  hourlyRate: string;
   estimatedDuration: string;
+  description: string;
+  requiredSkills: string;
+  experienceLevel: string;
+  paymentMethod: string;
 }
 
 export const MyContracts: React.FC = () => {
@@ -21,6 +26,8 @@ export const MyContracts: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [contractorId, setContractorId] = useState<string | null>(null);
+  const [selectedAssignment, setSelectedAssignment] = useState<Assignment | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
     const fetchContractorId = async () => {
@@ -116,6 +123,11 @@ export const MyContracts: React.FC = () => {
     }
   };
 
+  const handleViewFullAssignment = (assignment: Assignment) => {
+    setSelectedAssignment(assignment);
+    setIsDialogOpen(true);
+  };
+
   return (
     <div className="w-full">
       <Card className="border shadow-sm bg-white">
@@ -146,6 +158,7 @@ export const MyContracts: React.FC = () => {
                   <TableHead className="font-medium text-gray-700">Status</TableHead>
                   <TableHead className="font-medium text-gray-700">Start Date</TableHead>
                   <TableHead className="font-medium text-gray-700">End Date</TableHead>
+                  <TableHead className="font-medium text-gray-700">Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -167,6 +180,14 @@ export const MyContracts: React.FC = () => {
                     <TableCell>
                       {contract.completedAt ? formatDate(contract.completedAt) : 'In Progress'}
                     </TableCell>
+                    <TableCell>
+                      <button 
+                        className="text-blue-500 hover:underline"
+                        onClick={() => handleViewFullAssignment(contract)}
+                      >
+                        View Full Assignment
+                      </button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -174,6 +195,14 @@ export const MyContracts: React.FC = () => {
           )}
         </CardContent>
       </Card>
+      
+      {isDialogOpen && selectedAssignment && (
+        <AssignmentModal 
+          assignment={selectedAssignment} 
+          isOpen={isDialogOpen} 
+          onClose={() => setIsDialogOpen(false)} 
+        />
+      )}
     </div>
   );
 };
