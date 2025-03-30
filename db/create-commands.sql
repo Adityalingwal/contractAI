@@ -10,7 +10,7 @@ CREATE TABLE contractors (
     email VARCHAR(100) NOT NULL UNIQUE,
     professional_title VARCHAR(100) NOT NULL,
     bio TEXT NOT NULL,
-    experience_level experience_level NOT NULL DEFAULT 'intermediate',
+    experience_level experience_type NOT NULL DEFAULT 'intermediate',
     hourly_rate DECIMAL(10,2) NOT NULL,
     skills TEXT NOT NULL,
     portfolio_link VARCHAR(255),
