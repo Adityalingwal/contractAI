@@ -24,7 +24,7 @@ app.use('*', (req, res, next) => {
 
 // Register all the router configurations
 app.use('/contractor', contractorRouterConfig.router);
-app.use('/paymant', paymanRouterConfig.router);
+app.use('/payment', paymanRouterConfig.router);
 
 const routeConfigs = [
   contractorRouterConfig,
