@@ -3,7 +3,21 @@ import { motion } from 'framer-motion';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { Briefcase, Clock, Link, Mail, Linkedin, X, ArrowLeft } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../components/ui/dialog';
+import { Briefcase, Clock, Link, Mail,  ArrowLeft, Check, X } from 'lucide-react';
+import { assignContractToContractor, getAllGigs } from '../api/api';
+import { toast } from '../components/ui/use-toast';
+
+interface Gig {
+  gigId: string;
+  title: string;
+  description: string;
+  requiredSkills: string;
+  experienceLevel: string;
+  estimatedDuration: string;
+  hourlyRate: number;
+  status: string;
+}
 
 export interface ContractorProfile {
   contractorId: string;
@@ -78,6 +92,11 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
   error = null,
 }) => {
   const [selectedContractor, setSelectedContractor] = useState<any | null>(null);
+  const [isGigDialogOpen, setIsGigDialogOpen] = useState(false);
+  const [gigs, setGigs] = useState<Gig[]>([]);
+  const [loadingGigs, setLoadingGigs] = useState(false);
+  const [assigningContract, setAssigningContract] = useState(false);
+  const [selectedGig, setSelectedGig] = useState<Gig | null>(null);
 
   const handleViewProfile = (contractor: any) => {
     setSelectedContractor(contractor);
@@ -86,6 +105,96 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
 
   const handleBackToList = () => {
     setSelectedContractor(null);
+  };
+
+  const handleOpenAssignDialog = async (contractor: any) => {
+    console.log("Full contractor object:", contractor);
+    
+    setSelectedContractor(contractor);
+    setIsGigDialogOpen(true);
+    setLoadingGigs(true);
+    
+    try {
+      const response = await getAllGigs();
+      const availableGigs = response.gigs.filter(
+        (gig: Gig) => gig.status === 'open'
+      );
+      setGigs(availableGigs);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to load available contracts. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoadingGigs(false);
+    }
+  };
+
+  const handleAssignContract = async (gig: Gig) => {
+    console.log("handleAssignContract clicked for gig:", gig.title);
+    
+    if (!selectedContractor) {
+      console.error("No contractor selected");
+      toast({
+        title: "Error",
+        description: "No contractor selected. Please try again.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    console.log("Selected contractor object:", selectedContractor);
+    
+    const gigId = gig.gigId;
+    const contractorId = selectedContractor.contractorId || 
+                         selectedContractor.contractor_id || 
+                         selectedContractor.id;
+    
+    console.log("Gig ID:", gigId);
+    console.log("Contractor ID (after fallbacks):", contractorId);
+    
+    if (!gigId || !contractorId) {
+      console.error("Missing IDs:", { gigId, contractorId });
+      toast({
+        title: "Error",
+        description: "Missing required information to assign contract.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setAssigningContract(true);
+    setSelectedGig(gig);
+    
+    console.log("Assigning contract with data:", { gigId, contractorId });
+    
+    try {
+      const response = await assignContractToContractor({
+        gigId,
+        contractorId
+      });
+      
+      console.log("Assignment API response:", response);
+      
+      toast({
+        title: "Success!",
+        description: `Contract "${gig.title}" has been assigned to ${selectedContractor.fullName || selectedContractor.name}`,
+        variant: "default",
+      });
+      
+      setIsGigDialogOpen(false);
+    } catch (error) {
+      console.error("Failed to assign contract:", error);
+      toast({
+        title: "Error",
+        description: "Failed to assign contract. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setAssigningContract(false);
+      setSelectedGig(null);
+    }
   };
 
   const renderContractorCard = (contractor: any) => (
@@ -132,9 +241,9 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
           <Button
             variant="default"
             className="w-full bg-blue-500 hover:bg-blue-600"
-            onClick={() => onViewProfile(contractor)}
+            onClick={() => handleOpenAssignDialog(contractor)}
           >
-            Assign contract
+            Assign Contract
           </Button>
         </div>
       </Card>
@@ -245,8 +354,8 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
                     {selectedContractor.linkedinProfile && (
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                          <Linkedin className="h-5 w-5 text-muted-foreground mr-2" />
-                          <span className="text-sm font-medium">LinkedIn</span>
+                          
+                      
                         </div>
                         <a href={selectedContractor.linkedinProfile} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline text-sm">
                           View Profile
@@ -275,6 +384,7 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
                 <Button 
                   variant="default" 
                   className="w-full bg-blue-500 hover:bg-blue-600 py-3 text-base font-medium"
+                  onClick={() => handleOpenAssignDialog(selectedContractor)}
                 >
                   Assign Contract
                 </Button>
@@ -285,6 +395,89 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
       </motion.div>
     );
   };
+
+  const renderGigSelectionDialog = () => (
+    <Dialog open={isGigDialogOpen} onOpenChange={setIsGigDialogOpen}>
+      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="text-xl font-bold">
+            Assign Contract to {selectedContractor?.fullName || selectedContractor?.name}
+          </DialogTitle>
+          <DialogDescription>
+            Select a contract to assign to this contractor.
+          </DialogDescription>
+        </DialogHeader>
+
+        {loadingGigs ? (
+          <div className="py-8 flex flex-col items-center justify-center">
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent mb-4" />
+            <p className="text-sm text-muted-foreground">Loading available contracts...</p>
+          </div>
+        ) : gigs.length === 0 ? (
+          <div className="py-8 text-center">
+            <Briefcase className="h-10 w-10 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-medium mb-2">No Available Contracts</h3>
+            <p className="text-sm text-muted-foreground">
+              There are no open contracts available for assignment.
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-4 py-4">
+            {gigs.map((gig) => (
+              <Card key={gig.gigId} className={`overflow-hidden ${selectedGig?.gigId === gig.gigId ? 'border-2 border-blue-500' : ''}`}>
+                <div className="p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-semibold text-base">{gig.title}</h3>
+                    <Badge variant="outline">${gig.hourlyRate}/hr</Badge>
+                  </div>
+                  
+                  <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                    {gig.description}
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {gig.requiredSkills.split(',').map((skill, idx) => (
+                      <Badge key={idx} variant="secondary" className="text-xs">
+                        {skill.trim()}
+                      </Badge>
+                    ))}
+                  </div>
+                  
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="text-xs">
+                        {gig.experienceLevel}
+                      </Badge>
+                      <Badge variant="outline" className="text-xs">
+                        {gig.estimatedDuration}
+                      </Badge>
+                    </div>
+                    
+                    <Button
+                      variant="default"
+                      size="sm"
+                      className="bg-blue-500 hover:bg-blue-600"
+                      onClick={() => {
+                        console.log("Select button clicked for gig:", gig.title);
+                        handleAssignContract(gig);
+                      }}
+                      disabled={assigningContract}
+                    >
+                      {assigningContract && selectedGig?.gigId === gig.gigId ? (
+                        "Assigning..."
+                      ) : (
+                        "Select"
+                      )}
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
 
   return (
     <motion.div
@@ -334,6 +527,8 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
       ) : (
         renderContractorProfile()
       )}
+      
+      {renderGigSelectionDialog()}
     </motion.div>
   );
 };

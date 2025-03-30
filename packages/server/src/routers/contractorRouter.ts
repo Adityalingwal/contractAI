@@ -105,7 +105,10 @@ export async function getAllGigsHandler(): Promise<any> {
 }
 
 export async function assignContractHandler(req: any): Promise<any> {
+  console.log("Server received assignment request:", req);
+  
   if (!req.gigId || !req.contractorId) {
+    console.error("Missing required IDs:", { gigId: req.gigId, contractorId: req.contractorId });
     throw new contractAiError('Gig ID and Contractor ID are required');
   }
   

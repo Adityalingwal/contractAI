@@ -33,5 +33,13 @@ export const getAllGigs = async (): Promise<any> => {
 }
 
 export const assignContractToContractor = async (req: any): Promise<any> => {
-  return await post('/contractor/assignContract', req);
+  console.log("API call - assignContractToContractor with params:", req);
+  try {
+    const response = await post('/contractor/assignContract', req);
+    console.log("API response:", response);
+    return response;
+  } catch (error) {
+    console.error("API error in assignContractToContractor:", error);
+    throw error;
+  }
 };
