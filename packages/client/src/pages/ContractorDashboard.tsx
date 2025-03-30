@@ -10,7 +10,7 @@ import { EditProfile } from '../components/EditProfile';
 import { ApplyGigs } from './ApplyGigs';
 
 const ContractorDashboard: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('applyForGigs');
+  const [activeTab, setActiveTab] = useState('myContracts');
   const location = useLocation();
 
   const containerVariants = {
@@ -59,7 +59,7 @@ const ContractorDashboard: React.FC = () => {
       case 'applyForGigs':
         return <ApplyGigs />
       default:
-        return <ApplyGigs />;
+        return <MyContracts />;
     }
   };
 
@@ -91,28 +91,6 @@ const ContractorDashboard: React.FC = () => {
           <nav className="space-y-2 px-2">
             <motion.div whileHover="hover" whileTap="tap" variants={buttonVariants}>
               <Button
-                variant={activeTab === 'applyForGigs' ? 'secondary' : 'ghost'}
-                className={`w-full justify-start ${activeTab === 'applyForGigs' ? 'bg-blue-100 text-blue-900 hover:bg-blue-200' : 'hover:bg-blue-50 text-black'}`}
-                onClick={() => setActiveTab('applyForGigs')}
-              >
-                <FileText className="h-4 w-4 mr-2 text-blue-600" />
-                Apply for Gigs
-              </Button>
-            </motion.div>
-            
-            <motion.div whileHover="hover" whileTap="tap" variants={buttonVariants}>
-              <Button
-                variant={activeTab === 'editProfile' ? 'secondary' : 'ghost'}
-                className={`w-full justify-start ${activeTab === 'editProfile' ? 'bg-blue-100 text-blue-900 hover:bg-blue-200' : 'hover:bg-blue-50 text-black'}`}
-                onClick={() => setActiveTab('editProfile')}
-              >
-                <User className="h-4 w-4 mr-2 text-blue-600" />
-                Edit Profile
-              </Button>
-            </motion.div>
-            
-            <motion.div whileHover="hover" whileTap="tap" variants={buttonVariants}>
-              <Button
                 variant={activeTab === 'myContracts' ? 'secondary' : 'ghost'}
                 className={`w-full justify-start ${activeTab === 'myContracts' ? 'bg-blue-100 text-blue-900 hover:bg-blue-200' : 'hover:bg-blue-50 text-black'}`}
                 onClick={() => setActiveTab('myContracts')}
@@ -124,12 +102,34 @@ const ContractorDashboard: React.FC = () => {
             
             <motion.div whileHover="hover" whileTap="tap" variants={buttonVariants}>
               <Button
+                variant={activeTab === 'applyForGigs' ? 'secondary' : 'ghost'}
+                className={`w-full justify-start ${activeTab === 'applyForGigs' ? 'bg-blue-100 text-blue-900 hover:bg-blue-200' : 'hover:bg-blue-50 text-black'}`}
+                onClick={() => setActiveTab('applyForGigs')}
+              >
+                <FileText className="h-4 w-4 mr-2 text-blue-600" />
+                Apply for Gigs
+              </Button>
+            </motion.div>
+            
+            <motion.div whileHover="hover" whileTap="tap" variants={buttonVariants}>
+              <Button
                 variant={activeTab === 'paymentStatus' ? 'secondary' : 'ghost'}
                 className={`w-full justify-start ${activeTab === 'paymentStatus' ? 'bg-blue-100 text-blue-900 hover:bg-blue-200' : 'hover:bg-blue-50 text-black'}`}
                 onClick={() => setActiveTab('paymentStatus')}
               >
                 <CreditCard className="h-4 w-4 mr-2 text-blue-600" />
                 Payment Status
+              </Button>
+            </motion.div>
+            
+            <motion.div whileHover="hover" whileTap="tap" variants={buttonVariants}>
+              <Button
+                variant={activeTab === 'editProfile' ? 'secondary' : 'ghost'}
+                className={`w-full justify-start ${activeTab === 'editProfile' ? 'bg-blue-100 text-blue-900 hover:bg-blue-200' : 'hover:bg-blue-50 text-black'}`}
+                onClick={() => setActiveTab('editProfile')}
+              >
+                <User className="h-4 w-4 mr-2 text-blue-600" />
+                Edit Profile
               </Button>
             </motion.div>
           </nav>
