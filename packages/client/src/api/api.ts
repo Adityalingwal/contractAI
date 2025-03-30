@@ -31,3 +31,7 @@ export const getAllContractors = async (): Promise<any> => {
 export const getAllGigs = async (): Promise<any> => {
   return await post('/contractor/getAllGigs');
 }
+
+export const assignContractToContractor = async (req: any): Promise<any> => {
+  return await post('/contractor/assignContract', req);
+};

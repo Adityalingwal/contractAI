@@ -1,5 +1,5 @@
 import { pool } from '../../dbClient';
-import { Contractor, ContractorDB } from './types';
+import { Contractor, ContractorDB, ContractAssignment } from './types';
 import { mapToContractor } from './utils';
 
 export async function upsertContractor(contractor: Contractor): Promise<Contractor> {
@@ -79,4 +79,61 @@ export async function fetchAllContractors(): Promise<Contractor[]> {
 
 export async function deleteContractor(id: number): Promise<void> {
   await pool.query('DELETE FROM contractors WHERE contractor_id = $1', [id]);
+}
+
+export async function assignContractToContractor(gigId: string, contractorId: string): Promise<ContractAssignment> {
+  await pool.query(
+    'UPDATE gigs SET status = $1 WHERE gig_id = $2',
+    ['assigned', gigId]
+  );
+  
+  const result = await pool.query(
+    `INSERT INTO gig_assignments
+      (gig_id, contractor_id, assigned_at, status)
+     VALUES
+      ($1, $2, CURRENT_TIMESTAMP, 'assigned')
+     RETURNING *`,
+    [gigId, contractorId]
+  );
+  
+  return {
+    assignmentId: result.rows[0].assignment_id,
+    gigId: result.rows[0].gig_id,
+    contractorId: result.rows[0].contractor_id,
+    assignedAt: result.rows[0].assigned_at,
+    status: result.rows[0].status,
+    completedAt: result.rows[0].completed_at,
+  };
+}
+
+export async function getAssignmentsByContractorId(contractorId: string): Promise<ContractAssignment[]> {
+  const result = await pool.query(
+    'SELECT * FROM gig_assignments WHERE contractor_id = $1',
+    [contractorId]
+  );
+  
+  return result.rows.map((row:any) => ({
+    assignmentId: row.assignment_id,
+    gigId: row.gig_id,
+    contractorId: row.contractor_id,
+    assignedAt: row.assigned_at,
+    status: row.status,
+    completedAt: row.completed_at,
+  }));
+}
+
+export async function getAssignmentsByGigId(gigId: string): Promise<ContractAssignment[]> {
+  const result = await pool.query(
+    'SELECT * FROM gig_assignments WHERE gig_id = $1',
+    [gigId]
+  );
+  
+  return result.rows.map((row:any) => ({
+    assignmentId: row.assignment_id,
+    gigId: row.gig_id,
+    contractorId: row.contractor_id,
+    assignedAt: row.assigned_at,
+    status: row.status,
+    completedAt: row.completed_at,
+  }));
 }

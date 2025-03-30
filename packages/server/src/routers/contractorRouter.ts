@@ -7,6 +7,7 @@ import {
   createOrUpdateContractor,
   removeContractor,
   createContractorProfile,
+  assignContractToContractor
 } from '../services/contractor-service/contractorService';
 import {
   GetContractorRequest,
@@ -103,6 +104,15 @@ export async function getAllGigsHandler(): Promise<any> {
   return { gigs };
 }
 
+export async function assignContractHandler(req: any): Promise<any> {
+  if (!req.gigId || !req.contractorId) {
+    throw new contractAiError('Gig ID and Contractor ID are required');
+  }
+  
+  const assignment = await assignContractToContractor(req.gigId, req.contractorId);
+  return { success: true, assignment };
+}
+
 export const contractorRouterConfig: RouteConfig = {
   router: contractorRouter,
   endpoints: {
@@ -140,6 +150,10 @@ export const contractorRouterConfig: RouteConfig = {
     },
     '/getAllGigs': {
       handler: getAllGigsHandler,
+      isUserScoped: false,
+    },
+    '/assignContract': {
+      handler: assignContractHandler,
       isUserScoped: false,
     }
   },

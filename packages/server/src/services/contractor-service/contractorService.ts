@@ -3,12 +3,14 @@ import {
     fetchContractorByEmail, 
     fetchAllContractors, 
     upsertContractor, 
-    deleteContractor 
+    deleteContractor,
+    assignContractToContractor as assignContract
   } from '../../db/dao/contractors/contractorsDao';
-  import { Contractor } from '../../db/dao/contractors/types';
+  import { Contractor,ContractAssignment } from '../../db/dao/contractors/types';
   import { contractAiError } from '../../error/contractAiError';
   import { insertGig } from '../../db/dao/gigs/gigsDao';
   import { Gig } from '../../db/dao/gigs/types';
+
   
   export async function getContractorById(contractorId: string): Promise<Contractor> {
     const contractor = await fetchContractorById(Number(contractorId));
@@ -85,5 +87,20 @@ export async function postContract(req: any): Promise<Gig> {
   } catch (error) {
     console.error('Error creating contract:', error);
     throw new contractAiError('Failed to create contract');
+  }
+}
+
+export async function assignContractToContractor(
+  gigId: string, 
+  contractorId: string
+): Promise<ContractAssignment> {
+  if (!gigId || !contractorId) {
+    throw new contractAiError('Gig ID and Contractor ID are required');
+  }
+  
+  try {
+    return await assignContract(gigId, contractorId);
+  } catch (error) {
+    throw new contractAiError('Failed to assign contract to contractor');
   }
 }

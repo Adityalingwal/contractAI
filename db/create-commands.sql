@@ -35,3 +35,15 @@ CREATE TABLE gigs (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE gig_assignments (
+    assignment_id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    gig_id uuid NOT NULL REFERENCES gigs(gig_id),
+    contractor_id uuid NOT NULL REFERENCES contractors(contractor_id),
+    assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status task_status NOT NULL DEFAULT 'assigned',
+    completed_at TIMESTAMP,
+    UNIQUE(gig_id, contractor_id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

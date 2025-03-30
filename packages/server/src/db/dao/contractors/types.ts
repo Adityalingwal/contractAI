@@ -31,3 +31,12 @@ export interface ContractorDB {
   created_at: Date;
   updated_at: Date;
 }
+
+export interface ContractAssignment {
+  assignmentId?: string;
+  gigId: string;
+  contractorId: string;
+  assignedAt?: Date;
+  status: 'assigned' | 'in_progress' | 'completed' | 'cancelled';
+  completedAt?: Date;
+}
