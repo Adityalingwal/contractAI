@@ -1,98 +1,173 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Building2, User, Cpu } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Logo } from "../components/common/Logo";
 import { Footer } from "@/components/landing/Footer";
+import { ProfileModal } from "../components/ProflleModal";
+import { submitProfile } from "../api/api";
+import { useToast } from "../components/ui/use-toast";
+import { createContext, useState, useEffect } from "react";
+import React from "react";
+
+interface DashboardSelectorContextType {
+  handleContractorClick: (e: React.MouseEvent) => void;
+}
+
+const DashboardSelectorContext = createContext<DashboardSelectorContextType | null>(null);
 
 const DashboardSelector = () => {
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasProfile, setHasProfile] = useState(false);
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const profileData = localStorage.getItem('contractorProfile');
+    if (profileData) {
+      setHasProfile(true);
+    }
+  }, []);
+
+  const handleProfileSubmit = async (profileData: any) => {
+    try {
+      setIsSubmitting(true);
+    
+      const formattedData = {
+        ...profileData,
+        hourlyRate: Number(profileData.hourlyRate),
+        availableFrom: profileData.startDate 
+      };
+      
+      await submitProfile({ profileData: formattedData });
+      
+      localStorage.setItem('contractorProfile', JSON.stringify(formattedData));
+    
+      setHasProfile(true);
+      
+      toast({
+        title: "Profile Created",
+        description: "Your contractor profile has been successfully created.",
+      });
+      
+      setIsProfileModalOpen(false);
+      navigate("/explore-contractors");
+      
+    } catch (error) {
+      console.error('Error submitting profile:', error);
+      toast({
+        title: "Submission Failed",
+        description: "There was a problem creating your profile. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleContractorClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    
+    if (hasProfile) {
+      navigate("/explore-contractors");
+    } else {
+      setIsProfileModalOpen(true);
+    }
+  };
+
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Back Button Header */}
-      <header className="bg-white/80 backdrop-blur-md shadow-subtle py-3">
-        <div className="container flex items-center h-10 px-4 md:px-6">
-          <Link 
-            to="/" 
-            className="flex items-center text-slate-700 hover:text-blue-700 transition-colors"
-            onClick={(e) => {
-              e.preventDefault();
-              window.history.back();
-            }}
-          >
-            <ArrowRight className="h-5 w-5 rotate-180 mr-2" />
-            <span className="font-medium">Back</span>
-          </Link>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="flex-grow flex items-center justify-center  px-4 bg-gradient-to-b from-slate-50 to-slate-100/80">
-        <div className="container max-w-6xl mx-auto">
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ 
-              duration: 0.7,
-              ease: "easeOut"
-            }}
-          >
-            <motion.div
-              className="mb-4 flex justify-center"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
+    <DashboardSelectorContext.Provider value={{ handleContractorClick }}>
+      <div className="min-h-screen flex flex-col">
+        <header className="bg-white/80 backdrop-blur-md shadow-subtle py-3">
+          <div className="container flex items-center h-10 px-4 md:px-6">
+            <Link 
+              to="/" 
+              className="flex items-center text-slate-700 hover:text-blue-700 transition-colors"
+              onClick={(e) => {
+                e.preventDefault();
+                window.history.back();
+              }}
             >
-              <div className="h-20 w-20 rounded-full bg-blue-700 flex items-center justify-center text-white mb-3">
-                <Cpu className="h-10 w-10" />
-              </div>
-            </motion.div>
-            
-            <motion.h1 
-              className="text-3xl md:text-4xl font-display font-bold mb-2 -mt-2 bg-gradient-to-r from-blue-700 to-indigo-800 bg-clip-text text-transparent text-center"
-              initial={{ scale: 0.95 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              Contractor AI
-            </motion.h1>
-            
-            <motion.p 
-              className="text-xl text-slate-600 max-w-2xl mx-auto text-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              Select the Role from Businessman or Contractor
-            </motion.p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 max-w-8xl px-4 -mt-5">
-            {/* Business Dashboard Card */}
-            <DashboardCard 
-              icon={<Building2 className="h-8 w-8 " />}
-              title="Business Dashboard"
-              description="Manage your contracts, assign tasks, and process payments all in one place."
-              buttonText="Access Business Dashboard"
-              to="/business"
-              delay={0}
-              color="bg-blue-600"
-            />
-            
-            {/* Contractor Dashboard Card */}
-            <DashboardCard 
-              icon={<User className="h-8 w-8" />}
-              title="Contractor Dashboard"
-              description="View your assignments, track payments, and manage your profile with ease."
-              buttonText="Access Contractor Dashboard"
-              to="/explore-contractors"
-              delay={0.1}
-              color="bg-indigo-600"
-            />
+              <ArrowRight className="h-5 w-5 rotate-180 mr-2" />
+              <span className="font-medium">Back</span>
+            </Link>
           </div>
-        </div>
-      </main>
-    </div>
+        </header>
+
+        <main className="flex-grow flex items-center justify-center px-4 bg-gradient-to-b from-slate-50 to-slate-100/80">
+          <div className="container max-w-6xl mx-auto">
+            <motion.div 
+              className="text-center mb-16"
+              initial={{ opacity: 0, y: -30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ 
+                duration: 0.7,
+                ease: "easeOut"
+              }}
+            >
+              <motion.div
+                className="mb-4 flex justify-center"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="h-20 w-20 rounded-full bg-blue-700 flex items-center justify-center text-white mb-3">
+                  <Cpu className="h-10 w-10" />
+                </div>
+              </motion.div>
+              
+              <motion.h1 
+                className="text-3xl md:text-4xl font-display font-bold mb-2 -mt-2 bg-gradient-to-r from-blue-700 to-indigo-800 bg-clip-text text-transparent text-center"
+                initial={{ scale: 0.95 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                Contractor AI
+              </motion.h1>
+              
+              <motion.p 
+                className="text-xl text-slate-600 max-w-2xl mx-auto text-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+              >
+                Select the Role from Businessman or Contractor
+              </motion.p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 max-w-8xl px-4 -mt-5">
+              <DashboardCard 
+                icon={<Building2 className="h-8 w-8 " />}
+                title="Business Dashboard"
+                description="Manage your contracts, assign tasks, and process payments all in one place."
+                buttonText="Access Business Dashboard"
+                to="/business"
+                delay={0}
+                color="bg-blue-600"
+              />
+              
+              <DashboardCard 
+                icon={<User className="h-8 w-8" />}
+                title="Contractor Dashboard"
+                description="View your assignments, track payments, and manage your profile with ease."
+                buttonText="Access Contractor Dashboard"
+                to="/explore-contractors"
+                delay={0.1}
+                color="bg-indigo-600"
+              />
+            </div>
+          </div>
+        </main>
+
+        <ProfileModal 
+          isOpen={isProfileModalOpen} 
+          onClose={() => setIsProfileModalOpen(false)}
+          onSubmit={handleProfileSubmit}
+          isSubmitting={isSubmitting}
+        />
+      </div>
+    </DashboardSelectorContext.Provider>
   );
 };
 
@@ -107,6 +182,8 @@ interface DashboardCardProps {
 }
 
 const DashboardCard = ({ icon, title, description, buttonText, to, delay, color }: DashboardCardProps) => {
+  const dashboardSelector = React.useContext(DashboardSelectorContext);
+  
   return (
     <motion.div 
       className="bg-white rounded-2xl shadow-md overflow-hidden border border-slate-200 flex flex-col h-full hover:shadow-lg transition-shadow duration-300"
@@ -152,12 +229,16 @@ const DashboardCard = ({ icon, title, description, buttonText, to, delay, color 
         </motion.p>
       </div>
       <div className="px-8 pb-8 pt-0 mt-auto">
-        <Link to={to} className="w-full" onClick={() => console.log('Navigation triggered')}>
+        {to === "/explore-contractors" ? (
           <motion.div
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
           >
-            <Button className={`w-full ${color} hover:bg-opacity-90 transition-opacity duration-300 text-white`}>
+            <Button 
+              className={`w-full ${color} hover:bg-opacity-90 transition-opacity duration-300 text-white`}
+              onClick={dashboardSelector?.handleContractorClick}
+              data-contractor-click
+            >
               {buttonText}
               <motion.div
                 initial={{ x: 0 }}
@@ -168,7 +249,25 @@ const DashboardCard = ({ icon, title, description, buttonText, to, delay, color 
               </motion.div>
             </Button>
           </motion.div>
-        </Link>
+        ) : (
+          <Link to={to} className="w-full">
+            <motion.div
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Button className={`w-full ${color} hover:bg-opacity-90 transition-opacity duration-300 text-white`}>
+                {buttonText}
+                <motion.div
+                  initial={{ x: 0 }}
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </motion.div>
+              </Button>
+            </motion.div>
+          </Link>
+        )}
       </div>
     </motion.div>
   );
