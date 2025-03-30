@@ -10,7 +10,7 @@ const app: Application = express();
 const clientBuildPath = path.resolve(__dirname, '../../client/dist');
 
 app.use(cors({
-  origin: ['https://contractai-3qfc.onrender.com', 'http://localhost:3000'],
+  origin: ['https://contractai-3qfc.onrender.com', 'http://localhost:3000', 'https://contract-ai-client.vercel.app/'],
   credentials: true
 }));
 
