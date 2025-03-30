@@ -9,14 +9,26 @@ const app: Application = express();
 
 const clientBuildPath = path.resolve(__dirname, '../../client/dist');
 
+// CORS configuration (put this FIRST)
 app.use(cors({
-  origin: '*', 
+  origin: '*', // Allows all origins - replace with proper domains after testing
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   credentials: true
 }));
-app.use(express.static(clientBuildPath));
+
+// Additional headers for extra insurance
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://contract-ai-client.vercel.app');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+
+// THEN other middleware
 app.use(express.json());
+app.use(express.static(clientBuildPath));
 
 app.use('*', (req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
@@ -25,6 +37,7 @@ app.use('*', (req, res, next) => {
 
 app.options('*', cors());
 
+// THEN your routes
 app.use('/contractor', contractorRouterConfig.router);
 app.use('/payment', paymanRouterConfig.router);
 
