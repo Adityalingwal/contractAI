@@ -3,10 +3,19 @@ import express, { Request, Response, Application, NextFunction, Router } from 'e
 import { restRouteHandler } from './routers/utils/restRouteHandler';
 import { contractorRouterConfig } from './routers/contractorRouter';
 import { paymanRouterConfig } from './routers/paymanAirouter';
+import cors from 'cors';
 
 const app: Application = express();
 
 const clientBuildPath = path.resolve(__dirname, '../../client/dist');
+
+app.use(cors({
+  origin: [
+    'https://contractai-3qfc.onrender.com', 
+    'http://localhost:3000'
+  ],
+  credentials: true
+}));
 
 app.use(express.static(clientBuildPath));
 app.use(express.json());

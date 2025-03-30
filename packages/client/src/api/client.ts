@@ -1,10 +1,13 @@
+const API_BASE_URL = process.env.REACT_APP_API_URL || '';
 
 export async function post(url = '', data = {}) {
-  const response = await fetch(url, {
+  const fullUrl = API_BASE_URL + url;
+  
+  const response = await fetch(fullUrl, {
     method: 'POST',
     mode: 'cors',
     cache: 'no-cache',
-    credentials: 'same-origin',
+    credentials: process.env.NODE_ENV === 'production' ? 'include' : 'same-origin',
     headers: {
       'Content-Type': 'application/json',
     },

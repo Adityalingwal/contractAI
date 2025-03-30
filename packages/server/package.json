@@ -15,6 +15,7 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "@types/cors": "^2.8.17",
         "@types/defaults-deep": "^0.2.2",
         "@types/express": "^4.17.21",
         "@types/express-session": "^1.18.1",
@@ -25,6 +26,7 @@
         "@types/selenium-webdriver": "^4.1.27",
         "@types/uuid": "^10.0.0",
         "@typescript-eslint/eslint-plugin": "^6.18.0",
+        "cors": "^2.8.5",
         "eslint": "^8.56.0",
         "eslint-config-airbnb": "^19.0.4",
         "eslint-plugin-import": "^2.29.1",
