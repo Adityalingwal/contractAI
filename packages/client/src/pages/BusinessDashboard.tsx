@@ -58,7 +58,6 @@ const BusinessDashboard = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Only fetch notifications from dummy data for now
     setNotifications(dummyNotifications);
     
     // Fetch contractors from API
@@ -68,16 +67,14 @@ const BusinessDashboard = () => {
       try {
         const response = await getAllContractors();
         if (response && response.contractors) {
-          // Transform API data to match component expectations
           const formattedContractors = response.contractors.map((contractor: ContractorProfile) => ({
             id: contractor.contractorId,
             name: contractor.fullName,
             experience: contractor.experienceLevel,
-            completedProjects: [], // API doesn't provide this info
             availability: contractor.availability === 'fullTime' ? 'Full-time' : contractor.availability,
-            professionalSummary: contractor.bio || contractor.professionalTitle,
+            professionalTitle: contractor.professionalTitle,
+            bio: contractor.bio,
             hourlyRate: contractor.hourlyRate,
-            // Add other fields as needed
           }));
           setContractors(formattedContractors);
         } else {

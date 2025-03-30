@@ -86,9 +86,8 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
               {contractor.name}
             </div>
             <div>
-              <CardTitle className="text-lg">{contractor.fullName}</CardTitle>
               <p className="text-sm text-muted-foreground">
-                {contractor.experienceLevel}
+                {contractor.experience}
               </p>
             </div>
           </div>
@@ -104,6 +103,9 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
 
           <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
             {contractor.professionalTitle}
+          </p>
+          <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+            {contractor.bio}
           </p>
 
           <div className="text-lg font-medium text-primary">
