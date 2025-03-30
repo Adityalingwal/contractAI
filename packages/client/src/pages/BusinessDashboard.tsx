@@ -77,6 +77,7 @@ const BusinessDashboard = () => {
             experienceLevel:contractor.experienceLevel,
             email:contractor.email,
             portfolioLink:contractor.portfolioLink,
+            skills:contractor.skills,
           }));
           setContractors(formattedContractors);
         } else {
