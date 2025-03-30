@@ -9,15 +9,13 @@ const app: Application = express();
 
 const clientBuildPath = path.resolve(__dirname, '../../client/dist');
 
-// CORS configuration (put this FIRST)
 app.use(cors({
-  origin: '*', // Allows all origins - replace with proper domains after testing
+  origin: ['https://contractai-3qfc.onrender.com', 'https://contract-ai-client.vercel.app', 'http://localhost:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   credentials: true
 }));
 
-// Additional headers for extra insurance
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'https://contract-ai-client.vercel.app');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');

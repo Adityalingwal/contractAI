@@ -7,7 +7,7 @@ export async function post(url = '', data = {}) {
     method: 'POST',
     mode: 'cors',
     cache: 'no-cache',
-    credentials: process.env.NODE_ENV === 'production' ? 'include' : 'same-origin',
+    credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json',
     },
