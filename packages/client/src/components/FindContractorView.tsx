@@ -151,94 +151,92 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
         transition={{ duration: 0.3 }}
         className="w-full"
       >
-        <Card className="w-full shadow-lg overflow-hidden">
-          {/* Header with back button - reduced height */}
-          <div className="relative h-24 bg-gradient-to-r from-blue-500 to-blue-600 flex items-end">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-primary mb-2">Detailed Profile View</h1>
+          <p className="text-base text-muted-foreground">View complete information and details about this contractor</p>
+        </div>
+        
+        <Card className="w-full shadow-lg overflow-hidden border-t-4 border-blue-500">
+          <div className="relative h-32 bg-gradient-to-r from-blue-500 to-blue-600 flex items-end">
             <Button
               variant="ghost"
               size="sm"
-              className="absolute top-3 left-4 bg-white/20 hover:bg-white/40 text-white"
+              className="absolute top-4 left-5 bg-white/20 hover:bg-white/40 text-white"
               onClick={handleBackToList}
             >
-              <ArrowLeft className="h-4 w-4 mr-1" /> Back
+              <ArrowLeft className="h-4 w-4 mr-2" /> Back to contractors list
             </Button>
             
-            <div className="absolute -bottom-8 left-6 h-16 w-16 rounded-full border-2 border-white bg-blue-500 flex items-center justify-center text-white text-xl font-bold">
+            <div className="absolute -bottom-8 left-8 h-16 w-16 rounded-full border-2 border-white bg-blue-500 flex items-center justify-center text-white text-2xl font-bold shadow-md">
               {selectedContractor.name?.charAt(0) || selectedContractor.fullName?.charAt(0) || '?'}
             </div>
           </div>
           
-          {/* Tightened padding and margins */}
-          <div className="pt-10 pb-4 px-6">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+          <div className="pt-12 pb-6 px-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
               <div>
-                <h2 className="text-xl font-bold">
+                <h2 className="text-2xl font-bold">
                   {selectedContractor.fullName || selectedContractor.name || 'Unnamed Contractor'}
                 </h2>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-base text-muted-foreground mt-1">
                   {selectedContractor.professionalTitle || 'Professional'}
                 </p>
               </div>
               
-              <div className="mt-2 md:mt-0 flex items-center gap-2">
-                <Badge className="bg-blue-100 text-blue-700 border-blue-200 px-2 py-0.5 text-xs">
+              <div className="mt-3 sm:mt-0 flex items-center gap-4">
+                <Badge className="bg-blue-100 text-blue-700 border-blue-200 px-3 py-1 text-sm">
                   {selectedContractor.experienceLevel || 'Experience not specified'}
                 </Badge>
-                <div className="text-lg font-semibold text-blue-600">
-                  ${selectedContractor.hourlyRate || 0}<span className="text-xs text-muted-foreground">/hr</span>
+                <div className="text-xl font-semibold text-blue-600">
+                  ${selectedContractor.hourlyRate || 0}<span className="text-sm text-muted-foreground">/hr</span>
                 </div>
               </div>
             </div>
             
-            {/* Condensed grid with tighter spacing */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-              {/* Left column - Main info */}
-              <div className="md:col-span-2 space-y-4">
-                <Card className="p-4">
-                  <h3 className="text-base font-semibold mb-2">About</h3>
-                  <p className="text-sm text-muted-foreground">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+              <div className="md:col-span-2 space-y-5">
+                <Card className="p-5 shadow-sm">
+                  <h3 className="text-lg font-semibold mb-3">About</h3>
+                  <p className="text-base text-muted-foreground leading-relaxed">
                     {selectedContractor.bio || 'No bio available.'}
                   </p>
                 </Card>
                 
-                <Card className="p-4">
-                  <h3 className="text-base font-semibold mb-2">Skills</h3>
+                <Card className="p-5 shadow-sm">
+                  <h3 className="text-lg font-semibold mb-3">Skills</h3>
                   {selectedContractor.skills ? (
-                    <div className="flex flex-wrap gap-1.5">
+                    <div className="flex flex-wrap gap-2">
                       {selectedContractor.skills.split(',').map((skill: string, index: number) => (
-                        <Badge key={index} variant="secondary" className="px-2 py-0.5 text-xs">
+                        <Badge key={index} variant="secondary" className="px-3 py-1 text-sm">
                           {skill.trim()}
                         </Badge>
                       ))}
                     </div>
                   ) : (
-                    <p className="text-sm text-muted-foreground">No skills listed</p>
+                    <p className="text-base text-muted-foreground">No skills listed</p>
                   )}
                 </Card>
               </div>
               
-              {/* Right column - Combined Info */}
-              <div className="space-y-4">
-                <Card className="p-4">
-                  <h3 className="text-base font-semibold mb-3">Contact & Details</h3>
+              <div className="space-y-5">
+                <Card className="p-5 shadow-sm">
+                  <h3 className="text-lg font-semibold mb-3">Contact & Details</h3>
                   
-                  {/* Availability */}
-                  <div className="flex justify-between items-center mb-3 border-b pb-2">
-                    <h4 className="text-xs font-medium text-muted-foreground">Availability</h4>
-                    <Badge variant="outline" className="text-xs">
+                  <div className="flex justify-between items-center mb-4 border-b pb-3">
+                    <h4 className="text-sm font-medium text-muted-foreground">Availability</h4>
+                    <Badge variant="outline" className="text-sm">
                       {selectedContractor.availability || 'Not specified'}
                     </Badge>
                   </div>
                   
-                  {/* Contact section - now merged with details */}
-                  <div className="space-y-2.5">
+                  <div className="space-y-3">
                     {selectedContractor.email && (
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                          <Mail className="h-4 w-4 text-muted-foreground mr-2" />
-                          <span className="text-xs font-medium">Email</span>
+                          <Mail className="h-5 w-5 text-muted-foreground mr-2" />
+                          <span className="text-sm font-medium">Email</span>
                         </div>
-                        <a href={`mailto:${selectedContractor.email}`} className="text-blue-500 hover:underline text-xs truncate max-w-[140px]">
+                        <a href={`mailto:${selectedContractor.email}`} className="text-blue-500 hover:underline text-sm truncate max-w-[170px]">
                           {selectedContractor.email}
                         </a>
                       </div>
@@ -247,10 +245,10 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
                     {selectedContractor.linkedinProfile && (
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                          <Linkedin className="h-4 w-4 text-muted-foreground mr-2" />
-                          <span className="text-xs font-medium">LinkedIn</span>
+                          <Linkedin className="h-5 w-5 text-muted-foreground mr-2" />
+                          <span className="text-sm font-medium">LinkedIn</span>
                         </div>
-                        <a href={selectedContractor.linkedinProfile} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline text-xs">
+                        <a href={selectedContractor.linkedinProfile} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline text-sm">
                           View Profile
                         </a>
                       </div>
@@ -259,24 +257,24 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
                     {selectedContractor.portfolioLink && (
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                          <Link className="h-4 w-4 text-muted-foreground mr-2" />
-                          <span className="text-xs font-medium">Portfolio</span>
+                          <Link className="h-5 w-5 text-muted-foreground mr-2" />
+                          <span className="text-sm font-medium">Portfolio</span>
                         </div>
-                        <a href={selectedContractor.portfolioLink} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline text-xs">
+                        <a href={selectedContractor.portfolioLink} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline text-sm">
                           View Website
                         </a>
                       </div>
                     )}
                     
                     {!selectedContractor.email && !selectedContractor.linkedinProfile && !selectedContractor.portfolioLink && (
-                      <p className="text-muted-foreground text-xs">No contact information provided</p>
+                      <p className="text-muted-foreground text-sm">No contact information provided</p>
                     )}
                   </div>
                 </Card>
                 
                 <Button 
                   variant="default" 
-                  className="w-full bg-blue-500 hover:bg-blue-600 text-sm py-1.5"
+                  className="w-full bg-blue-500 hover:bg-blue-600 py-3 text-base font-medium"
                 >
                   Assign Contract
                 </Button>
@@ -293,40 +291,42 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="container mx-auto p-4 md:p-6"
+      className="container mx-auto px-5 py-6"
     >
-      <Card className="mb-6 w-full -mt-8">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-2xl md:text-3xl font-bold text-primary">
-            Find Expert Contractors
-          </CardTitle>
-          <p className="text-muted-foreground">
-            Connect with skilled professionals for your projects
-          </p>
-        </CardHeader>
-      </Card>
+      {!selectedContractor && (
+        <Card className="mb-6 w-full -mt-8">
+          <CardHeader className="py-5">
+            <CardTitle className="text-3xl font-bold text-primary">
+              Find Expert Contractors
+            </CardTitle>
+            <p className="text-base text-muted-foreground mt-1">
+              Connect with skilled professionals for your projects
+            </p>
+          </CardHeader>
+        </Card>
+      )}
 
       {!selectedContractor ? (
         <motion.div variants={itemVariants} className="w-full">
           {isLoading ? (
-            <Card className="p-8 md:p-12 text-center w-full">
-              <div className="h-10 w-10 md:h-12 md:w-12 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto mb-3 md:mb-4" />
-              <h3 className="text-lg md:text-xl font-medium text-primary mb-2">Loading contractors...</h3>
+            <Card className="p-10 text-center w-full">
+              <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto mb-4" />
+              <h3 className="text-xl font-medium text-primary mb-2">Loading contractors...</h3>
             </Card>
           ) : error ? (
-            <Card className="p-8 md:p-12 text-center w-full">
-              <Briefcase className="h-10 w-10 md:h-12 md:w-12 text-destructive mx-auto mb-3 md:mb-4" />
-              <h3 className="text-lg md:text-xl font-medium text-destructive mb-2">Error loading contractors</h3>
-              <p className="text-muted-foreground">{error}</p>
+            <Card className="p-10 text-center w-full">
+              <Briefcase className="h-12 w-12 text-destructive mx-auto mb-4" />
+              <h3 className="text-xl font-medium text-destructive mb-2">Error loading contractors</h3>
+              <p className="text-base text-muted-foreground">{error}</p>
             </Card>
           ) : contractors.length === 0 ? (
-            <Card className="p-8 md:p-12 text-center w-full">
-              <Briefcase className="h-10 w-10 md:h-12 md:w-12 text-muted-foreground mx-auto mb-3 md:mb-4" />
-              <h3 className="text-lg md:text-xl font-medium text-primary mb-2">No contractors found</h3>
-              <p className="text-muted-foreground">No contractors are currently available</p>
+            <Card className="p-10 text-center w-full">
+              <Briefcase className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-xl font-medium text-primary mb-2">No contractors found</h3>
+              <p className="text-base text-muted-foreground">No contractors are currently available</p>
             </Card>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {contractors.map(contractor => renderContractorCard(contractor))}
             </div>
           )}
