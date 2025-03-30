@@ -196,9 +196,9 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold flex items-center">
               <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold shadow-sm mr-3">
-                {selectedContractor?.name?.charAt(0) || '?'}
+                {selectedContractor?.name?.charAt(0) || selectedContractor?.fullName?.charAt(0) || '?'}
               </div>
-              {selectedContractor?.name || 'Contractor Profile'}
+              {selectedContractor?.name || selectedContractor?.fullName || 'Contractor Profile'}
             </DialogTitle>
             <DialogDescription>
               {selectedContractor?.professionalTitle || 'Professional'}
@@ -206,79 +206,87 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
           </DialogHeader>
           
           {selectedContractor && (
-            <div className="space-y-6 py-4">
-              <div className="flex justify-between items-center">
-                <Badge className="text-md px-3 py-1">
-                  {selectedContractor.availability || 'Availability not specified'}
-                </Badge>
-                <div className="text-xl font-semibold text-primary">
-                  ${selectedContractor.hourlyRate || 0}
-                  <span className="text-sm text-muted-foreground">/hr</span>
-                </div>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-semibold mb-2">About</h3>
-                <p className="text-sm text-muted-foreground">
-                  {selectedContractor.bio || 'No bio available.'}
-                </p>
-              </div>
-              
-              {selectedContractor.experienceLevel && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">Experience Level</h3>
-                  <p className="text-sm text-muted-foreground">{selectedContractor.experienceLevel}</p>
-                </div>
-              )}
-              
-              {selectedContractor.skills && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">Skills</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedContractor.skills.split(',').map((skill: string, index: number) => (
-                      <Badge key={index} variant="secondary" className="text-xs">
-                        {skill.trim()}
-                      </Badge>
-                    ))}
+            <div className="space-y-4 py-4">
+              {/* Display all contractor information in a structured list format */}
+              <div className="grid grid-cols-1 gap-3 border rounded-lg p-4">
+                
+                {/* Full Name */}
+                <div className="flex justify-between items-center bg-slate-50 p-3 rounded-md">
+                  <div className="font-medium">Full Name</div>
+                  <div className="text-sm font-medium">
+                    {selectedContractor.fullName || selectedContractor.name || 'N/A'}
                   </div>
                 </div>
-              )}
-              
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Contact Information</h3>
-                <div className="space-y-2">
-                  {selectedContractor.email && (
-                    <div className="flex items-center gap-2">
-                      <Mail className="h-4 w-4 text-muted-foreground" />
-                      <a href={`mailto:${selectedContractor.email}`} className="text-sm text-blue-500 hover:underline">
-                        {selectedContractor.email}
-                      </a>
-                    </div>
-                  )}
-                  
-                  {selectedContractor.linkedinProfile && (
-                    <div className="flex items-center gap-2">
-                      <Linkedin className="h-4 w-4 text-muted-foreground" />
-                      <a href={selectedContractor.linkedinProfile} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-500 hover:underline">
-                        LinkedIn Profile
-                      </a>
-                    </div>
-                  )}
-                  
-                  {selectedContractor.portfolioLink && (
-                    <div className="flex items-center gap-2">
-                      <Link className="h-4 w-4 text-muted-foreground" />
-                      <a href={selectedContractor.portfolioLink} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-500 hover:underline">
-                        Portfolio
-                      </a>
-                    </div>
+                
+                {/* Professional Title */}
+                <div className="flex justify-between items-center bg-slate-50 p-3 rounded-md">
+                  <div className="font-medium">Professional Title</div>
+                  <div className="text-sm">
+                    {selectedContractor.professionalTitle || 'N/A'}
+                  </div>
+                </div>
+                
+                {/* Experience Level */}
+                <div className="flex justify-between items-center bg-slate-50 p-3 rounded-md">
+                  <div className="font-medium">Experience Level</div>
+                  <div className="text-sm">
+                    {selectedContractor.experienceLevel || 'Not specified'}
+                  </div>
+                </div>
+                
+                {/* Availability */}
+                <div className="flex justify-between items-center bg-slate-50 p-3 rounded-md">
+                  <div className="font-medium">Availability</div>
+                  <Badge variant="outline" className="ml-2">
+                    {selectedContractor.availability || 'Not specified'}
+                  </Badge>
+                </div>
+                
+                {/* Hourly Rate */}
+                <div className="flex justify-between items-center bg-slate-50 p-3 rounded-md">
+                  <div className="font-medium">Hourly Rate</div>
+                  <div className="text-lg font-semibold text-primary">
+                    ${selectedContractor.hourlyRate || 0}<span className="text-sm text-muted-foreground">/hr</span>
+                  </div>
+                </div>
+                
+                {/* Bio */}
+                <div className="flex flex-col bg-slate-50 p-3 rounded-md">
+                  <div className="font-medium mb-1">Bio</div>
+                  <div className="text-sm text-muted-foreground">
+                    {selectedContractor.bio || 'No bio available.'}
+                  </div>
+                </div>
+                
+                {/* Email */}
+                <div className="flex flex-col bg-slate-50 p-3 rounded-md">
+                  <div className="font-medium mb-1">Email</div>
+                  <div className="text-sm text-muted-foreground">
+                    {selectedContractor.email || 'No email available.'}
+                  </div>
+                </div>
+                
+                {/* Portfolio */}
+                <div className="flex justify-between items-center bg-slate-50 p-3 rounded-md">
+                  <div className="flex items-center gap-2">
+                    <Link className="h-4 w-4 text-muted-foreground" />
+                    <span>Portfolio</span>
+                  </div>
+                  {selectedContractor.portfolioLink ? (
+                    <a href={selectedContractor.portfolioLink} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-500 hover:underline">
+                      View Portfolio
+                    </a>
+                  ) : (
+                    <span className="text-sm text-muted-foreground">Not provided</span>
                   )}
                 </div>
-              </div>
-            </div>
+                </div>
+        
+                </div>
+    
           )}
           
-          <DialogFooter>
+          <DialogFooter className="pt-2">
             <Button 
               variant="default" 
               className="w-full bg-blue-500 hover:bg-blue-600"
