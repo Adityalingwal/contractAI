@@ -9,7 +9,8 @@ import {
   createContractorProfile,
   assignContractToContractor,
   getContractorAssignments,
-  submitGigCompletion
+  submitGigCompletion,
+  getGigsWithStatus,
 } from '../services/contractor-service/contractorService';
 import {
   GetContractorRequest,
@@ -138,8 +139,14 @@ export async function submitGigCompletionHandler(req: any): Promise<any> {
   }
   
   const updatedAssignment = await submitGigCompletion(assignmentId, projectLink);
-  console.log('updatedAssignment is: ', updatedAssignment);
+  // console.log('updatedAssignment is: ', updatedAssignment);
   return { success: true, assignment: updatedAssignment };
+}
+
+export async function getGigsWithStatusHandler(): Promise<any> {
+  const gigs = await getGigsWithStatus();
+  console.log('gigs are: ', gigs);
+  return { gigs };
 }
 
 export const contractorRouterConfig: RouteConfig = {
@@ -191,6 +198,10 @@ export const contractorRouterConfig: RouteConfig = {
     },
     '/submitGigCompletion': {
       handler: submitGigCompletionHandler,
+      isUserScoped: false,
+    },
+    '/getGigsWithStatus': {
+      handler: getGigsWithStatusHandler,
       isUserScoped: false,
     },
   },

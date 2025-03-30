@@ -1,5 +1,5 @@
 import { pool } from '../../dbClient';
-import { Contractor, ContractorDB, ContractAssignment } from './types';
+import { Contractor, ContractorDB, ContractAssignment, GigWithStatus } from './types';
 import { mapToContractor } from './utils';
 
 export async function upsertContractor(contractor: Contractor): Promise<Contractor> {
@@ -224,4 +224,56 @@ export async function completeGigAssignment(
     completedAt: result.rows[0].completed_at,
     projectLink: result.rows[0].project_link
   };
+}
+
+
+export async function fetchGigsWithStatus(): Promise<GigWithStatus[]> {
+  const query = `
+    SELECT 
+      g.gig_id,
+      g.title,
+      g.description,
+      g.required_skills,
+      g.experience_level,
+      g.estimated_duration,
+      g.hourly_rate,
+      g.status,
+      g.payment_method,
+      g.created_at,
+      g.updated_at,
+      ga.contractor_id,
+      c.full_name as contractor_name,
+      ga.assigned_at,
+      ga.completed_at,
+      ga.project_link
+    FROM 
+      gigs g
+    LEFT JOIN 
+      gig_assignments ga ON g.gig_id = ga.gig_id
+    LEFT JOIN
+      contractors c ON ga.contractor_id = c.contractor_id
+    ORDER BY 
+      g.created_at DESC
+  `;
+
+  const result = await pool.query(query);
+  
+  return result.rows.map((row: any) => ({
+    gigId: row.gig_id,
+    title: row.title,
+    description: row.description,
+    requiredSkills: row.required_skills,
+    experienceLevel: row.experience_level,
+    estimatedDuration: row.estimated_duration,
+    hourlyRate: row.hourly_rate,
+    status: row.status,
+    paymentMethod: row.payment_method,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+    contractorId: row.contractor_id,
+    contractorName: row.contractor_name,
+    assignedAt: row.assigned_at,
+    completedAt: row.completed_at,
+    projectLink: row.project_link
+  }));
 }

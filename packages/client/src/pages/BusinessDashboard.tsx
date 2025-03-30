@@ -11,6 +11,7 @@ import SidebarNav from '../components/SidebarNav';
 import FindContractorsView from '../components/FindContractorView';
 import PostContractView from '../components/PostContractView';
 import ComingSoonView from '../components/ComingSoonView';
+import ContractStatus from '../components/ContractStatus';
 
 export interface ContractorProfile {
   contractorId: string;
@@ -159,7 +160,7 @@ const BusinessDashboard = () => {
         );
       
       case 'contract-status':
-        return <ComingSoonView title="Contract Status" />;
+        return <ContractStatus />;
       case 'send-payment':
         return <ComingSoonView title="Send Payment" />;
       default:

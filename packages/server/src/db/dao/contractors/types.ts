@@ -41,3 +41,22 @@ export interface ContractAssignment {
   completedAt?: Date;
   projectLink?: string;
 }
+
+export interface GigWithStatus {
+  gigId: string;
+  title: string;
+  description: string;
+  requiredSkills: string;
+  experienceLevel: string;
+  estimatedDuration: string;
+  hourlyRate: string;
+  status: string;
+  paymentMethod: string;
+  createdAt: Date;
+  updatedAt: Date;
+  contractorId?: string;
+  contractorName?: string;
+  assignedAt?: Date;
+  completedAt?: Date;
+  projectLink?: string;
+}
