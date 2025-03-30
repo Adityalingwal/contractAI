@@ -2,7 +2,6 @@ import { Contractor } from '../db/dao/contractors/types';
 import { Company } from '../db/dao/companies/types';
 import { Task, TaskStatus } from '../db/dao/tasks/types';
 import { Skill } from '../db/dao/skills/types';
-import { ContractorSkillWithName } from '../db/dao/contractorSkills/types';
 import { Invoice, InvoiceStatus, PaymentMethod } from '../db/dao/invoices/types';
 
 // Contractor API Types
@@ -200,9 +199,6 @@ export interface RemoveAllSkillsRequest {
   contractorId: string;
 }
 
-export interface GetContractorSkillsResponse {
-  skills: ContractorSkillWithName[];
-}
 
 export interface GetContractorsWithSkillResponse {
   contractorIds: number[];

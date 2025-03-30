@@ -11,7 +11,7 @@ export const pool = new Pool({
   password: process.env.DB_PASSWORD,
 });
 
-pool.query('SELECT NOW()', (err, res) => {
+pool.query('SELECT NOW()', (err:Error, res:any) => {
   if (err) {
     console.error('Database connection error:', err.stack);
   } else {

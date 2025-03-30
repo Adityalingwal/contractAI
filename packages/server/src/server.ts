@@ -1,6 +1,7 @@
+declare module 'express-session';
+declare module 'pg';
 import path from 'path';
 import express, { Request, Response, Application, NextFunction, Router } from 'express';
-import session from 'express-session';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import { restRouteHandler } from './routers/utils/restRouteHandler';
@@ -8,7 +9,6 @@ import { contractorRouterConfig } from './routers/contractorRouter';
 import { companyRouterConfig } from './routers/companyRouter';
 import { taskRouterConfig } from './routers/taskRouter';
 import { skillRouterConfig } from './routers/skillRouter';
-import { contractorSkillRouterConfig } from './routers/contractorSkillRouter';
 import { invoiceRouterConfig } from './routers/invoiceRouter';
 import { paymanRouterConfig } from './routers/paymanAirouter';
 
@@ -31,7 +31,6 @@ app.use('/contractor', contractorRouterConfig.router);
 app.use('/company', companyRouterConfig.router);
 app.use('/task', taskRouterConfig.router);
 app.use('/skill', skillRouterConfig.router);
-app.use('/contractorSkill', contractorSkillRouterConfig.router);
 app.use('/invoice', invoiceRouterConfig.router);
 app.use('/payman', paymanRouterConfig.router);
 
@@ -40,7 +39,6 @@ const routeConfigs = [
   companyRouterConfig,
   taskRouterConfig,
   skillRouterConfig,
-  contractorSkillRouterConfig,
   invoiceRouterConfig,
   paymanRouterConfig,
 ];
