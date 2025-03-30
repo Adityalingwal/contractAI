@@ -9,19 +9,12 @@ const app: Application = express();
 
 const clientBuildPath = path.resolve(__dirname, '../../client/dist');
 
-app.use(
-  cors({
-    origin: [
-      'https://contractai-3qfc.onrender.com',
-      'http://localhost:3000',
-      'https://contract-ai-client.vercel.app/',
-    ],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  })
-);
-
+app.use(cors({
+  origin: '*', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: true
+}));
 app.use(express.static(clientBuildPath));
 app.use(express.json());
 
