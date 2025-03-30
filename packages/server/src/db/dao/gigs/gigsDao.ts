@@ -20,12 +20,12 @@ export async function insertGig(gig: Gig): Promise<Gig> {
     gig.hourlyRate
   ];
 
-  const result = await pool.query<GigDB>(query, values);
+  const result = await pool.query(query, values);
   return mapToGig(result.rows[0]);
 }
 
 export async function fetchGigById(id: string): Promise<Gig | undefined> {
-  const result = await pool.query<GigDB>(
+  const result = await pool.query(
     'SELECT * FROM gigs WHERE gig_id = $1',
     [id]
   );
@@ -38,6 +38,6 @@ export async function fetchGigById(id: string): Promise<Gig | undefined> {
 }
 
 export async function fetchAllGigs(): Promise<Gig[]> {
-  const result = await pool.query<GigDB>('SELECT * FROM gigs');
+  const result = await pool.query('SELECT * FROM gigs');
   return result.rows.map(mapToGig);
 }

@@ -5,7 +5,7 @@
     "main": "dist/server.js",
     "scripts": {
         "bootstrap": "npm --prefix ../client install && npm install",
-        "build": "rimraf dist && tsc --skipLibCheck --noEmit false",
+        "build": "rimraf dist && tsc --build",
         "build:render": "npm run build",
         "start": "npm run build && nodemon dist/server.js",
         "start:prod": "node dist/server.js",
@@ -55,7 +55,7 @@
         "openai": "^4.24.7",
         "paymanai": "^2.7.0",
         "peopledatalabs": "^7.0.2",
-        "pg": "^8.11.3",
+        "pg": "^8.14.1",
         "postgres-interval": "^4.0.2",
         "postmark": "^4.0.2",
         "proxycurl-js-linkedin-profile-scraper": "^1.0.2",

@@ -43,12 +43,12 @@ export async function upsertContractor(contractor: Contractor): Promise<Contract
     values.push(contractor.contractorId);
   }
 
-  const result = await pool.query<ContractorDB>(query, values);
+  const result = await pool.query(query, values);
   return mapToContractor(result.rows[0]);
 }
 
 export async function fetchContractorById(id: number): Promise<Contractor | undefined> {
-  const result = await pool.query<ContractorDB>(
+  const result = await pool.query(
     'SELECT * FROM contractors WHERE contractor_id = $1',
     [id]
   );
@@ -61,7 +61,7 @@ export async function fetchContractorById(id: number): Promise<Contractor | unde
 }
 
 export async function fetchContractorByEmail(email: string): Promise<Contractor | undefined> {
-  const result = await pool.query<ContractorDB>('SELECT * FROM contractors WHERE email = $1', [
+  const result = await pool.query('SELECT * FROM contractors WHERE email = $1', [
     email,
   ]);
 
@@ -73,7 +73,7 @@ export async function fetchContractorByEmail(email: string): Promise<Contractor 
 }
 
 export async function fetchAllContractors(): Promise<Contractor[]> {
-  const result = await pool.query<ContractorDB>('SELECT * FROM contractors');
+  const result = await pool.query('SELECT * FROM contractors');
   return result.rows.map(mapToContractor);
 }
 

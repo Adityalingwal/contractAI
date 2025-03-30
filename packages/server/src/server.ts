@@ -2,10 +2,6 @@ import path from 'path';
 import express, { Request, Response, Application, NextFunction, Router } from 'express';
 import { restRouteHandler } from './routers/utils/restRouteHandler';
 import { contractorRouterConfig } from './routers/contractorRouter';
-import { companyRouterConfig } from './routers/companyRouter';
-import { taskRouterConfig } from './routers/taskRouter';
-import { skillRouterConfig } from './routers/skillRouter';
-import { invoiceRouterConfig } from './routers/invoiceRouter';
 import { paymanRouterConfig } from './routers/paymanAirouter';
 
 const app: Application = express();
@@ -22,18 +18,10 @@ app.use('*', (req, res, next) => {
 
 // Register all the router configurations
 app.use('/contractor', contractorRouterConfig.router);
-app.use('/company', companyRouterConfig.router);
-app.use('/task', taskRouterConfig.router);
-app.use('/skill', skillRouterConfig.router);
-app.use('/invoice', invoiceRouterConfig.router);
 app.use('/payman', paymanRouterConfig.router);
 
 const routeConfigs = [
   contractorRouterConfig,
-  companyRouterConfig,
-  taskRouterConfig,
-  skillRouterConfig,
-  invoiceRouterConfig,
   paymanRouterConfig,
 ];
 
