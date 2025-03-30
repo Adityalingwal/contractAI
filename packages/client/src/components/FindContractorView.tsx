@@ -112,18 +112,18 @@ const FindContractorsView: React.FC<FindContractorsViewProps> = ({
           </div>
         </CardContent>
 
-        <div className="p-4 pt-0 mt-auto gap-4">
+        <div className="p-4 pt-0 mt-auto gap-4 flex flex-col space-y-1">
           <Button
-            variant="outline"
-            className="w-full"
+            variant="default"
+            className="w-full bg-blue-500 hover:bg-blue-600"
             onClick={() => onViewProfile(contractor)}
           >
             View Profile
           </Button>
 
           <Button
-            variant="outline"
-            className="w-full"
+            variant="default"
+            className="w-full bg-blue-500 hover:bg-blue-600"
             onClick={() => onViewProfile(contractor)}
           >
             Assign contract
