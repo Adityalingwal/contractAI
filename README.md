@@ -19,7 +19,7 @@ AI-Powered Contractor Hiring & Payments is an intelligent platform that connects
 
 
 
-## Installation
+## Contributing And Project Setup
 ```bash
 # Clone the repository
 git clone https://github.com/your-repo/ai-contractor-hiring.git
@@ -47,12 +47,6 @@ npm start
 - **Authentication**: JWT
 - **Payment Gateway**: Stripe
 - **AI Model**: OpenAI for contractor recommendations
-
-## Contributing
-Contributions are welcome! Feel free to submit a pull request or open an issue.
-
-## License
-[MIT License](LICENSE)
 
 ## Contact
 For inquiries, please reach out at [your-email@example.com](mailto:your-email@example.com).
