@@ -6,7 +6,7 @@
     "scripts": {
         "bootstrap": "npm --prefix ../client install && npm install",
         "build": "rimraf dist && tsc --build",
-        "build:render": "./render-build.sh",
+        "build:render": "npm install --save-dev @types/pg && npm run build",
         "start": "npm run build && nodemon dist/server.js",
         "start:prod": "node dist/server.js",
         "test": "echo \"Error: no test specified\" && exit 1",
