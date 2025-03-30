@@ -1,6 +1,6 @@
 # ContractorAI
 
-<img src="./packages/client/images/Screenshot 2025-03-30 185108.png" width="150">
+<img src="https://img.freepik.com/free-vector/artificial-intelligence-ai-robot-circuit-brain-logo-vector-icon-illustration_727335-212.jpg" width="150" alt="ContractorAI Logo">
 
 ## Transform Your Contractor Management
 
@@ -9,7 +9,7 @@ ContractorAI is a comprehensive platform designed to streamline and automate con
 ## Key Features
 
 ### 🚀 AI-Driven Matching
-<img src="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png" width="250" alt="AI Matching">
+<img src="https://img.freepik.com/free-vector/ai-matching-system-abstract-concept-illustration_335657-3723.jpg" width="250" alt="AI Matching">
 - Intelligent algorithm that finds the perfect talent for specialized projects
 - Saves countless hours on screening candidates
 - Delivers better talent for your specific needs
@@ -20,7 +20,7 @@ ContractorAI is a comprehensive platform designed to streamline and automate con
 - Simple and intuitive user experience
 
 ### 💸 Payment Automation
-<img src="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png" width="250" alt="Payment Process">
+<img src="https://img.freepik.com/free-vector/payment-information-concept-illustration_114360-2766.jpg" width="250" alt="Payment Process">
 - Eliminate payment delays
 - Multiple payment options including crypto (USDC) and ACH
 - Reduce finance team workload by up to 80%
@@ -37,7 +37,7 @@ ContractorAI is a comprehensive platform designed to streamline and automate con
 3. **Invoicing & Approval** - Generate and approve invoices for completed tasks
 4. **Automated Payments** - Seamless payment processing via ACH/USDC with compliance tracking
 
-<img src="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png" width="400" alt="How It Works">
+<img src="https://img.freepik.com/free-vector/workflow-infographic-template_23-2148637165.jpg" width="400" alt="How It Works">
 
 ## Getting Started
 
@@ -92,7 +92,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 - Framer Motion for animations
 - Lucide for icons
 
-<img src="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png" width="350" alt="Tech Stack">
+<img src="https://img.freepik.com/free-vector/web-development-programmer-engineering-coding-website-augmented-reality-interface-screens-developer-project-engineer-programming-software-application-design-cartoon-illustration_107791-3863.jpg" width="350" alt="Tech Stack">
 
 ## Testimonials
 
@@ -108,7 +108,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 For questions or support, please contact us at [support@contractorai.com](mailto:support@contractorai.com)
 
-<img src="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png" width="250" alt="Contact">
+<img src="https://img.freepik.com/free-vector/flat-design-illustration-customer-support_23-2148887720.jpg" width="250" alt="Contact">
 
 ## License
 
