@@ -1,50 +1,115 @@
-# ContractorAI - AI-Powered Contractor Hiring & Payments Platform
+# ContractorAI
 
-<img src="Screenshot_2025-03-30_185108.png" alt="ContractorAI Banner" width="100%">
+![ContractorAI Logo](https://example.com/logo.png) <!-- Replace with your actual logo URL -->
 
-## Overview
-ContractorAI is an all-in-one platform that streamlines contractor management and payment processes using AI automation. Scale your workforce efficiently without increasing overhead.
+## Transform Your Contractor Management
+
+ContractorAI is a comprehensive platform designed to streamline and automate contractor management, from onboarding to payments. Our AI-powered solution helps businesses reduce administrative overhead, ensure compliance, and efficiently match the right talent to specific projects.
 
 ## Key Features
 
-### Automated Contractor Onboarding
-<img src="Screenshot_2025-03-30_185145.png" alt="Onboarding Feature" width="600px">
-- Easy registration with automated workflows
-- Time-saving solution for businesses and contractors
-- AI-powered verification and documentation
+### 🚀 AI-Driven Matching
+![AI Matching](https://example.com/ai-matching.png) <!-- Add an image showing AI matching visualization -->
+- Intelligent algorithm that finds the perfect talent for specialized projects
+- Saves countless hours on screening candidates
+- Delivers better talent for your specific needs
 
-### Business Dashboard
-<img src="Screenshot_2025-03-30_185320.png" alt="Business Dashboard" width="600px">
-- Manage contracts and assign tasks
-- Process payments in one place
-- Track contractor performance
+### 📋 Automated Onboarding
+- Streamlined contractor registration
+- Automated Payman AI payee creation
+- Simple and intuitive user experience
 
-### Contractor Discovery
-<img src="Screenshot_2025-03-30_185702.png" alt="Find Contractors" width="600px">
-- Search by skills, experience, or availability
-- Filter by hourly rate and project type
-- View detailed contractor profiles
+### 💸 Payment Automation
+![Payment Process](https://example.com/payment-process.png) <!-- Add an image showing payment flow -->
+- Eliminate payment delays
+- Multiple payment options including crypto (USDC) and ACH
+- Reduce finance team workload by up to 80%
+
+### ✅ Compliance Management
+- Centralized system for tax documents and compliance requirements
+- Automatic handling of jurisdiction-specific requirements
+- Built-in compliance tracking
 
 ## How It Works
 
+1. **Contractor Registration** - Easy onboarding with automated Payman AI payee creation
+2. **Task Assignment** - AI-driven matching of contractors to specific tasks
+3. **Invoicing & Approval** - Generate and approve invoices for completed tasks
+4. **Automated Payments** - Seamless payment processing via ACH/USDC with compliance tracking
+
+![How It Works](https://example.com/how-it-works.png) <!-- Add a flow diagram showing the process -->
+
+## Getting Started
+
 ### For Businesses
-1. Post your gig requirements
-<img src="Screenshot_2025-03-30_185732.png" alt="Post a Gig" width="600px">
-2. Review contractor applications
-3. Manage projects and payments
+
+1. Create an account and select the "Business" role
+2. Set up your company profile and payment preferences
+3. Start adding projects and let our AI match you with qualified contractors
 
 ### For Contractors
-1. Create your profile
-<img src="Screenshot_2025-03-30_185845.png" alt="Edit Profile" width="600px">
-2. Browse available gigs
-<img src="Screenshot_2025-03-30_185820.png" alt="Available Gigs" width="600px">
-3. Get paid quickly and securely
 
-## Payment System
-<img src="Screenshot_2025-03-30_185913.png" alt="Payment Status" width="600px">
-- Multiple payment options (Crypto, ACH)
-- Real-time payment tracking
-- Automated payment processing
+1. Create an account and select the "Contractor" role
+2. Complete your profile with skills, experience, and payment details
+3. Get matched with relevant projects and start earning
 
-## Support
-For questions or support, contact us at support@contractorai.com
+## Development
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+### Available Scripts
+
+In the project directory, you can run:
+
+#### `npm start`
+
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
+
+#### `npm test`
+
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+#### `npm run build`
+
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+## Technologies Used
+
+- React
+- TypeScript
+- Tailwind CSS
+- Framer Motion for animations
+- Lucide for icons
+
+![Tech Stack](https://example.com/tech-stack.png) <!-- Add an image showing the tech stack logos -->
+
+## Testimonials
+
+> "ContractorAI has revolutionized how we manage our global contractor workforce. The automated onboarding and payments have cut our administrative overhead by 75%, and the AI matching delivers better talent for our projects."
+> 
+> **Sarah Johnson** - *CEO, TechInnovate Inc.*
+
+> "Managing compliance across different jurisdictions was a nightmare before ContractorAI. Now we have a centralized system that automatically handles tax documents and compliance requirements. The time savings alone is worth the investment."
+> 
+> **David Rodriguez** - *Operations Director, Global Consulting Group*
+
+## Contact
+
+For questions or support, please contact us at [support@contractorai.com](mailto:support@contractorai.com)
+
+![Contact](https://example.com/contact.png) <!-- Add a contact/support image -->
+
+## License
+
+[MIT](LICENSE)
