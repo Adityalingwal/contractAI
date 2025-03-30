@@ -43,3 +43,11 @@ export const assignContractToContractor = async (req: any): Promise<any> => {
     throw error;
   }
 };
+
+export const getContractorAssignments = async (contractorId: string): Promise<any> => {
+  return await post('/contractor/getContractorAssignments', { contractorId });
+};
+
+export const getContractorByEmail = async (req: { email: string }): Promise<any> => {
+  return await post('/contractor/getContractorByEmail', req);
+};

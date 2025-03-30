@@ -7,7 +7,8 @@ import {
   createOrUpdateContractor,
   removeContractor,
   createContractorProfile,
-  assignContractToContractor
+  assignContractToContractor,
+  getContractorAssignments
 } from '../services/contractor-service/contractorService';
 import {
   GetContractorRequest,
@@ -116,6 +117,18 @@ export async function assignContractHandler(req: any): Promise<any> {
   return { success: true, assignment };
 }
 
+export async function getContractorAssignmentsHandler(req: any): Promise<any> {
+  const { contractorId } = req;
+  
+  if (!contractorId) {
+    throw new contractAiError('Contractor ID is required');
+  }
+  
+  const assignments = await getContractorAssignments(contractorId);
+  console.log('assignments are: ', assignments);
+  return { assignments };
+}
+
 export const contractorRouterConfig: RouteConfig = {
   router: contractorRouter,
   endpoints: {
@@ -158,6 +171,10 @@ export const contractorRouterConfig: RouteConfig = {
     '/assignContract': {
       handler: assignContractHandler,
       isUserScoped: false,
-    }
+    },
+    '/getContractorAssignments': {
+      handler: getContractorAssignmentsHandler,
+      isUserScoped: false,
   },
-};
+}
+}

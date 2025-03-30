@@ -137,3 +137,53 @@ export async function getAssignmentsByGigId(gigId: string): Promise<ContractAssi
     completedAt: row.completed_at,
   }));
 }
+
+export async function getContractorAssignments(contractorId: string): Promise<any[]> {
+  const query = `
+    SELECT 
+      ga.assignment_id,
+      ga.gig_id,
+      ga.contractor_id,
+      ga.assigned_at,
+      ga.status as assignment_status,
+      ga.completed_at,
+      g.title,
+      g.description,
+      g.required_skills,
+      g.experience_level,
+      g.estimated_duration,
+      g.hourly_rate,
+      g.status as gig_status,
+      g.payment_method,
+      g.created_at,
+      g.updated_at
+    FROM 
+      gig_assignments ga
+    JOIN 
+      gigs g ON ga.gig_id = g.gig_id
+    WHERE 
+      ga.contractor_id = $1
+    ORDER BY 
+      ga.assigned_at DESC
+  `;
+  
+  const result = await pool.query(query, [contractorId]);
+  return result.rows.map((row: any) => ({
+    assignmentId: row.assignment_id,
+    gigId: row.gig_id,
+    contractorId: row.contractor_id,
+    title: row.title,
+    description: row.description,
+    requiredSkills: row.required_skills,
+    experienceLevel: row.experience_level,
+    estimatedDuration: row.estimated_duration,
+    hourlyRate: row.hourly_rate,
+    assignmentStatus: row.assignment_status,
+    gigStatus: row.gig_status,
+    assignedAt: row.assigned_at,
+    completedAt: row.completed_at,
+    paymentMethod: row.payment_method,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at
+  }));
+}
