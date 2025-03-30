@@ -70,11 +70,11 @@ const BusinessDashboard = () => {
           const formattedContractors = response.contractors.map((contractor: ContractorProfile) => ({
             id: contractor.contractorId,
             name: contractor.fullName,
-            experience: contractor.experienceLevel,
             availability: contractor.availability === 'fullTime' ? 'Full-time' : contractor.availability,
             professionalTitle: contractor.professionalTitle,
-            bio: contractor.bio,
             hourlyRate: contractor.hourlyRate,
+            bio:contractor.bio,
+            experienceLevel:contractor.experienceLevel,
           }));
           setContractors(formattedContractors);
         } else {
