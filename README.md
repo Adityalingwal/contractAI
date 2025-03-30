@@ -61,4 +61,4 @@ npm start
 - **AI Model**: OpenAI for contractor recommendations
 
 ## Contact
-For inquiries, please reach out at [sanulingwal1@gmail.com](mailto:sanulingwal1@gmail.com).
+For inquiries, please reach out at : [sanulingwal1@gmail.com](mailto:sanulingwal1@gmail.com).
