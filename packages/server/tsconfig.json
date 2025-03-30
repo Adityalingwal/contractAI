@@ -8,8 +8,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "outDir": "./dist",
-    "noStrictGenericChecks": true,
-    "ignoreDeprecations": "5.0"
+    "typeRoots": ["./node_modules/@types", "./src/types"]
   },
   "include": ["src/**/*"]
 }
