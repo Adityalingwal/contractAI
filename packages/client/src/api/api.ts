@@ -1,17 +1,5 @@
 import { post } from './client';
 
-export const createPayee = async (req: any): Promise<any> => {
-  return await post('/payman/createPayee', req);
-};
-
-export const sendPayment = async (req: any): Promise<any> => {
-  return await post('/payman/sendPayment', req);
-};
-
-export const getPayees = async (req?: any): Promise<any> => {
-  return await post('/payman/getPayees', req);
-};
-
 export const getAllContracts = async (): Promise<any> => {
   return await post('/contractor/getAllContracts');
 };
@@ -59,3 +47,17 @@ export const submitGigCompletion = async (payload: { assignmentId: string; proje
 export const getGigsWithStatus = async (): Promise<any> => {
   return await post('/contractor/getGigsWithStatus', {});
 };
+
+export const getCompletedGigsForPayment = async (): Promise<any> => {
+  return await post('/payment/getCompletedGigs', {});
+};
+
+export const sendGigPayment = async (payload: { 
+  assignmentId: string; 
+  payeeId: string; 
+  amount: number;
+  gigTitle: string;
+}): Promise<any> => {
+  return await post('/payment/sendGigPayment', payload);
+};
+

@@ -5,13 +5,12 @@ import { getAllContracts, postContract, getAllContractors } from '../api/api';
 import {
   Notification,
 } from '../types/businessDashboardTypes';
-import { dummyNotifications } from '../dummy-data/dummyData';
 
 import SidebarNav from '../components/SidebarNav';
 import FindContractorsView from '../components/FindContractorView';
 import PostContractView from '../components/PostContractView';
-import ComingSoonView from '../components/ComingSoonView';
 import ContractStatus from '../components/ContractStatus';
+import SendPaymentView from '../components/SendPaymentView';
 
 export interface ContractorProfile {
   contractorId: string;
@@ -52,12 +51,10 @@ const BusinessDashboard = () => {
     isOpen: false,
     contractor: null,
   });
-  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setNotifications(dummyNotifications);
     
     const fetchContractors = async () => {
       setIsLoading(true);
@@ -91,8 +88,6 @@ const BusinessDashboard = () => {
 
     fetchContractors();
   }, []);
-
-  const unreadCount = notifications.filter(notification => !notification.isRead).length;
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -162,7 +157,7 @@ const BusinessDashboard = () => {
       case 'contract-status':
         return <ContractStatus />;
       case 'send-payment':
-        return <ComingSoonView title="Send Payment" />;
+        return <SendPaymentView />;
       default:
         return null;
     }
@@ -195,7 +190,6 @@ const BusinessDashboard = () => {
       <SidebarNav
         activeItem={activeItem}
         setActiveItem={setActiveItem}
-        unreadCount={unreadCount}
       />
 
       <main className="flex-1 overflow-auto bg-white p-6">

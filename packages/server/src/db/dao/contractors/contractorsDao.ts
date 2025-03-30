@@ -277,3 +277,59 @@ export async function fetchGigsWithStatus(): Promise<GigWithStatus[]> {
     projectLink: row.project_link
   }));
 }
+
+export async function createContractor(contractorData: any): Promise<any> {
+  try {
+    const result = await pool.query(
+      `INSERT INTO contractors (
+        full_name, 
+        email, 
+        bio, 
+        professional_title, 
+        skills, 
+        experience_level, 
+        availability, 
+        hourly_rate, 
+        available_from, 
+        portfolio_link, 
+        linkedin_profile,
+        payee_id
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`,
+      [
+        contractorData.fullName,
+        contractorData.email,
+        contractorData.bio,
+        contractorData.professionalTitle,
+        contractorData.skills,
+        contractorData.experienceLevel,
+        contractorData.availability,
+        contractorData.hourlyRate,
+        contractorData.availableFrom,
+        contractorData.portfolioLink,
+        contractorData.linkedinProfile,
+        contractorData.payeeId
+      ]
+    );
+
+    return {
+      contractorId: result.rows[0].contractor_id,
+      fullName: result.rows[0].full_name,
+      email: result.rows[0].email,
+      bio: result.rows[0].bio,
+      professionalTitle: result.rows[0].professional_title,
+      skills: result.rows[0].skills,
+      experienceLevel: result.rows[0].experience_level,
+      availability: result.rows[0].availability,
+      hourlyRate: result.rows[0].hourly_rate,
+      availableFrom: result.rows[0].available_from,
+      portfolioLink: result.rows[0].portfolio_link,
+      linkedinProfile: result.rows[0].linkedin_profile,
+      payeeId: result.rows[0].payee_id,
+      createdAt: result.rows[0].created_at,
+      updatedAt: result.rows[0].updated_at
+    };
+  } catch (error) {
+    console.error('Error creating contractor:', error);
+    throw error;
+  }
+}

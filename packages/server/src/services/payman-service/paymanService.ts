@@ -1,8 +1,6 @@
 import fetch from 'node-fetch';
 import { contractAiError } from '../../error/contractAiError';
 import {
-  PayeeCreationRequest,
-  PayeeResponse,
   PaymentRequest,
   PaymentResponse,
   SearchPayeesOptions,
@@ -16,14 +14,16 @@ const PAYMAN_API_SECRET = process.env.PAYMAN_API_SECRET || '';
 const PAYMAN_API_BASE_URL = 'https://agent.payman.ai/api';
 
 export async function createPayee(
-  payeeData: PayeeCreationRequest,
-  apiSecret = PAYMAN_API_SECRET
-): Promise<PayeeResponse> {
+  payeeData: any,
+  apiSecret= PAYMAN_API_SECRET
+): Promise<any> {
   try {
-    const response = await fetch(`${PAYMAN_API_BASE_URL}/payees/create-payee`, {
+    console.log('payeeData is: ', payeeData);
+    console.log('apiSecret is: ', PAYMAN_API_SECRET );
+    const response = await fetch(`${PAYMAN_API_BASE_URL}/payments/payees`, {
       method: 'POST',
       headers: {
-        'x-payman-api-secret': apiSecret,
+        'x-payman-api-secret': PAYMAN_API_SECRET,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payeeData),
@@ -42,9 +42,6 @@ export async function createPayee(
   }
 }
 
-/**
- * Sends a payment to a payee
- */
 export async function sendPayment(
   paymentData: PaymentRequest,
   apiSecret = PAYMAN_API_SECRET
@@ -53,7 +50,7 @@ export async function sendPayment(
     const response = await fetch(`${PAYMAN_API_BASE_URL}/payments/send-payment`, {
       method: 'POST',
       headers: {
-        'x-payman-api-secret': apiSecret,
+        'x-payman-api-secret': PAYMAN_API_SECRET ,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(paymentData),

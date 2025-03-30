@@ -11,6 +11,7 @@ export interface Contractor {
   availability: 'fullTime' | 'partTime' | 'limited';
   availableFrom: Date;
   linkedinProfile?: string;
+  payeeId?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

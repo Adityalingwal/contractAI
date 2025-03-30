@@ -8,11 +8,13 @@ import {
   getContractorAssignments as fetchContractorAssignments,
   completeGigAssignment,
   fetchGigsWithStatus,
+  createContractor,
 } from '../../db/dao/contractors/contractorsDao';
 import { Contractor, ContractAssignment, GigWithStatus } from '../../db/dao/contractors/types';
 import { contractAiError } from '../../error/contractAiError';
 import { insertGig } from '../../db/dao/gigs/gigsDao';
 import { Gig } from '../../db/dao/gigs/types';
+import { createPayee } from '../payman-service/paymanService';
 
 export async function getContractorById(contractorId: string): Promise<Contractor> {
   const contractor = await fetchContractorById(Number(contractorId));
@@ -34,39 +36,35 @@ export async function removeContractor(contractorId: string): Promise<void> {
   await deleteContractor(Number(contractorId));
 }
 
-export async function createContractorProfile(profileData: any): Promise<Contractor> {
-  if (!profileData) {
-    throw new contractAiError('Profile data is required');
-  }
-
-  console.log('profile data is :', profileData);
-
-  if (
-    !profileData.fullName ||
-    !profileData.email ||
-    !profileData.professionalTitle ||
-    !profileData.bio ||
-    !profileData.experienceLevel ||
-    !profileData.hourlyRate ||
-    !profileData.skills ||
-    !profileData.portfolioLink ||
-    !profileData.availability ||
-    !profileData.availableFrom
-  ) {
-    throw new contractAiError('Missing required fields in profile data');
-  }
-
+export async function createContractorProfile(contractorData: any): Promise<any> {
   try {
-    const existingContractor = await getContractorByEmail(profileData.email);
+    let payeeId = null;
 
-    if (existingContractor) {
-      profileData.contractorId = existingContractor.contractorId;
+    try {
+      const payeeResponse = await createPayee({
+        type: 'TEST_RAILS',
+        name: contractorData.fullName,
+        contactDetails: {
+          email: contractorData.email,
+        },
+        tags: ['contractor'],
+      });
+
+      payeeId = payeeResponse.id;
+      console.log('Created payee with ID:', payeeId);
+    } catch (payeeError) {
+      console.error('Error creating payee for contractor:', payeeError);
     }
 
-    return await upsertContractor(profileData);
+    const contractorWithPayee = {
+      ...contractorData,
+      payeeId,
+    };
+
+    const contractor = await createContractor(contractorWithPayee);
+    return contractor;
   } catch (error) {
-    console.error('Error creating contractor profile:', error);
-    throw new contractAiError('Failed to create contractor profile');
+    throw new Error(`Failed to create contractor profile: ${(error as Error).message}`);
   }
 }
 

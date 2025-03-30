@@ -7,10 +7,9 @@ import { Briefcase, Users, PlusSquare, Bell, FileCheck, CreditCard, Home } from 
 interface SidebarNavProps {
   activeItem: string;
   setActiveItem: (item: string) => void;
-  unreadCount: number;
 }
 
-const SidebarNav: React.FC<SidebarNavProps> = ({ activeItem, setActiveItem, unreadCount }) => {
+const SidebarNav: React.FC<SidebarNavProps> = ({ activeItem, setActiveItem }) => {
   const buttonVariants = {
     hover: {
       scale: 1.05,

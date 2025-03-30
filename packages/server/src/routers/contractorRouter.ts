@@ -30,7 +30,7 @@ const contractorRouter = Router();
 
 async function getAllContractorsHandler(): Promise<GetAllContractorsResponse> {
   const contractors = await fetchAllContractors();
-  console.log('contractors are: ', contractors);
+  // console.log('contractors are: ', contractors);
   return { contractors };
 }
 
@@ -103,7 +103,7 @@ export async function postContractHandler(req: any): Promise<any> {
 
 export async function getAllGigsHandler(): Promise<any> {
   const gigs = await fetchAllGigs();
-  console.log('gigs are: ', gigs);
+  // console.log('gigs are: ', gigs);
   return { gigs };
 }
 
