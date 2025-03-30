@@ -78,15 +78,15 @@ export const dummyContractors: ContractorProfile[] = [
     availability: 'full-time',
     completedProjects: [
       {
-        projectName: 'E-commerce Platform Redesign',
-        clientName: 'TechCorp Inc.',
+        projectName: 'Kitchen Renovation',
+        clientName: 'Thompson Family',
         completionDate: '2023-12-15',
-        description: "Complete redesign of client's e-commerce platform",
-        feedback: 'Excellent work and communication',
+        description: "Complete kitchen remodel including custom cabinetry and island installation",
+        feedback: 'Excellent work and craftsmanship',
       },
     ],
     professionalSummary:
-      'Senior full-stack developer specialized in React and Node.js with extensive e-commerce experience.',
+      'Licensed general contractor specializing in kitchen and bathroom renovations with expertise in modern designs.',
   },
   {
     id: 2,
@@ -98,15 +98,15 @@ export const dummyContractors: ContractorProfile[] = [
     availability: 'contract',
     completedProjects: [
       {
-        projectName: 'Mobile App Development',
-        clientName: 'HealthTech Solutions',
+        projectName: 'Roofing Replacement',
+        clientName: 'Westside Properties',
         completionDate: '2024-01-20',
-        description: 'Healthcare monitoring mobile application',
-        feedback: 'Great attention to detail',
+        description: 'Complete roof replacement with weatherproofing upgrades',
+        feedback: 'Great attention to detail and finished ahead of schedule',
       },
     ],
     professionalSummary:
-      'Mobile app developer with focus on React Native and iOS development. Healthcare industry expert.',
+      'Roofing specialist with certification in several roofing systems. Experienced in residential and commercial properties.',
   },
   {
     id: 3,
@@ -118,15 +118,15 @@ export const dummyContractors: ContractorProfile[] = [
     availability: 'freelance',
     completedProjects: [
       {
-        projectName: 'AI Integration Project',
-        clientName: 'DataSmart Analytics',
+        projectName: 'Home Addition Project',
+        clientName: 'Garcia Family',
         completionDate: '2024-02-01',
-        description: 'Implementation of ML models in production',
-        feedback: 'Outstanding technical expertise',
+        description: 'Design and construction of 500 sq ft master suite addition',
+        feedback: 'Outstanding work quality and excellent project management',
       },
     ],
     professionalSummary:
-      'AI/ML specialist with extensive experience in Python and TensorFlow. Led multiple successful AI implementations.',
+      'Master carpenter and licensed contractor specializing in home additions and structural renovations. Known for quality craftsmanship.',
   },
 ];
 
