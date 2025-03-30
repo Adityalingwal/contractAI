@@ -1,9 +1,5 @@
-declare module 'express-session';
-declare module 'pg';
 import path from 'path';
 import express, { Request, Response, Application, NextFunction, Router } from 'express';
-import passport from 'passport';
-import cookieParser from 'cookie-parser';
 import { restRouteHandler } from './routers/utils/restRouteHandler';
 import { contractorRouterConfig } from './routers/contractorRouter';
 import { companyRouterConfig } from './routers/companyRouter';
@@ -23,8 +19,6 @@ app.use('*', (req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
   next();
 });
-app.use(cookieParser());
-app.use(passport.initialize());
 
 // Register all the router configurations
 app.use('/contractor', contractorRouterConfig.router);
