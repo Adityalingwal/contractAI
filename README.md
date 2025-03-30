@@ -1,6 +1,6 @@
 # AI-Powered Contractor Hiring & Payments
 
-<img src="./packages/./client/images/Screenshot 2025-03-30 185108.png" width="500" alt="Project Logo">
+<img src="./packages/./client/images/Screenshot 2025-03-30 185108.png" width="800" alt="Project Logo">
 
 ## Overview
 AI-Powered Contractor Hiring & Payments is an intelligent platform that connects businesses with skilled contractors. It streamlines the hiring process, contract management, and payments, all in one seamless experience.
