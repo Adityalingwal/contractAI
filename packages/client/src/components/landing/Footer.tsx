@@ -24,7 +24,7 @@ export function Footer() {
           <div className="md:col-span-1">
             <Logo className="mb-4" />
             <p className="text-muted-foreground text-sm mt-2 max-w-xs">
-              Automating rental payment reconciliation with AI-powered insights for property managers.
+              AI-powered contract hiring.
             </p>
             <div className="flex space-x-4 mt-6">
               <motion.a 
@@ -103,7 +103,7 @@ export function Footer() {
         </div>
         
         <div className="mt-8 pt-8 flex flex-col md:flex-row items-center justify-between text-sm text-muted-foreground">
-          <p>© 2023 PaymanMate. All rights reserved.</p>
+          <p>© 2023 ContractorAI. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-foreground transition-colors">Terms of Service</a>
