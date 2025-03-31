@@ -24,13 +24,20 @@ AI-Powered Contractor Hiring & Payments is an intelligent platform that connects
 # Clone the repository
 git clone https://github.com/Adityalingwal/contractAI.git
 
-# Navigate to the project directory
-cd contractAi
+# Navigate to the packages directory
 cd packages
-cd client (for client) and
-cd server (for server)
 
-# Create an .env file and paste this
+#Go to the client directory to start the client
+cd client 
+npm install 
+npm start
+
+#Go to the server directory
+cd server 
+npm install 
+npm start
+
+# Create an .env file in server directory
    DB_HOST= Your_host
    DB_PORT= Your_port
    DB_NAME= Your_name
@@ -39,25 +46,17 @@ cd server (for server)
    PAYMAN_API_SECRET= Your_api
    NODE_ENV= Your_env
 
-
-# Install dependencies
-npm install
-
-# Start the development server
-npm start
-```
-
 ## Usage
 1. Register or log in as a **Business** or **Contractor**.
 2. Businesses can post contracts and manage payments.
 3. Contractors can apply for gigs and track job status.
-4. Use the dashboard for contract management and notifications.
+4. Use the dashboard for contract management.
 
 ## Technologies Used
 - **Frontend**: React, TailwindCSS
 - **Backend**: Node.js, Express
 - **Database**: PostgreSQL
-- **Payment API**: Payman
+- **Payment API**: PaymanAI
 - **AI Model**: OpenAI for contractor recommendations
 
 ## Contact
