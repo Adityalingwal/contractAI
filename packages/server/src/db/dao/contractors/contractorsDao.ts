@@ -48,10 +48,7 @@ export async function upsertContractor(contractor: Contractor): Promise<Contract
 }
 
 export async function fetchContractorById(id: number): Promise<Contractor | undefined> {
-  const result = await pool.query(
-    'SELECT * FROM contractors WHERE contractor_id = $1',
-    [id]
-  );
+  const result = await pool.query('SELECT * FROM contractors WHERE contractor_id = $1', [id]);
 
   if (result.rows.length === 0) {
     return undefined;
@@ -61,9 +58,7 @@ export async function fetchContractorById(id: number): Promise<Contractor | unde
 }
 
 export async function fetchContractorByEmail(email: string): Promise<Contractor | undefined> {
-  const result = await pool.query('SELECT * FROM contractors WHERE email = $1', [
-    email,
-  ]);
+  const result = await pool.query('SELECT * FROM contractors WHERE email = $1', [email]);
 
   if (result.rows.length === 0) {
     return undefined;
@@ -81,12 +76,12 @@ export async function deleteContractor(id: number): Promise<void> {
   await pool.query('DELETE FROM contractors WHERE contractor_id = $1', [id]);
 }
 
-export async function assignContractToContractor(gigId: string, contractorId: string): Promise<ContractAssignment> {
-  await pool.query(
-    'UPDATE gigs SET status = $1 WHERE gig_id = $2',
-    ['assigned', gigId]
-  );
-  
+export async function assignContractToContractor(
+  gigId: string,
+  contractorId: string
+): Promise<ContractAssignment> {
+  await pool.query('UPDATE gigs SET status = $1 WHERE gig_id = $2', ['assigned', gigId]);
+
   const result = await pool.query(
     `INSERT INTO gig_assignments
       (gig_id, contractor_id, assigned_at, status)
@@ -95,7 +90,7 @@ export async function assignContractToContractor(gigId: string, contractorId: st
      RETURNING *`,
     [gigId, contractorId]
   );
-  
+
   return {
     assignmentId: result.rows[0].assignment_id,
     gigId: result.rows[0].gig_id,
@@ -106,13 +101,14 @@ export async function assignContractToContractor(gigId: string, contractorId: st
   };
 }
 
-export async function getAssignmentsByContractorId(contractorId: string): Promise<ContractAssignment[]> {
-  const result = await pool.query(
-    'SELECT * FROM gig_assignments WHERE contractor_id = $1',
-    [contractorId]
-  );
-  
-  return result.rows.map((row:any) => ({
+export async function getAssignmentsByContractorId(
+  contractorId: string
+): Promise<ContractAssignment[]> {
+  const result = await pool.query('SELECT * FROM gig_assignments WHERE contractor_id = $1', [
+    contractorId,
+  ]);
+
+  return result.rows.map((row: any) => ({
     assignmentId: row.assignment_id,
     gigId: row.gig_id,
     contractorId: row.contractor_id,
@@ -123,12 +119,9 @@ export async function getAssignmentsByContractorId(contractorId: string): Promis
 }
 
 export async function getAssignmentsByGigId(gigId: string): Promise<ContractAssignment[]> {
-  const result = await pool.query(
-    'SELECT * FROM gig_assignments WHERE gig_id = $1',
-    [gigId]
-  );
-  
-  return result.rows.map((row:any) => ({
+  const result = await pool.query('SELECT * FROM gig_assignments WHERE gig_id = $1', [gigId]);
+
+  return result.rows.map((row: any) => ({
     assignmentId: row.assignment_id,
     gigId: row.gig_id,
     contractorId: row.contractor_id,
@@ -166,7 +159,7 @@ export async function getContractorAssignments(contractorId: string): Promise<an
     ORDER BY 
       ga.assigned_at DESC
   `;
-  
+
   const result = await pool.query(query, [contractorId]);
   return result.rows.map((row: any) => ({
     assignmentId: row.assignment_id,
@@ -184,12 +177,12 @@ export async function getContractorAssignments(contractorId: string): Promise<an
     completedAt: row.completed_at,
     paymentMethod: row.payment_method,
     createdAt: row.created_at,
-    updatedAt: row.updated_at
+    updatedAt: row.updated_at,
   }));
 }
 
 export async function completeGigAssignment(
-  assignmentId: string, 
+  assignmentId: string,
   projectLink: string
 ): Promise<ContractAssignment> {
   const result = await pool.query(
@@ -203,18 +196,18 @@ export async function completeGigAssignment(
      RETURNING *`,
     [projectLink, assignmentId]
   );
-  
+
   if (result.rows.length === 0) {
     throw new Error('Assignment not found');
   }
-  
+
   await pool.query(
     `UPDATE gigs 
      SET status = 'completed' 
      WHERE gig_id = $1`,
     [result.rows[0].gig_id]
   );
-  
+
   return {
     assignmentId: result.rows[0].assignment_id,
     gigId: result.rows[0].gig_id,
@@ -222,10 +215,9 @@ export async function completeGigAssignment(
     assignedAt: result.rows[0].assigned_at,
     status: result.rows[0].status,
     completedAt: result.rows[0].completed_at,
-    projectLink: result.rows[0].project_link
+    projectLink: result.rows[0].project_link,
   };
 }
-
 
 export async function fetchGigsWithStatus(): Promise<GigWithStatus[]> {
   const query = `
@@ -257,7 +249,7 @@ export async function fetchGigsWithStatus(): Promise<GigWithStatus[]> {
   `;
 
   const result = await pool.query(query);
-  
+
   return result.rows.map((row: any) => ({
     gigId: row.gig_id,
     title: row.title,
@@ -274,7 +266,7 @@ export async function fetchGigsWithStatus(): Promise<GigWithStatus[]> {
     contractorName: row.contractor_name,
     assignedAt: row.assigned_at,
     completedAt: row.completed_at,
-    projectLink: row.project_link
+    projectLink: row.project_link,
   }));
 }
 
@@ -307,7 +299,7 @@ export async function createContractor(contractorData: any): Promise<any> {
         contractorData.availableFrom,
         contractorData.portfolioLink,
         contractorData.linkedinProfile,
-        contractorData.payeeId
+        contractorData.payeeId,
       ]
     );
 
@@ -326,15 +318,13 @@ export async function createContractor(contractorData: any): Promise<any> {
       linkedinProfile: result.rows[0].linkedin_profile,
       payeeId: result.rows[0].payee_id,
       createdAt: result.rows[0].created_at,
-      updatedAt: result.rows[0].updated_at
+      updatedAt: result.rows[0].updated_at,
     };
   } catch (error) {
     console.error('Error creating contractor:', error);
     throw error;
   }
 }
-
-
 
 export interface ContractorPayment {
   paymentId: string;
@@ -362,21 +352,20 @@ export async function fetchContractorPayments(contractorId: string): Promise<Con
       gigs g ON ga.gig_id = g.gig_id
     WHERE 
       ga.contractor_id = $1
-      AND ga.payment_id IS NOT NULL
+      AND ga.payment_status = 'paid'
     ORDER BY 
       ga.payment_sent_at DESC
   `;
 
   const result = await pool.query(query, [contractorId]);
-  
-  return result.rows.map((row:any) => ({
-    paymentId: row.payment_id,
+
+  return result.rows.map((row: any) => ({
+    paymentId: row.payment_id || `payment-${row.assignment_id.substring(0, 8)}`,
     assignmentId: row.assignment_id,
     gigTitle: row.gig_title,
     amount: `$${row.amount}`,
     paymentDate: row.payment_date,
     status: row.status || 'paid',
-    projectLink: row.project_link
+    projectLink: row.project_link,
   }));
 }
-

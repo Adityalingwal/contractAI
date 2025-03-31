@@ -104,9 +104,9 @@ export async function searchPayees(
 
 export async function getContractorPayments(contractorId: string) {
   try {
-    return await fetchContractorPayments(contractorId);
+    const details = await fetchContractorPayments(contractorId);
+    return details
   } catch (error) {
-    console.error('Error fetching contractor payments:', error);
     throw new contractAiError('Failed to fetch contractor payments');
   }
 }
