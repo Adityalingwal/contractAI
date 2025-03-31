@@ -333,3 +333,50 @@ export async function createContractor(contractorData: any): Promise<any> {
     throw error;
   }
 }
+
+
+
+export interface ContractorPayment {
+  paymentId: string;
+  assignmentId: string;
+  gigTitle: string;
+  amount: string;
+  paymentDate: Date;
+  status: string;
+  projectLink: string;
+}
+
+export async function fetchContractorPayments(contractorId: string): Promise<ContractorPayment[]> {
+  const query = `
+    SELECT 
+      ga.payment_id,
+      ga.assignment_id,
+      g.title as gig_title,
+      g.hourly_rate as amount,
+      ga.payment_sent_at as payment_date,
+      ga.payment_status as status,
+      ga.project_link
+    FROM 
+      gig_assignments ga
+    JOIN 
+      gigs g ON ga.gig_id = g.gig_id
+    WHERE 
+      ga.contractor_id = $1
+      AND ga.payment_id IS NOT NULL
+    ORDER BY 
+      ga.payment_sent_at DESC
+  `;
+
+  const result = await pool.query(query, [contractorId]);
+  
+  return result.rows.map((row:any) => ({
+    paymentId: row.payment_id,
+    assignmentId: row.assignment_id,
+    gigTitle: row.gig_title,
+    amount: `$${row.amount}`,
+    paymentDate: row.payment_date,
+    status: row.status || 'paid',
+    projectLink: row.project_link
+  }));
+}
+

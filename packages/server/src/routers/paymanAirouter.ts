@@ -5,6 +5,7 @@ import {
   processPaymentForGig,
 } from '../services/gigs-service/gigsService';
 import { contractAiError } from '../error/contractAiError';
+import { getContractorPayments } from '../services/payman-service/paymanService';
 
 const paymanRouter = Router();
 
@@ -28,6 +29,18 @@ async function sendGigPaymentHandler(req: any): Promise<any> {
   };
 }
 
+async function getContractorPaymentsHandler(req: any): Promise<any> {
+  const { contractorId } = req;
+  
+  if (!contractorId) {
+    throw new contractAiError('Contractor ID is required');
+  }
+
+  const payments = await getContractorPayments(contractorId);
+  console.log('payment is ',payments)
+  return { payments };
+}
+
 export const paymanRouterConfig: RouteConfig = {
   router: paymanRouter,
   endpoints: {
@@ -39,5 +52,9 @@ export const paymanRouterConfig: RouteConfig = {
       handler: sendGigPaymentHandler,
       isUserScoped: false,
     },
+    '/getContractorPayments': {
+      handler: getContractorPaymentsHandler,
+      isUserScoped: false,
+    }
   },
-};
+  }

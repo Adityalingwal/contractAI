@@ -61,3 +61,7 @@ export const sendGigPayment = async (payload: {
   return await post('/payment/sendGigPayment', payload);
 };
 
+export const getContractorPayments = async (contractorId: string): Promise<any> => {
+  return await post('/payment/getContractorPayments', { contractorId });
+};
+

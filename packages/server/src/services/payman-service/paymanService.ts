@@ -7,6 +7,7 @@ import {
   SearchPayeesResponse,
 } from './types';
 import dotenv from 'dotenv';
+import { fetchContractorPayments } from '../../db/dao/contractors/contractorsDao';
 
 dotenv.config();
 
@@ -18,8 +19,6 @@ export async function createPayee(
   apiSecret= PAYMAN_API_SECRET
 ): Promise<any> {
   try {
-    console.log('payeeData is: ', payeeData);
-    console.log('apiSecret is: ', PAYMAN_API_SECRET );
     const response = await fetch(`${PAYMAN_API_BASE_URL}/payments/payees`, {
       method: 'POST',
       headers: {
@@ -99,5 +98,15 @@ export async function searchPayees(
     return await response.json();
   } catch (error) {
     throw new contractAiError(`Error searching payees: ${(error as Error).message}`);
+  }
+}
+
+
+export async function getContractorPayments(contractorId: string) {
+  try {
+    return await fetchContractorPayments(contractorId);
+  } catch (error) {
+    console.error('Error fetching contractor payments:', error);
+    throw new contractAiError('Failed to fetch contractor payments');
   }
 }
