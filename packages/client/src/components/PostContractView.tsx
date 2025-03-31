@@ -36,6 +36,7 @@ interface PostContractViewProps {
       hourly_rate: string;
     }>
   >;
+  isSubmitting?: boolean;
 }
 
 const containerVariants = {
@@ -53,6 +54,7 @@ const PostContractView: React.FC<PostContractViewProps> = ({
   handleInputChange,
   handleContractSubmit,
   setContractForm,
+  isSubmitting = false,
 }) => {
   return (
     <motion.div
@@ -158,7 +160,20 @@ const PostContractView: React.FC<PostContractViewProps> = ({
             </div>
 
             <div className="flex justify-end">
-              <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white">Post Your Gig</Button>
+              <Button 
+                type="submit" 
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span>
+                    Submitting...
+                  </>
+                ) : (
+                  "Post Your Gig"
+                )}
+              </Button>
             </div>
           </form>
         </CardContent>

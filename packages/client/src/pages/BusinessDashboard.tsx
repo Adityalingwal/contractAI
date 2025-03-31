@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './BusinessDashboard.css';
-import { getAllContracts, postContract, getAllContractors } from '../api/api';
-import {
-  Notification,
-} from '../types/businessDashboardTypes';
-
+import { postContract, getAllContractors } from '../api/api';
 import SidebarNav from '../components/SidebarNav';
 import FindContractorsView from '../components/FindContractorView';
 import PostContractView from '../components/PostContractView';
@@ -53,6 +49,7 @@ const BusinessDashboard = () => {
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [isSubmittingContract, setIsSubmittingContract] = useState<boolean>(false);
 
   useEffect(() => {
     
@@ -101,6 +98,7 @@ const BusinessDashboard = () => {
 
   const handleContractSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmittingContract(true);
 
     try {
       const contractData = {
@@ -114,8 +112,6 @@ const BusinessDashboard = () => {
       
       const response = await postContract({ contractData });
       
-      alert('Gig posted successfully!');
-      
       setContractForm({
         title: '',
         description: '',
@@ -126,6 +122,8 @@ const BusinessDashboard = () => {
       });
     } catch (error) {
       alert('Error posting gig');
+    } finally {
+      setIsSubmittingContract(false);
     }
   };
 
@@ -151,6 +149,7 @@ const BusinessDashboard = () => {
             handleInputChange={handleInputChange}
             handleContractSubmit={handleContractSubmit}
             setContractForm={setContractForm}
+            isSubmitting={isSubmittingContract}
           />
         );
       
